@@ -1,0 +1,10 @@
+geom_label,v_ms,A_dP_v,A_dchi_phi,A_robust,Ap_dP_v,Ap_dchi_phi,Ap_robust,cross_robust
+baseline,20.0,2.289294e-02,-7.251013e-03,False,-1.000415e-02,-2.602017e-03,True,False
+period_nm=120,20.0,1.154375e-02,2.369243e-03,False,3.440674e-03,3.173530e-03,False,False
+period_nm=180,20.0,4.122249e-05,-8.340839e-04,False,1.153036e-05,-7.699316e-04,False,False
+depth_nm=-40,20.0,-1.272889e-03,-6.113245e-03,True,-6.065493e-04,-9.845501e-03,True,True
+depth_nm=-60,20.0,3.014398e-04,3.638320e-03,False,4.420330e-03,-8.561957e-04,False,False
+half_x_nm=20,20.0,-4.566160e-03,-2.099755e-06,False,4.241012e-03,-1.433198e-03,False,False
+half_x_nm=30,20.0,9.944873e-03,8.206838e-04,False,1.155817e-03,4.476256e-02,False,False
+half_z_nm=12,20.0,4.959306e-04,7.037684e-03,False,4.601112e-03,-1.122664e-05,False,False
+half_z_nm=18,20.0,-8.488918e-04,-1.435888e-03,True,5.732196e-04,-6.217820e-03,False,False

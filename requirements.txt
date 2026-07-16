@@ -1,0 +1,8 @@
+# Pinned direct dependencies for the validated CPU environment (Python 3.12).
+# CPU-only JAX is sufficient; no GPU is used. float64 is enabled at runtime.
+jax==0.10.2
+jaxlib==0.10.2
+numpy==2.4.4
+scipy==1.17.1
+matplotlib==3.10.8
+pytest==9.1.1

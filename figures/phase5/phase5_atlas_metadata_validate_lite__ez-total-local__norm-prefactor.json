@@ -1,0 +1,125 @@
+{
+  "archive_version": "phase5_atlas_v27",
+  "script_sha256_16": "69736aaa66ea8c70",
+  "ez_convention": "total-local",
+  "profile_norm": "prefactor",
+  "kernel_phase4p6_sha256_16": "d3f3ea281a085581",
+  "mode": "validate_lite",
+  "n_real": 3,
+  "n_conditions": 144,
+  "elapsed_sec": 78.21216440200806,
+  "timestamp": "2026-07-11T05:07:42",
+  "amplitude": {
+    "A": {
+      "mean_abs_dP_v": 0.0019594116141369755,
+      "mean_abs_dchi_phi": 0.0007508604176249988,
+      "std_abs_dP_v": 0.0019719058008114613,
+      "std_abs_dchi_phi": 0.00125249135818456
+    },
+    "A_pocket": {
+      "mean_abs_dP_v": 0.0003484194636655255,
+      "mean_abs_dchi_phi": 0.000191625134250536,
+      "std_abs_dP_v": 0.0005546508325554592,
+      "std_abs_dchi_phi": 0.0005258925643486683
+    },
+    "B_z": {
+      "mean_abs_dP_v": 0.003423881674104434,
+      "mean_abs_dchi_phi": 0.00034759759280102685,
+      "std_abs_dP_v": 0.005337274988243697,
+      "std_abs_dchi_phi": 0.00040274246974952144
+    },
+    "B_x": {
+      "mean_abs_dP_v": 0.0055235580908816586,
+      "mean_abs_dchi_phi": 0.000799566749004914,
+      "std_abs_dP_v": 0.005625141701011968,
+      "std_abs_dchi_phi": 0.0015868075076734774
+    }
+  },
+  "model_sensitivity": {
+    "A_vs_A_pocket": 0.002077353773649074,
+    "A_vs_B_z": 0.0038031508423680494,
+    "A_vs_B_x": 0.004199668912723005,
+    "A_pocket_vs_B_z": 0.0033351000751698765,
+    "A_pocket_vs_B_x": 0.005454112684119883,
+    "B_z_vs_B_x": 0.004285731292870998
+  },
+  "model_sensitivity_normalized": {
+    "A_vs_A_pocket": 2.077353773649074,
+    "A_vs_B_z": 3.80315084236805,
+    "A_vs_B_x": 4.199668912723004,
+    "A_pocket_vs_B_z": 3.335100075169877,
+    "A_pocket_vs_B_x": 5.454112684119883,
+    "B_z_vs_B_x": 4.285731292870997
+  },
+  "rank_correlation": {
+    "A_vs_A_pocket": 0.29523809523809524,
+    "A_vs_B_z": 0.6494208494208494,
+    "A_vs_B_x": 0.766023166023166,
+    "A_pocket_vs_B_z": 0.4646074646074646,
+    "A_pocket_vs_B_x": 0.1353925353925354,
+    "B_z_vs_B_x": 0.7935649935649937
+  },
+  "mean_rank_correlation": 0.5173745173745175,
+  "rank_correlation_interpretation": "MODERATE -- partial model-dependence",
+  "quadrant_agreement": {
+    "A_vs_A_pocket": 0.3333333333333333,
+    "A_vs_B_z": 0.4166666666666667,
+    "A_vs_B_x": 0.5,
+    "A_pocket_vs_B_z": 0.25,
+    "A_pocket_vs_B_x": 0.3055555555555556,
+    "B_z_vs_B_x": 0.3055555555555556
+  },
+  "mean_quadrant_agreement": 0.35185185185185186,
+  "geometry_sensitivity_raw": {
+    "A": {
+      "period_nm": 7.331288175030568e-05,
+      "depth_nm": 0.00017749626215341158,
+      "half_x_nm": 0.00026756321085299225,
+      "half_z_nm": 0.00033519042632214205
+    },
+    "A_pocket": {
+      "period_nm": 1.1251027690015414e-05,
+      "depth_nm": 4.9341731131643544e-05,
+      "half_x_nm": 4.896709360174593e-05,
+      "half_z_nm": 4.420499221868625e-05
+    },
+    "B_z": {
+      "period_nm": 0.00011571242880423511,
+      "depth_nm": 0.00021465746970052719,
+      "half_x_nm": 0.0004921305905036584,
+      "half_z_nm": 0.0003737203952942279
+    },
+    "B_x": {
+      "period_nm": 0.00014431193846224782,
+      "depth_nm": 0.00037614573087247635,
+      "half_x_nm": 0.0008915645747504645,
+      "half_z_nm": 0.0005085791333539839
+    }
+  },
+  "geometry_sensitivity_relative": {
+    "A": {
+      "period_nm": 0.01099693226254585,
+      "depth_nm": 0.00887481310767058,
+      "half_x_nm": 0.006689080271324805,
+      "half_z_nm": 0.005027856394832131
+    },
+    "A_pocket": {
+      "period_nm": 0.001687654153502312,
+      "depth_nm": 0.002467086556582177,
+      "half_x_nm": 0.001224177340043648,
+      "half_z_nm": 0.0006630748832802935
+    },
+    "B_z": {
+      "period_nm": 0.017356864320635264,
+      "depth_nm": 0.01073287348502636,
+      "half_x_nm": 0.01230326476259146,
+      "half_z_nm": 0.005605805929413419
+    },
+    "B_x": {
+      "period_nm": 0.021646790769337173,
+      "depth_nm": 0.01880728654362382,
+      "half_x_nm": 0.02228911436876161,
+      "half_z_nm": 0.007628687000309758
+    }
+  }
+}

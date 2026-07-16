@@ -1,0 +1,101 @@
+{
+  "archive_version": "phase5_atlas_v26",
+  "mode": "validate_mid",
+  "n_real": 4,
+  "n_conditions": 288,
+  "atlas_script_sha256_16": "1f6a19083ab568fa",
+  "merge_script_sha256_16": "317a3ed9f174c5ec",
+  "mean_rank_correlation": 0.6708309216026755,
+  "rank_correlation_interpretation": "MODERATE -- partial model-dependence",
+  "mean_quadrant_agreement": 0.32175925925925924,
+  "rank_correlation": {
+    "A_vs_A_pocket": 0.8059360730593608,
+    "A_vs_B_z": 0.8420155637018458,
+    "A_vs_B_x": 0.45260145346967656,
+    "A_pocket_vs_B_z": 0.874975882693421,
+    "A_pocket_vs_B_x": 0.5157244838896393,
+    "B_z_vs_B_x": 0.5337320728021095
+  },
+  "quadrant_agreement": {
+    "A_vs_A_pocket": 0.2916666666666667,
+    "A_vs_B_z": 0.7222222222222222,
+    "A_vs_B_x": 0.16666666666666666,
+    "A_pocket_vs_B_z": 0.3472222222222222,
+    "A_pocket_vs_B_x": 0.25,
+    "B_z_vs_B_x": 0.1527777777777778
+  },
+  "model_sensitivity": {
+    "A_vs_A_pocket": 0.021612705764132392,
+    "A_vs_B_z": 0.029874269133854627,
+    "A_vs_B_x": 0.035423587847301125,
+    "A_pocket_vs_B_z": 0.02655394414172617,
+    "A_pocket_vs_B_x": 0.043643609049923086,
+    "B_z_vs_B_x": 0.05486271725204436
+  },
+  "model_sensitivity_normalized": {
+    "A_vs_A_pocket": 21.612705764132393,
+    "A_vs_B_z": 29.874269133854632,
+    "A_vs_B_x": 35.42358784730113,
+    "A_pocket_vs_B_z": 26.55394414172617,
+    "A_pocket_vs_B_x": 43.64360904992308,
+    "B_z_vs_B_x": 54.862717252044376
+  },
+  "geometry_sensitivity_raw": {
+    "A": {
+      "period_nm": 0.00015435385125475538,
+      "depth_nm": 0.0009863336606679542,
+      "half_x_nm": 0.0028037552164786247,
+      "half_z_nm": 0.012493875409645309
+    },
+    "A_pocket": {
+      "period_nm": 0.00010685394497887468,
+      "depth_nm": 0.0009846614213068075,
+      "half_x_nm": 0.0019397550283723791,
+      "half_z_nm": 0.00898942304816373
+    },
+    "B_z": {
+      "period_nm": 0.0003470599236200943,
+      "depth_nm": 0.0029123252429733263,
+      "half_x_nm": 0.009766519794253426,
+      "half_z_nm": 0.008712108532623502
+    },
+    "B_x": {
+      "period_nm": 0.00021549599922534874,
+      "depth_nm": 0.00042157322879517634,
+      "half_x_nm": 0.007461211104641287,
+      "half_z_nm": 0.025918045556540224
+    }
+  },
+  "geometry_sensitivity_relative": {
+    "A": {
+      "period_nm": 0.023153077688213307,
+      "depth_nm": 0.0493166830333977,
+      "half_x_nm": 0.07009388041196563,
+      "half_z_nm": 0.18740813114467963
+    },
+    "A_pocket": {
+      "period_nm": 0.0160280917468312,
+      "depth_nm": 0.049233071065340375,
+      "half_x_nm": 0.04849387570930948,
+      "half_z_nm": 0.13484134572245596
+    },
+    "B_z": {
+      "period_nm": 0.052058988543014134,
+      "depth_nm": 0.1456162621486663,
+      "half_x_nm": 0.24416299485633564,
+      "half_z_nm": 0.13068162798935248
+    },
+    "B_x": {
+      "period_nm": 0.0323243998838023,
+      "depth_nm": 0.021078661439758815,
+      "half_x_nm": 0.18653027761603214,
+      "half_z_nm": 0.38877068334810344
+    }
+  },
+  "merged_from": [
+    "case_i_center",
+    "case_ii_edge"
+  ],
+  "total_compute_seconds": 314.1,
+  "note": "full validate via case-split (avoids single-process limits)"
+}

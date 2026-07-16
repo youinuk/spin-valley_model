@@ -1,0 +1,12 @@
+{
+  "figure_script_sha256_16": "390216623b747918",
+  "input_summary_csv": "phase5_atlas_summary_validate.csv",
+  "input_sensitivity_csv": "phase5_atlas_sensitivity_validate.csv",
+  "mode": "validate",
+  "n_real": 5,
+  "mean_rank_correlation": 0.6769,
+  "mean_quadrant_agreement": 0.2886,
+  "quadrant_disagreement_conditions": 71,
+  "caveat": "center+edge, v=[5,10,20], n_real=5, full validate",
+  "timestamp": "2026-06-28T15:06:20"
+}

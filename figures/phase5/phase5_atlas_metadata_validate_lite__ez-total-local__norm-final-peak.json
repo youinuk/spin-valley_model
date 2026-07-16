@@ -1,0 +1,125 @@
+{
+  "archive_version": "phase5_atlas_v27",
+  "script_sha256_16": "69736aaa66ea8c70",
+  "ez_convention": "total-local",
+  "profile_norm": "final-peak",
+  "kernel_phase4p6_sha256_16": "d3f3ea281a085581",
+  "mode": "validate_lite",
+  "n_real": 3,
+  "n_conditions": 144,
+  "elapsed_sec": 77.37456345558167,
+  "timestamp": "2026-07-11T05:09:01",
+  "amplitude": {
+    "A": {
+      "mean_abs_dP_v": 0.0019594116141369517,
+      "mean_abs_dchi_phi": 0.0007508604176251042,
+      "std_abs_dP_v": 0.001971905800811517,
+      "std_abs_dchi_phi": 0.0012524913581846132
+    },
+    "A_pocket": {
+      "mean_abs_dP_v": 0.0003560731508044639,
+      "mean_abs_dchi_phi": 0.00019378204287355842,
+      "std_abs_dP_v": 0.0005679026587468099,
+      "std_abs_dchi_phi": 0.0005298629661853948
+    },
+    "B_z": {
+      "mean_abs_dP_v": 0.004777598001057669,
+      "mean_abs_dchi_phi": 0.0005260468527722288,
+      "std_abs_dP_v": 0.007172833484918239,
+      "std_abs_dchi_phi": 0.0005515865978740395
+    },
+    "B_x": {
+      "mean_abs_dP_v": 0.009268456434288433,
+      "mean_abs_dchi_phi": 0.0022929142892607977,
+      "std_abs_dP_v": 0.009237029580920493,
+      "std_abs_dchi_phi": 0.00402589458313768
+    }
+  },
+  "model_sensitivity": {
+    "A_vs_A_pocket": 0.0020707086420709096,
+    "A_vs_B_z": 0.005090853233780006,
+    "A_vs_B_x": 0.008169911151073829,
+    "A_pocket_vs_B_z": 0.004763240142274545,
+    "A_pocket_vs_B_x": 0.009692936939543508,
+    "B_z_vs_B_x": 0.008451757404952487
+  },
+  "model_sensitivity_normalized": {
+    "A_vs_A_pocket": 2.070708642070909,
+    "A_vs_B_z": 5.090853233780007,
+    "A_vs_B_x": 8.169911151073826,
+    "A_pocket_vs_B_z": 4.7632401422745465,
+    "A_pocket_vs_B_x": 9.692936939543507,
+    "B_z_vs_B_x": 8.45175740495249
+  },
+  "rank_correlation": {
+    "A_vs_A_pocket": 0.27644787644787644,
+    "A_vs_B_z": 0.6478764478764479,
+    "A_vs_B_x": 0.8095238095238096,
+    "A_pocket_vs_B_z": 0.45508365508365517,
+    "A_pocket_vs_B_x": 0.11583011583011583,
+    "B_z_vs_B_x": 0.7732303732303732
+  },
+  "mean_rank_correlation": 0.512998712998713,
+  "rank_correlation_interpretation": "MODERATE -- partial model-dependence",
+  "quadrant_agreement": {
+    "A_vs_A_pocket": 0.3333333333333333,
+    "A_vs_B_z": 0.3888888888888889,
+    "A_vs_B_x": 0.4166666666666667,
+    "A_pocket_vs_B_z": 0.2777777777777778,
+    "A_pocket_vs_B_x": 0.2222222222222222,
+    "B_z_vs_B_x": 0.25
+  },
+  "mean_quadrant_agreement": 0.3148148148148148,
+  "geometry_sensitivity_raw": {
+    "A": {
+      "period_nm": 7.33128817503013e-05,
+      "depth_nm": 0.00017749626215343578,
+      "half_x_nm": 0.0002675632108529915,
+      "half_z_nm": 0.0003351904263222178
+    },
+    "A_pocket": {
+      "period_nm": 1.1445569908163975e-05,
+      "depth_nm": 4.978123703218248e-05,
+      "half_x_nm": 5.104735305987198e-05,
+      "half_z_nm": 4.4638676418800124e-05
+    },
+    "B_z": {
+      "period_nm": 0.00015561932368872384,
+      "depth_nm": 0.0003022913145778076,
+      "half_x_nm": 0.0007392591185726798,
+      "half_z_nm": 0.0004193780148283538
+    },
+    "B_x": {
+      "period_nm": 0.00021397834621127482,
+      "depth_nm": 0.0008181899460549407,
+      "half_x_nm": 0.00120112962087047,
+      "half_z_nm": 0.001242603974741849
+    }
+  },
+  "geometry_sensitivity_relative": {
+    "A": {
+      "period_nm": 0.010996932262545197,
+      "depth_nm": 0.00887481310767179,
+      "half_x_nm": 0.006689080271324787,
+      "half_z_nm": 0.005027856394833267
+    },
+    "A_pocket": {
+      "period_nm": 0.001716835486224596,
+      "depth_nm": 0.0024890618516091242,
+      "half_x_nm": 0.0012761838264967993,
+      "half_z_nm": 0.0006695801462820018
+    },
+    "B_z": {
+      "period_nm": 0.023342898553308577,
+      "depth_nm": 0.01511456572889038,
+      "half_x_nm": 0.01848147796431699,
+      "half_z_nm": 0.006290670222425307
+    },
+    "B_x": {
+      "period_nm": 0.032096751931691224,
+      "depth_nm": 0.04090949730274704,
+      "half_x_nm": 0.03002824052176175,
+      "half_z_nm": 0.018639059621127732
+    }
+  }
+}

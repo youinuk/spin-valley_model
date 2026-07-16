@@ -1,0 +1,119 @@
+{
+  "archive_version": "phase5_atlas_v27",
+  "ez_convention": "total-local",
+  "profile_norm": "prefactor",
+  "raw_config": {
+    "ez_convention": "total-local",
+    "profile_norm": "prefactor",
+    "B_ext_T": 0.5,
+    "sigma_E_ueV": 10.0,
+    "mode": "validate",
+    "case": "case_i_center",
+    "n_real": 5,
+    "base_seed": 41,
+    "atlas_script_sha256": "9b78f64d5c78d85d44b094d15f1288804b17be068e8da0b2230f0d0d4f7dc73e",
+    "atlas_script_sha256_16": "9b78f64d5c78d85d",
+    "kernel_script_sha256": "7825a96fb3bf05b996f0957fa923355229b5ed764decb85fd8e02e781c4b89b7",
+    "kernel_script_sha256_16": "7825a96fb3bf05b9",
+    "archive_version": "phase5_atlas_v27"
+  },
+  "atlas_sha_source": "raw config",
+  "mode": "validate",
+  "n_real": 5,
+  "n_conditions": 432,
+  "atlas_script_sha256_16": "9b78f64d5c78d85d",
+  "merge_script_sha256_16": "0b3601585f6a41c2",
+  "mean_rank_correlation": 0.8373806370891169,
+  "rank_correlation_interpretation": "HIGH rank agreement, NOT model independence (quadrant interpretation remains model-dependent)",
+  "mean_quadrant_agreement": 0.3595679012345679,
+  "rank_correlation": {
+    "A_vs_A_pocket": 0.7853801671001361,
+    "A_vs_B_z": 0.9131250774052797,
+    "A_vs_B_x": 0.7887621824001829,
+    "A_pocket_vs_B_z": 0.8811817047262472,
+    "A_pocket_vs_B_x": 0.8548972534225042,
+    "B_z_vs_B_x": 0.800937437480351
+  },
+  "quadrant_agreement": {
+    "A_vs_A_pocket": 0.3611111111111111,
+    "A_vs_B_z": 0.4537037037037037,
+    "A_vs_B_x": 0.2962962962962963,
+    "A_pocket_vs_B_z": 0.3148148148148148,
+    "A_pocket_vs_B_x": 0.4444444444444444,
+    "B_z_vs_B_x": 0.28703703703703703
+  },
+  "model_sensitivity": {
+    "A_vs_A_pocket": 0.0052849090955847935,
+    "A_vs_B_z": 0.015421062935566861,
+    "A_vs_B_x": 0.012714157995361715,
+    "A_pocket_vs_B_z": 0.016665983135340175,
+    "A_pocket_vs_B_x": 0.010095235118990865,
+    "B_z_vs_B_x": 0.02035183386219552
+  },
+  "model_sensitivity_normalized": {
+    "A_vs_A_pocket": 37.16112419139509,
+    "A_vs_B_z": 54.91104874341842,
+    "A_vs_B_x": 100.65266562113408,
+    "A_pocket_vs_B_z": 74.36576307459934,
+    "A_pocket_vs_B_x": 68.26667551377466,
+    "B_z_vs_B_x": 127.02380780532386
+  },
+  "geometry_sensitivity_raw": {
+    "A": {
+      "period_nm": 0.00011453142239546904,
+      "depth_nm": 0.0005631508777513609,
+      "half_x_nm": 0.0006333168214720716,
+      "half_z_nm": 0.0013066301549560203
+    },
+    "A_pocket": {
+      "period_nm": 2.4687820789171434e-05,
+      "depth_nm": 9.032367639674651e-05,
+      "half_x_nm": 0.00016547263774136553,
+      "half_z_nm": 0.00012571527800617338
+    },
+    "B_z": {
+      "period_nm": 0.0008240574969446593,
+      "depth_nm": 0.0008834333174415344,
+      "half_x_nm": 0.0016163505062234045,
+      "half_z_nm": 0.00278373670121875
+    },
+    "B_x": {
+      "period_nm": 0.0001834777154895147,
+      "depth_nm": 0.0009641324345681324,
+      "half_x_nm": 0.001604775917739054,
+      "half_z_nm": 0.002008090668207028
+    }
+  },
+  "geometry_sensitivity_relative": {
+    "A": {
+      "period_nm": 0.01717971335932036,
+      "depth_nm": 0.028157543887568037,
+      "half_x_nm": 0.015832920536801784,
+      "half_z_nm": 0.019599452324340308
+    },
+    "A_pocket": {
+      "period_nm": 0.0037031731183757165,
+      "depth_nm": 0.004516183819837326,
+      "half_x_nm": 0.004136815943534137,
+      "half_z_nm": 0.0018857291700926006
+    },
+    "B_z": {
+      "period_nm": 0.12360862454169884,
+      "depth_nm": 0.044171665872076694,
+      "half_x_nm": 0.04040876265558512,
+      "half_z_nm": 0.04175605051828125
+    },
+    "B_x": {
+      "period_nm": 0.027521657323427203,
+      "depth_nm": 0.048206621728406625,
+      "half_x_nm": 0.04011939794347636,
+      "half_z_nm": 0.03012136002310542
+    }
+  },
+  "merged_from": [
+    "case_i_center",
+    "case_ii_edge"
+  ],
+  "total_compute_seconds": 461.3,
+  "note": "full validate via case-split (avoids single-process limits)"
+}

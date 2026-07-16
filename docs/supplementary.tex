@@ -1,0 +1,460 @@
+% Supplementary Material
+% Numerical-consistency and literature-reproduction validations
+% underpinning the simulator used in the main text.
+% Target journal: Physical Review Applied (REVTeX 4-2).
+%
+% Build (same directory as ref.bib):
+%   pdflatex supplementary
+%   bibtex   supplementary
+%   pdflatex supplementary  (x2)
+
+\documentclass[aps,prapplied,onecolumn,superscriptaddress,longbibliography]{revtex4-2}
+\pdfoutput=1
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,graphicx,bm}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\hypersetup{pdftitle={Supplementary Material: Spin-valley model uncertainty in micromagnet-assisted shuttling},
+            pdfauthor={Inuk You}}
+
+% Renumber as supplementary (S1, S2, ...)
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\begin{document}
+
+\title{Supplementary Material: Numerical-consistency and
+literature-reproduction validations}
+
+\author{Inuk You}
+\affiliation{Department of Science, Kyungdong High School, Seoul, Republic of Korea}
+
+\maketitle
+
+This supplement documents the validation suite that underpins the
+valley-aware spin-shuttling simulator used in the main text. The goal
+is not to establish new
+physics but to certify that (i) the numerical engine reproduces
+analytic limits to machine precision, and (ii) the representative
+parameter values quoted in the main text are consistent with
+independent literature results. We group the checks into
+\emph{numerical-consistency} validations (Sec.~\ref{sec:numerics}) and
+\emph{literature-reproduction} validations (Sec.~\ref{sec:literature}).
+Every check is reproducible from the released code with a fixed seed;
+the relevant script is named in each case. Throughout, ``relative
+error'' means $|x_{\rm num}-x_{\rm ref}|/|x_{\rm ref}|$.
+
+Two cautions apply globally. First, several checks are validated only
+in a \emph{ratio} or \emph{trend} sense; the accompanying caveats state
+exactly what is and is not claimed. Second, these validations concern
+the spin and field sectors and the generic valley two-level dynamics;
+they do not validate the phenomenological spin--valley coupling
+ansatz, which by construction is a diagnostic choice rather than a
+microscopically derived form (see the main-text Model section).
+
+\section{Numerical-consistency validations}
+\label{sec:numerics}
+
+These checks compare the simulator against closed-form expressions or
+against automatic differentiation, in regimes where an exact answer is
+known.
+
+\subsection{Analytic field landscape (V0)}
+The deterministic field model reproduces the analytic periodic
+landscape of the device model to machine precision: the analytic
+derivative $\partial_x B_{\rm long}$ and the JAX automatic-differentiation
+value agree to a relative error of $4\times10^{-9}$
+(\texttt{field\_landscape.py}). This certifies the field gradients that
+feed every downstream observable.
+
+\subsection{Bounded deterministic modulation phase (V0.1)}
+For uniform-velocity shuttling through a periodic landscape, the
+maximum deterministic modulation phase $|\phi_{\rm mod}|_{\rm max}$ is
+independent of the number of shuttling periods $N$, whereas for a
+monotonic-gradient landscape it grows as $\propto N^2$. Over
+$N=1$--$100$ the periodic-landscape relative variance is $0.00\%$,
+while the monotonic case grows from $\sim\!4$ to $\sim\!4.4\times10^4$
+radians. \emph{Caveat:} this is a property of the \emph{deterministic}
+phase, which is a calibration target, not an error; the
+noise-driven variance is treated in the literature-reproduction
+checks below.
+
+\subsection{Quasi-static charge-noise limit (V0.2)}
+For a static dot with Gaussian quasi-static position fluctuations and a
+monotonic gradient, the simulator reproduces the analytic dephasing
+time $T_2^\ast=\sqrt{2}/\sigma_\omega$ to within $1\%$: a
+$2\times10^4$-realization Monte Carlo gives $27.1$\,ns against the
+predicted $26.8$\,ns.
+
+\subsection{Double precision is required (V0.3)}
+The mixed nanometre and tesla-per-metre scales make single precision
+insufficient for the derivative and cancellation steps used here. In float32 the analytic and
+automatic-differentiation derivatives disagree at the $\sim\!10^{0}$\,T/m
+level; in float64 they agree at $\sim\!10^{-9}$\,T/m
+(\texttt{reproduce/v0p3\_float\_precision\_check.py}). All production runs
+therefore use 64-bit precision (\texttt{jax\_enable\_x64}). This also
+guarantees the accuracy of the geometry-derivative checks below.
+
+\subsection{Position and geometry autodifferentiation (V6)}
+Automatic differentiation of $B_z,B_x$ with respect to both position
+\emph{and} device-geometry parameters (magnet half-widths
+$\mathrm{half}_x,\mathrm{half}_z$, spatial period, 2DEG depth) agrees
+with finite differences to a relative error
+$\le 4\times10^{-6}$: position derivatives reach
+$\sim\!10^{-10}$, and the four geometry derivatives are
+$1.3\times10^{-6}$ ($\mathrm{half}_x$), $2.0\times10^{-6}$
+($\mathrm{half}_z$), $1.0\times10^{-6}$ (period), and
+$4.0\times10^{-6}$ (depth) (\texttt{tests/test\_geometry\_autodiff.py}).
+This underpins any differentiable geometry exploration.
+
+\subsection{Spatial periodicity of the finite array (V7)}
+An eleven-prism finite array (central $\pm5$ periods) satisfies
+$B(x+a)=B(x)$ to within $0.04\%$ in the central region (maximum
+deviation $0.0423\%$ at $z=-50$\,nm, $a=400$\,nm), justifying the use of
+a periodic descriptor.
+
+\subsection{Fourier-harmonic content (V8)}
+The stray field is dominated by its first harmonic, but the even/odd
+harmonic pattern depends on the magnet duty cycle. For a large magnet
+($200^3$\,nm, $a=400$\,nm, $50\%$ duty) only odd harmonics survive, with
+$B_z^{(3)}/B_z^{(1)}=8.8\%$ and $B_x^{(3)}/B_x^{(1)}=10.0\%$; for the
+small-magnet baseline ($50^3$\,nm, $a=150$\,nm, $33\%$ duty) even
+harmonics also appear, with $B_z^{(2)}/B_z^{(1)}=9.2\%$. We therefore
+retain three harmonics ($N_{\rm harm}=3$) in the field descriptor so
+that both regimes are represented.
+
+\begin{table}[t]
+\centering
+\caption{Summary of numerical-consistency validations. ``Tolerance''
+is the relative error against the analytic or finite-difference
+reference unless noted.}
+\label{tab:numerics}
+\begin{tabular}{llll}
+\toprule
+ID & quantity & reference & result \\
+\midrule
+V0   & field-gradient autodiff      & analytic derivative        & $4\times10^{-9}$ \\
+V0.1 & modulation-phase scaling     & $N$-independence / $N^2$   & $0.00\%$ variance \\
+V0.2 & quasi-static $T_2^\ast$      & $\sqrt{2}/\sigma_\omega$   & $<1\%$ ($27.1$ vs $26.8$\,ns) \\
+V0.3 & float64 necessity            & analytic vs autodiff       & $10^0\!\to\!10^{-9}$ \\
+V6   & geometry autodiff            & finite difference          & $\le 4\times10^{-6}$ \\
+V7   & array periodicity            & $B(x{+}a){=}B(x)$          & $0.04\%$ \\
+V8   & harmonic content             & FFT spectrum               & $N_{\rm harm}{=}3$ retained \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Literature-reproduction validations}
+\label{sec:literature}
+
+These checks reproduce independently published results in the regime
+where they apply, and motivate the representative parameter values used
+in the main text. Each is validated in the sense stated; absolute
+magnitudes that depend on arbitrary noise amplitudes are validated only
+as ratios.
+
+\subsection{Gradient-halving dephasing ratio (V1)}
+Halving a monotonic magnetic gradient roughly doubles the static-dot
+$T_2^\ast$, consistent with the ratio reported by Krzywda
+\emph{et~al.}~\cite{struck_low-frequency_2020}: at $g_{\rm grad}=0.1\to0.05$\,mT/nm
+we find $T_2^\ast=302\to664$\,ns, a ratio of $2.20$, inside the
+literature window $[1.55,2.32]$. \emph{Caveat:} the absolute values are
+about $10\times$ shorter than the reference because our noise amplitude
+$\sigma_{\delta x}=0.3$\,nm is a representative, not device-calibrated,
+value; only the ratio is claimed.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.7\columnwidth]{figures/gradient_halving.pdf}
+\caption{Validation V1. Static-dot coherence decay $|C(T)|$ under
+$1/f$ charge noise for a high and a halved magnetic gradient. Halving
+the gradient increases $T_2^\ast$ from $302$ to $664$\,ns (ratio
+$2.20$), inside the literature window. Only the ratio is claimed; the
+absolute values depend on the representative noise amplitude.}
+\label{fig:v1}
+\end{figure}
+
+\subsection{Motional-narrowing trend (V2)}
+For a periodic landscape with $1/f$ charge noise, the effective
+$T_2^\ast$ improves as the shuttling velocity increases, from
+$50$\,ns at $v=0$ to $3215$\,ns at $v=20$\,m/s (up to $64\times$),
+once the drive frequency $f_{\rm drive}=v/a$ moves above the dominant
+noise band. The stationary baseline here is an effective static-gradient
+model with the mean absolute periodic gradient
+$\langle|B_{\rm long}'|\rangle\approx0.8$\,T/$\mu$m, so only the
+\emph{relative} improvement is meaningful. \emph{Caveat:} we claim only
+the direction of the trend; at very high velocity, orbital
+non-adiabaticity (not modeled here) is expected to re-introduce error,
+so unbounded improvement is not claimed.
+
+\subsection{Filter-function suppression (V3)}
+The periodic-shuttling filter function $F(f,T)$ suppresses
+low-frequency ($f<1$\,MHz) sensitivity by about $2\times10^5$ relative
+to a static dot. More directly, the actual dephasing functional, the
+PSD-weighted overlap $\chi(T)=\int S_{\delta x}(f)F(f,T)\,df$, is
+suppressed by about $5.8\times10^3$ ($T=1\,\mu$s, $v=10$\,m/s).
+\emph{Caveat:} the filter-function shape and the realized dephasing
+differ; a $10^5$-fold suppression of $F$ corresponds to only a
+$10^3$-fold suppression of $\chi$, because dynamical decoupling lowers
+the low-frequency response but introduces a sensitivity peak near
+$f_{\rm drive}$ that overlaps the $1/f$ tail.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/filter_suppression.pdf}
+\caption{Validation V3. Left: the filter function $F(f,T)$ for a
+static dot versus periodic shuttling (and shuttling with dynamical
+decoupling), showing strong low-frequency ($f<1$\,MHz, shaded)
+suppression. Right: the PSD-weighted integrand
+$S_{\delta x}(f)\,F(f,T)$, whose integral is the realized dephasing;
+its suppression ($\sim\!5.8\times10^3$) is smaller than that of $F$
+alone ($\sim\!2\times10^5$) because decoupling introduces a
+sensitivity feature near $f_{\rm drive}=v/a$.}
+\label{fig:v3}
+\end{figure*}
+
+\subsection{Valley Landau--Zener dynamics (V4)}
+The two-level valley time evolution reproduces the analytic
+Landau--Zener diabatic probability
+%
+\begin{equation}
+P_{\rm diab}=\exp\!\left(-\frac{2\pi\Delta_{v}^2}{\hbar\,|\dot \varepsilon_v|}\right)
+\end{equation}
+%
+(where $\Delta_v$ is the valley avoided-crossing coupling and
+$\varepsilon_v$ the diabatic valley detuning)
+to within $0.28\%$ over a sweep-rate parameter range
+$\gamma\in[0.1,10]$. In the adiabatic limit ($v\to0$) deep-pocket
+traversal gives an excitation probability $P_e<10^{-5}$, and in the
+diabatic limit ($v\ge30$\,m/s) the numerical and analytic predictions
+agree to order of magnitude. \emph{Caveat:} this validates the
+\emph{reduced} valley Landau--Zener physics of
+Oda~\emph{et~al.}, not their full optimized-protocol sequence; at
+intermediate velocity ($1\le v\le10$\,m/s) St\"uckelberg interference
+produces the expected order-of-magnitude departure from the single-event
+formula, evidence that phase-coherent evolution between two crossings
+is captured.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.7\columnwidth]{figures/landau_zener.pdf}
+\caption{Validation V4. Diabatic transition probability after a linear
+valley sweep, numerical (markers) versus the analytic Landau--Zener
+formula (line), as a function of the sweep-rate parameter
+$\gamma=\hbar\alpha/(2\pi\Delta_v^2)$. Agreement is within $0.28\%$
+across the scanned range.}
+\label{fig:v4}
+\end{figure}
+
+\subsection{Single-prism stray field (V5)}
+The analytic stray field of a uniformly magnetized rectangular prism
+(Engel-Herbert \& Hesjedal) is implemented in JAX and matches the
+far-field dipole limit $B_z\to\mu_0 m/(2\pi d^3)$ to $0.06\%$:
+$8.95\,\mu$T (numerical) versus $8.96\,\mu$T (dipole) on the $z$-axis at
+$d=5\,\mu$m.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\columnwidth]{figures/prism_fields.pdf}
+\caption{Validation V5/V6. Stray field $B_z,B_x$ (left) and their
+position gradients via automatic differentiation (right) at two depths
+below a micromagnet array. The gradient panels feed the coupling
+profiles of the main text; the autodifferentiation underlying them is
+validated against finite differences to $\le4\times10^{-6}$ (V6).}
+\label{fig:v5}
+\end{figure}
+
+\subsection{Field- and gradient-scale consistency (V9)}
+For a $50\times50\times30$\,nm magnet ($a=150$\,nm, depth $-50$\,nm) the
+descriptor yields $\delta B_z=26.9$\,mT, peak gradient $1.19$\,mT/nm,
+and mean gradient $0.72$\,mT/nm, consistent with the micromagnet
+parameter window $\delta B_z\sim5$--$30$\,mT and gradient
+$\sim0.1$--$1$\,mT/nm used in the main text and reported for comparable
+devices~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,langrock_blueprint_2023}.
+\emph{Caveat:} a large magnet ($200\times200\times100$\,nm) gives
+$\delta B_z\approx197$\,mT, about $10\times$ stronger; the main-text
+baseline uses the small-magnet configuration, and the large-magnet case
+is reserved as a strong-gradient stress test.
+
+\begin{table}[t]
+\centering
+\caption{Summary of literature-reproduction validations. Quantities
+validated as ratios or trends are marked; absolute magnitudes that
+depend on representative noise amplitudes are not claimed beyond the
+stated sense.}
+\label{tab:literature}
+\begin{tabular}{llll}
+\toprule
+ID & quantity & reference / regime & result \\
+\midrule
+V1 & gradient-halving $T_2^\ast$ ratio & Krzywda window $[1.55,2.32]$ & $2.20$ (ratio only) \\
+V2 & motional-narrowing trend          & periodic $1/f$ noise         & up to $64\times$ (trend) \\
+V3 & filter-function suppression       & static vs shuttling          & $F:2\times10^5$, $\chi:5.8\times10^3$ \\
+V4 & valley Landau--Zener              & analytic $P_{\rm diab}$      & $<0.28\%$ \\
+V5 & single-prism stray field          & dipole far-field limit       & $0.06\%$ \\
+V9 & field/gradient scale              & device parameter window      & within window \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Robustness of the response metrics}
+The main-text conclusions rest on two derived quantities: the
+magnitude ranking (Spearman $\rho$) and the quadrant agreement. Here we
+check that the central finding---quadrant-level interpretation is much
+more ansatz-dependent than magnitude ranking, especially for
+$\partial_x B_x$-based coupling---is robust to the analysis choices.
+
+\subsection{Ranking depends on channel weighting; quadrant does not}
+The magnitude $|\mathcal{R}|=\sqrt{\Delta P_v^2+\Delta\chi_\phi^2}$
+weights the two channels equally in raw units, but $|\Delta\chi_\phi|$
+is typically larger than $|\Delta P_v|$, so the raw-norm ranking is
+effectively dominated by the dephasing channel. Table~\ref{tab:weight}
+shows the mean rank correlation under several weightings: it ranges
+from $\rho\approx0.75$ ($|\Delta P_v|$-only) to $\rho\approx0.85$
+($|\Delta\chi_\phi|$-only), with the raw norm at $0.84$. The ranking is
+high but still weighting-dependent, and remains an auxiliary
+diagnostic; the quadrant, which uses only signs, has no such
+dependence.
+
+\begin{table}[t]
+\centering
+\caption{Mean pairwise rank correlation under different definitions of
+the response magnitude. The ranking is high but weighting-dependent;
+the primary conclusion rests on the quadrant, not the ranking.}
+\label{tab:weight}
+\begin{tabular}{lc}
+\toprule
+magnitude definition & mean Spearman $\rho$ \\
+\midrule
+raw norm ($w_P{=}w_\chi{=}1$)        & $0.837$ \\
+threshold-normalized                  & $0.769$ \\
+$|\Delta P_v|$ only                   & $0.751$ \\
+$|\Delta\chi_\phi|$ only              & $0.845$ \\
+$P_{\rm ref}{=}10^{-2},\chi_{\rm ref}{=}1$     & $0.754$ \\
+$P_{\rm ref}{=}10^{-4},\chi_{\rm ref}{=}10^{-3}$ & $0.769$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Quadrant agreement is low across thresholds}
+The quadrant classification uses effect-size thresholds. Across a wide
+range of thresholds the mean quadrant agreement remains far from
+model-independent (Table~\ref{tab:thresh}): roughly $36$--$58\%$,
+always well below the rank correlation. The qualitative
+conclusion---trade-off interpretation is poorly conserved across
+ans\"atze---is threshold-robust.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/robustness_checks.pdf}
+\caption{Robustness of the two response metrics. Left: mean rank
+correlation under different channel weightings (dashed line: raw-norm
+value $0.837$); the ranking is high but weighting-dependent. Right:
+mean quadrant agreement under different effect-size thresholds; it
+stays low throughout, well below the rank correlation.}
+\label{fig:supp_robust}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Mean quadrant agreement under different effect-size
+thresholds $(|\Delta P_v|_{\min}, |\Delta\chi_\phi|_{\min})$,
+with one-channel cases separated.}
+\label{tab:thresh}
+\begin{tabular}{lc}
+\toprule
+threshold & mean quadrant agreement \\
+\midrule
+none                 & $49.4\%$ \\
+$(10^{-5},10^{-4})$  & $36.3\%$ \\
+$(10^{-4},10^{-3})$ (main) & $36.0\%$ \\
+$(10^{-3},10^{-2})$  & $58.0\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Chance-corrected agreement is modest across pairs}
+Raw agreement can be inflated by skewed marginal distributions. The
+chance-corrected Cohen's $\kappa$ (Table~\ref{tab:kappa}) is modest
+throughout ($\kappa\approx0.14$--$0.33$): no pair reaches strong
+agreement. The two lowest $\kappa$ values are the B$_z$ vs.\ B$_x$ and
+A vs.\ B$_x$ pairs, both pairing the $\partial_x B_x$-based model with a
+$\partial_x B_z$-based one. B$_x$ is not a uniform outlier, however: the
+third such pair, A$_{\rm pocket}$ vs.\ B$_x$, has comparatively high
+$\kappa$, because the pocket-localized A$_{\rm pocket}$ shares B$_x$'s
+concentration near the flanks. The decisive axis is thus the gradient
+component modulated by spatial localization, consistent with the
+main-text finding, rather than a blanket property of the $B_x$ ansatz.
+
+\begin{table}[t]
+\centering
+\caption{Pairwise quadrant agreement and chance-corrected Cohen's
+$\kappa$ at full validate (total-field convention). Agreement is modest
+throughout; the two lowest values are the B$_z$/B$_x$ and A/B$_x$
+pairs.}
+\label{tab:kappa}
+\begin{tabular}{lcc}
+\toprule
+pair & raw agreement & Cohen's $\kappa$ \\
+\midrule
+A vs A$_{\rm pocket}$       & $36.1\%$ & $0.211$ \\
+A vs B$_z$                  & $45.4\%$ & $0.334$ \\
+A vs B$_x$                  & $29.6\%$ & $0.145$ \\
+A$_{\rm pocket}$ vs B$_z$   & $31.5\%$ & $0.154$ \\
+A$_{\rm pocket}$ vs B$_x$   & $44.4\%$ & $0.244$ \\
+B$_z$ vs B$_x$              & $28.7\%$ & $0.135$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Absolute performance proxies}
+The main text reports baseline-relative responses, not absolute error
+rates. For context, Table~\ref{tab:abs} lists the absolute full-model
+(M2) leakage $P_v^{\mathrm{M2}}$, dephasing variance
+$\chi_\phi^{\mathrm{M2}}$, and the derived phase-error proxy
+$p_\phi=(1-e^{-\chi_\phi/2})/2$, averaged over the baseline geometry,
+both pocket cases, and $v\in\{5,10,20\}$\,m/s. The absolute error
+scales are comparable across ans\"atze (same order of magnitude),
+confirming that the strong ansatz-dependence is in the \emph{response
+interpretation}, not in a wildly different absolute performance.
+
+\begin{table}[t]
+\centering
+\caption{Absolute full-model performance proxies per ansatz, using the
+same setup as the atlas (baseline geometry, both pocket cases
+$x_c=0$ and $x_c=25$\,nm, $v\in\{5,10,20\}$\,m/s, $n_{\rm real}=5$, $1/f$ noise
+with $f_{\rm high}=10^7$\,Hz). These are reported for context; the
+atlas does not optimize them.}
+\label{tab:abs}
+\begin{tabular}{lccc}
+\toprule
+ansatz & $P_v^{\mathrm{M2}}$ & $\chi_\phi^{\mathrm{M2}}$ & $p_\phi^{\mathrm{M2}}$ \\
+\midrule
+A                  & $0.259$ & $0.0195$ & $0.0049$ \\
+A$_{\rm pocket}$   & $0.0786$ & $0.0106$ & $0.0026$ \\
+B$_z$              & $0.266$ & $0.172$ & $0.0413$ \\
+B$_x$              & $0.107$ & $0.0169$ & $0.0042$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Relation to the main text}
+The numerical-consistency checks (V0--V8) certify the field model, its
+gradients, and the time-evolution engine that produce every quantity in
+the main-text atlas. The literature-reproduction checks (V1--V9) justify
+the representative parameter values (Table~I of the main text): magnet
+geometry and velocity ranges (V9), the dephasing response to gradients
+(V1, V2, V3), and the valley dynamics (V4). None of these checks
+validates the spin--valley coupling profile $\lambda_{sv}(x)$ itself,
+which is treated in the main text as a phenomenological diagnostic
+ansatz rather than a microscopically derived coupling; the sensitivity
+of the conclusions to that choice is precisely the subject of the main
+text.
+
+\clearpage
+\bibliographystyle{apsrev4-2}
+\bibliography{ref}
+
+\end{document}

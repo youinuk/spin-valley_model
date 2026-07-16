@@ -1,0 +1,109 @@
+{
+  "n_real": 30,
+  "P_min": 0.0001,
+  "chi_min": 0.001,
+  "ez_convention": "total-local",
+  "profile_norm": "prefactor",
+  "candidates": {
+    "case_i_center|v5.0|lam0.5|period_nm-": {
+      "n_robust": 1,
+      "models": {
+        "A": {
+          "dP_v": -0.0003880699357295958,
+          "dchi_phi": -0.002464908861171315,
+          "robust": true
+        },
+        "A_pocket": {
+          "dP_v": -0.0003334411718887084,
+          "dchi_phi": -0.0002352110526648698,
+          "robust": false
+        },
+        "B_z": {
+          "dP_v": -9.438239815501293e-05,
+          "dchi_phi": -0.0018167142864481713,
+          "robust": false
+        },
+        "B_x": {
+          "dP_v": -5.707822494825654e-05,
+          "dchi_phi": -0.0007929666037261585,
+          "robust": false
+        }
+      }
+    },
+    "case_ii_edge|v10.0|lam0.5|depth_nm+": {
+      "n_robust": 4,
+      "models": {
+        "A": {
+          "dP_v": -0.001327457105693347,
+          "dchi_phi": -0.00706515174942296,
+          "robust": true
+        },
+        "A_pocket": {
+          "dP_v": -0.00018558506197875572,
+          "dchi_phi": -0.0010545728168728785,
+          "robust": true
+        },
+        "B_z": {
+          "dP_v": -0.001439295816994729,
+          "dchi_phi": -0.007153827200424762,
+          "robust": true
+        },
+        "B_x": {
+          "dP_v": -0.002145250175054958,
+          "dchi_phi": -0.009816075457364154,
+          "robust": true
+        }
+      }
+    },
+    "case_ii_edge|v10.0|lam1.0|depth_nm+": {
+      "n_robust": 4,
+      "models": {
+        "A": {
+          "dP_v": -0.004710981490277905,
+          "dchi_phi": -0.030876217270242146,
+          "robust": true
+        },
+        "A_pocket": {
+          "dP_v": -0.0009900707846126136,
+          "dchi_phi": -0.005401597346558484,
+          "robust": true
+        },
+        "B_z": {
+          "dP_v": -0.006860761127908649,
+          "dchi_phi": -0.04321243149421722,
+          "robust": true
+        },
+        "B_x": {
+          "dP_v": -0.00552260924151915,
+          "dchi_phi": -0.03578881049941132,
+          "robust": true
+        }
+      }
+    },
+    "case_ii_edge|v20.0|lam1.0|depth_nm+": {
+      "n_robust": 2,
+      "models": {
+        "A": {
+          "dP_v": -0.0008558213771755474,
+          "dchi_phi": -0.0022908263444236104,
+          "robust": true
+        },
+        "A_pocket": {
+          "dP_v": 0.00014971030308095698,
+          "dchi_phi": -0.0003554734004670365,
+          "robust": false
+        },
+        "B_z": {
+          "dP_v": -0.0006085036977927921,
+          "dchi_phi": -0.0025552246137269877,
+          "robust": true
+        },
+        "B_x": {
+          "dP_v": 0.0008529597698176405,
+          "dchi_phi": -0.00393050737018822,
+          "robust": false
+        }
+      }
+    }
+  }
+}

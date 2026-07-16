@@ -1,0 +1,25 @@
+{
+  "archive_version": "phase4_v12",
+  "script_sha256_16": "d5a26913690bfc7d",
+  "mode": "quick",
+  "n_real": 1,
+  "N_max": 500,
+  "timestamp": "2026-05-30T16:10:40",
+  "lambda0_invariance": {
+    "pass": true,
+    "max_dP_v": 6.613633252161577e-18,
+    "max_dchi_phi": 0.0,
+    "max_S_M2": 1.67218863499129e-13,
+    "violation_count": 0
+  },
+  "response_map_analysis": {
+    "analysis_valid": false,
+    "threshold_P_v": 0.0001,
+    "threshold_chi_phi": 0.001,
+    "robust_count": 0,
+    "below_threshold_count": 0
+  },
+  "lambda0_invariance_pass": true,
+  "analysis_valid": false,
+  "robust_count": 0
+}

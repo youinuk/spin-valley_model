@@ -1,0 +1,9 @@
+quadrant,coupling_model,case,v_ms,lambda_uev,dP_v,dchi_phi
+robust_PvNeg_chiNeg,A,case_ii_edge,5.0,1.0,-2.550381e-03,-4.535835e-02
+robust_PvNeg_chiNeg,A,case_ii_edge,10.0,1.0,-5.757684e-03,-5.452799e-03
+robust_PvNeg_chiNeg,A_pocket,case_ii_edge,5.0,1.0,-6.247506e-04,-4.436750e-02
+PvPos_chiNeg,A_pocket,case_i_center,10.0,1.0,6.974144e-03,-2.207932e-03
+PvPos_chiNeg,A_pocket,case_ii_edge,10.0,1.0,3.346515e-03,-1.149430e-02
+PvNeg_chiPos,A,case_i_center,5.0,1.0,-5.608558e-04,1.078324e-02
+both_worsen,A,case_i_center,10.0,1.0,-4.054097e-02,-5.781826e-04
+both_worsen,A_pocket,case_i_center,5.0,1.0,8.423932e-04,1.094619e-04

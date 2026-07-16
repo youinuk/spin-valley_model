@@ -1,0 +1,4 @@
+The figures and data files under figures/ are licensed under the
+Creative Commons Attribution 4.0 International License (CC BY 4.0).
+Full legal text: https://creativecommons.org/licenses/by/4.0/legalcode
+Attribution: cite the accompanying paper (see CITATION.cff).

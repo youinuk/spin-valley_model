@@ -1,0 +1,13 @@
+quadrant,coupling_model,case,v_ms,lambda_uev,dP_v,dchi_phi
+robust_PvNeg_chiNeg,A,case_i_center,10.0,0.25,-2.451386e-04,-1.021645e-03
+robust_PvNeg_chiNeg,A,case_i_center,10.0,0.5,-6.586372e-03,-2.576249e-03
+robust_PvNeg_chiNeg,A,case_i_center,10.0,1.0,-2.172559e-02,-5.888391e-03
+robust_PvNeg_chiNeg,A,case_ii_edge,10.0,0.5,-3.973970e-03,-3.670705e-02
+robust_PvNeg_chiNeg,A,case_ii_edge,10.0,1.0,-1.415058e-03,-1.357948e-02
+PvPos_chiNeg,A,case_ii_edge,5.0,0.25,1.750386e-02,-1.252871e-01
+PvPos_chiNeg,A,case_ii_edge,5.0,0.5,8.922805e-03,-6.024871e-01
+PvPos_chiNeg,A,case_ii_edge,5.0,1.0,9.382687e-04,-2.304336e-01
+PvNeg_chiPos,A,case_i_center,5.0,0.5,-4.475914e-04,3.241890e-03
+PvNeg_chiPos,A,case_i_center,5.0,1.0,-2.492188e-03,4.450665e-02
+both_worsen,A,case_ii_edge,10.0,0.25,5.772591e-04,2.401460e-02
+below_threshold,A,case_i_center,5.0,0.25,-6.043241e-05,3.464483e-05

@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.agents/
+.codex/
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+docs/paper.pdf
+docs/supplementary.pdf
+.DS_Store
+*Notes.bib
+
+# Generated Overleaf bundle (regenerate with: bash make_overleaf.sh)
+overleaf_bundle/
+overleaf_bundle.zip
+
+# Internal development artifacts (excluded from the public release)
+internal/

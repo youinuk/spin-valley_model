@@ -1,0 +1,40 @@
+{
+  "archive_version": "phase5_v16",
+  "script_sha256_16": "4d81427891c47a48",
+  "mode": "targeted",
+  "n_real": 30,
+  "n_evaluations": 6,
+  "elapsed_sec": 63.16799330711365,
+  "timestamp": "2026-05-30T09:22:14",
+  "baseline": {
+    "x_c_nm": 25.0,
+    "v": 20.0,
+    "lam_uev": 1.0,
+    "period_nm": 150.0,
+    "depth_nm": -50.0,
+    "half_x_nm": 25.0,
+    "half_y_nm": 25.0,
+    "half_z_nm": 15.0,
+    "cz_nm": 15.0
+  },
+  "threshold_P_v": 0.0001,
+  "threshold_chi_phi": 0.001,
+  "baseline_cross_robust": false,
+  "basin_size": 0,
+  "basin_score": 0.0,
+  "basin_classification": "no_basin",
+  "decision": "hold Phase 5 -- no basin confirmed; redefine scope or coupling",
+  "param_cross_robust_count": {
+    "period_nm": 0,
+    "depth_nm": 0,
+    "half_x_nm": 0,
+    "half_z_nm": 0
+  },
+  "cross_robust_naive_count": 0,
+  "cross_robust_sem_count": 0,
+  "baseline_cross_robust_sem": false,
+  "n_real_caveat": "n_real >= 3 recommended for a meaningful SEM; current n_real=30",
+  "is_strong_basin": false,
+  "is_baseline_failed": true,
+  "phase5_entry_recommended": false
+}

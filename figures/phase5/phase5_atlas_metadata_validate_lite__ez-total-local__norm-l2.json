@@ -1,0 +1,125 @@
+{
+  "archive_version": "phase5_atlas_v27",
+  "script_sha256_16": "69736aaa66ea8c70",
+  "ez_convention": "total-local",
+  "profile_norm": "l2",
+  "kernel_phase4p6_sha256_16": "d3f3ea281a085581",
+  "mode": "validate_lite",
+  "n_real": 3,
+  "n_conditions": 144,
+  "elapsed_sec": 78.41103148460388,
+  "timestamp": "2026-07-11T05:10:21",
+  "amplitude": {
+    "A": {
+      "mean_abs_dP_v": 0.0035199377315110114,
+      "mean_abs_dchi_phi": 0.0020255553794681995,
+      "std_abs_dP_v": 0.003479238021368279,
+      "std_abs_dchi_phi": 0.003169643802137473
+    },
+    "A_pocket": {
+      "mean_abs_dP_v": 0.0013975018990177203,
+      "mean_abs_dchi_phi": 0.0020446980355175158,
+      "std_abs_dP_v": 0.0022682645736471583,
+      "std_abs_dchi_phi": 0.004023137410089217
+    },
+    "B_z": {
+      "mean_abs_dP_v": 0.0028824657314506195,
+      "mean_abs_dchi_phi": 0.02035136189137633,
+      "std_abs_dP_v": 0.0030957736220510105,
+      "std_abs_dchi_phi": 0.02753233401592926
+    },
+    "B_x": {
+      "mean_abs_dP_v": 0.0054760769325735365,
+      "mean_abs_dchi_phi": 0.015271230414493178,
+      "std_abs_dP_v": 0.0127286632326145,
+      "std_abs_dchi_phi": 0.0159863754926364
+    }
+  },
+  "model_sensitivity": {
+    "A_vs_A_pocket": 0.0054347401524337475,
+    "A_vs_B_z": 0.023199251403744094,
+    "A_vs_B_x": 0.019811730235062778,
+    "A_pocket_vs_B_z": 0.022162354399548986,
+    "A_pocket_vs_B_x": 0.0182263530258203,
+    "B_z_vs_B_x": 0.024394863866318367
+  },
+  "model_sensitivity_normalized": {
+    "A_vs_A_pocket": 5.434740152433749,
+    "A_vs_B_z": 23.199251403744096,
+    "A_vs_B_x": 19.811730235062775,
+    "A_pocket_vs_B_z": 22.162354399548985,
+    "A_pocket_vs_B_x": 18.226353025820302,
+    "B_z_vs_B_x": 24.394863866318367
+  },
+  "rank_correlation": {
+    "A_vs_A_pocket": 0.1595881595881596,
+    "A_vs_B_z": 0.25765765765765763,
+    "A_vs_B_x": 0.6676962676962678,
+    "A_pocket_vs_B_z": -0.2710424710424711,
+    "A_pocket_vs_B_x": 0.2460746460746461,
+    "B_z_vs_B_x": 0.19433719433719435
+  },
+  "mean_rank_correlation": 0.20905190905190907,
+  "rank_correlation_interpretation": "LOW -- the coupling-model choice strongly changes the ranking (strong model-dependence)",
+  "quadrant_agreement": {
+    "A_vs_A_pocket": 0.3611111111111111,
+    "A_vs_B_z": 0.1388888888888889,
+    "A_vs_B_x": 0.0,
+    "A_pocket_vs_B_z": 0.027777777777777776,
+    "A_pocket_vs_B_x": 0.19444444444444445,
+    "B_z_vs_B_x": 0.1111111111111111
+  },
+  "mean_quadrant_agreement": 0.13888888888888887,
+  "geometry_sensitivity_raw": {
+    "A": {
+      "period_nm": 0.00012238535967464603,
+      "depth_nm": 0.00041545894477848673,
+      "half_x_nm": 0.00040636412738064486,
+      "half_z_nm": 0.0007053499338326602
+    },
+    "A_pocket": {
+      "period_nm": 4.8449729997866954e-05,
+      "depth_nm": 0.00015945441842042513,
+      "half_x_nm": 0.0005101111800373961,
+      "half_z_nm": 0.0004476193109638305
+    },
+    "B_z": {
+      "period_nm": 0.00013679016931177204,
+      "depth_nm": 0.0030795026808779977,
+      "half_x_nm": 0.0012790621783264715,
+      "half_z_nm": 0.002803989144390259
+    },
+    "B_x": {
+      "period_nm": 0.00020190829853775392,
+      "depth_nm": 0.0023518172686296966,
+      "half_x_nm": 0.0011022183256041065,
+      "half_z_nm": 0.002505433164013893
+    }
+  },
+  "geometry_sensitivity_relative": {
+    "A": {
+      "period_nm": 0.018357803951196905,
+      "depth_nm": 0.020772947238924335,
+      "half_x_nm": 0.01015910318451612,
+      "half_z_nm": 0.010580249007489903
+    },
+    "A_pocket": {
+      "period_nm": 0.007267459499680042,
+      "depth_nm": 0.007972720921021257,
+      "half_x_nm": 0.012752779500934902,
+      "half_z_nm": 0.006714289664457458
+    },
+    "B_z": {
+      "period_nm": 0.020518525396765804,
+      "depth_nm": 0.1539751340438999,
+      "half_x_nm": 0.03197655445816179,
+      "half_z_nm": 0.04205983716585389
+    },
+    "B_x": {
+      "period_nm": 0.03028624478066308,
+      "depth_nm": 0.11759086343148484,
+      "half_x_nm": 0.027555458140102657,
+      "half_z_nm": 0.03758149746020839
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "archive_version": "phase5_atlas_v26",
+  "script_sha256_16": "1f6a19083ab568fa",
+  "kernel_phase4p6_sha256_16": "cc5aa39b03deb8ef",
+  "mode": "preview",
+  "n_real": 2,
+  "n_conditions": 32,
+  "elapsed_sec": 14.956927299499512,
+  "timestamp": "2026-06-28T15:00:56",
+  "amplitude": {
+    "A": {
+      "mean_abs_dP_v": 0.0028534399765946204,
+      "mean_abs_dchi_phi": 0.003958074581434603,
+      "std_abs_dP_v": 0.003778281641164398,
+      "std_abs_dchi_phi": 0.0047395383688403885
+    },
+    "A_pocket": {
+      "mean_abs_dP_v": 0.001965220219309869,
+      "mean_abs_dchi_phi": 0.0025834024252900695,
+      "std_abs_dP_v": 0.0026747034223081534,
+      "std_abs_dchi_phi": 0.0036379717598942042
+    },
+    "B_z": {
+      "mean_abs_dP_v": 0.0018908233609031021,
+      "mean_abs_dchi_phi": 0.0062555347607104635,
+      "std_abs_dP_v": 0.00338027012115039,
+      "std_abs_dchi_phi": 0.009969997254870773
+    },
+    "B_x": {
+      "mean_abs_dP_v": 0.0007663391883541209,
+      "mean_abs_dchi_phi": 0.003825509748432561,
+      "std_abs_dP_v": 0.0010265711956415028,
+      "std_abs_dchi_phi": 0.006203096022006927
+    }
+  },
+  "model_sensitivity": {
+    "A_vs_A_pocket": 0.005844225552917349,
+    "A_vs_B_z": 0.005595833853520325,
+    "A_vs_B_x": 0.006881417126379447,
+    "A_pocket_vs_B_z": 0.007576536144090769,
+    "A_pocket_vs_B_x": 0.003156648704015624,
+    "B_z_vs_B_x": 0.008486425325786404
+  },
+  "model_sensitivity_normalized": {
+    "A_vs_A_pocket": 5.844225552917349,
+    "A_vs_B_z": 5.595833853520325,
+    "A_vs_B_x": 6.881417126379446,
+    "A_pocket_vs_B_z": 7.576536144090767,
+    "A_pocket_vs_B_x": 3.156648704015624,
+    "B_z_vs_B_x": 8.486425325786406
+  },
+  "rank_correlation": {
+    "A_vs_A_pocket": 0.7142857142857144,
+    "A_vs_B_z": 0.7142857142857144,
+    "A_vs_B_x": 0.7142857142857144,
+    "A_pocket_vs_B_z": 0.880952380952381,
+    "A_pocket_vs_B_x": 0.6666666666666669,
+    "B_z_vs_B_x": 0.4523809523809524
+  },
+  "mean_rank_correlation": 0.6904761904761906,
+  "rank_correlation_interpretation": "MODERATE -- partial model-dependence",
+  "quadrant_agreement": {
+    "A_vs_A_pocket": 0.5,
+    "A_vs_B_z": 0.5,
+    "A_vs_B_x": 0.5,
+    "A_pocket_vs_B_z": 0.625,
+    "A_pocket_vs_B_x": 0.375,
+    "B_z_vs_B_x": 0.5
+  },
+  "mean_quadrant_agreement": 0.5,
+  "geometry_sensitivity_raw": {
+    "A": {},
+    "A_pocket": {},
+    "B_z": {},
+    "B_x": {}
+  },
+  "geometry_sensitivity_relative": {
+    "A": {},
+    "A_pocket": {},
+    "B_z": {},
+    "B_x": {}
+  }
+}

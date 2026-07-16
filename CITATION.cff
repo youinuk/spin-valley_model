@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the accompanying paper."
+title: "spinshuttle: periodic-reference model-risk atlas for micromagnet-assisted spin shuttling"
+authors:
+  - family-names: "You"
+    given-names: "Inuk"
+    email: "youinuk@gmail.com"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Spin-valley model uncertainty in micromagnet-assisted shuttling: a periodic-reference sensitivity atlas"
+  authors:
+    - family-names: "You"
+      given-names: "Inuk"
+  year: 2026
+  journal: "(submitted)"

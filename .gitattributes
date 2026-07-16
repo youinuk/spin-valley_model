@@ -1,0 +1,26 @@
+# Enforce LF in the working tree on all platforms.
+#
+# This is required for correctness, not style: the pipeline records the
+# SHA-256 of its own source files, and SHA256SUMS.txt hashes every file.
+# If Git checked these out with CRLF on Windows, both the script-SHA
+# provenance check (`--metadata-only`) and `sha256sum -c SHA256SUMS.txt`
+# would report spurious mismatches.
+* text=auto eol=lf
+
+*.py    text eol=lf
+*.sh    text eol=lf
+*.md    text eol=lf
+*.tex   text eol=lf
+*.bib   text eol=lf
+*.txt   text eol=lf
+*.cff   text eol=lf
+*.ini   text eol=lf
+*.csv   text eol=lf
+*.json  text eol=lf
+
+# Never touch binary artifacts.
+*.pkl   binary
+*.pdf   binary
+*.png   binary
+*.gz    binary
+*.zip   binary

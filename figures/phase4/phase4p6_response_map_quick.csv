@@ -1,0 +1,13 @@
+quadrant,coupling_model,case,v_ms,lambda_uev,dP_v,dchi_phi
+both_worsen,A,case_i_center,1.0,0.5,-4.337611e-03,0.000000e+00
+both_worsen,A,case_i_center,1.0,1.0,6.704210e-03,0.000000e+00
+both_worsen,A,case_i_center,5.0,0.5,1.262387e-04,0.000000e+00
+both_worsen,A,case_i_center,5.0,1.0,-1.411086e-03,0.000000e+00
+both_worsen,A,case_i_center,10.0,0.5,-1.410975e-04,0.000000e+00
+both_worsen,A,case_i_center,10.0,1.0,-3.592326e-02,0.000000e+00
+both_worsen,A,case_ii_edge,1.0,0.5,1.767824e-03,0.000000e+00
+both_worsen,A,case_ii_edge,1.0,1.0,1.154317e-03,0.000000e+00
+both_worsen,A,case_ii_edge,5.0,0.5,-2.633258e-02,0.000000e+00
+both_worsen,A,case_ii_edge,5.0,1.0,-9.289630e-04,0.000000e+00
+both_worsen,A,case_ii_edge,10.0,0.5,-4.289922e-03,0.000000e+00
+both_worsen,A,case_ii_edge,10.0,1.0,-3.101136e-03,0.000000e+00

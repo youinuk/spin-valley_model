@@ -1,0 +1,38 @@
+{
+  "archive_version": "phase5_v16",
+  "script_sha256_16": "529c03aac5ba0ad1",
+  "mode": "full",
+  "n_real": 2,
+  "n_evaluations": 45,
+  "elapsed_sec": 41.68886637687683,
+  "timestamp": "2026-05-30T04:30:16",
+  "baseline": {
+    "x_c_nm": 25.0,
+    "v": 20.0,
+    "lam_uev": 1.0,
+    "period_nm": 150.0,
+    "depth_nm": -50.0,
+    "half_x_nm": 25.0,
+    "half_y_nm": 25.0,
+    "half_z_nm": 15.0,
+    "cz_nm": 15.0
+  },
+  "threshold_P_v": 0.0001,
+  "threshold_chi_phi": 0.001,
+  "baseline_cross_robust": false,
+  "basin_size": 1,
+  "basin_score": 0.08333333333333333,
+  "basin_classification": "weak",
+  "decision": "narrow-scope Phase 5 optimization conditionally possible",
+  "param_cross_robust_count": {
+    "period_nm": 0,
+    "depth_nm": 1,
+    "half_x_nm": 0,
+    "half_z_nm": 0
+  },
+  "is_strong_basin": false,
+  "is_isolated": false,
+  "superseded_by": "phase5_narrow_scope_metadata_targeted.json",
+  "superseded_reason": "n_real=2 is statistically insufficient; the targeted (n_real=30) result is final.",
+  "note": "The 'weak' classification follows an earlier decision rule; in the final rule, baseline_cross_robust=False is classified as off_baseline_sparse_hits or no_basin."
+}
