@@ -24,6 +24,11 @@
 \definecolor{robustteal}{RGB}{56,142,142}
 \definecolor{deadgray}{RGB}{225,225,225}
 \definecolor{panelgray}{RGB}{150,150,150}
+% model colors matched to Fig. 2 (Tol vibrant palette)
+\definecolor{tolA}{HTML}{0077bb}
+\definecolor{tolAp}{HTML}{33bbee}
+\definecolor{tolBz}{HTML}{009988}
+\definecolor{tolBx}{HTML}{ee7733}
 
 \usepackage[colorlinks=true,allcolors=blue]{hyperref}
 \hypersetup{pdftitle={Spin-valley model uncertainty in
@@ -55,13 +60,13 @@ a \emph{model-risk diagnostic}. We find that even the \emph{existence}
 of a cross-ansatz robust operating point is convention-dependent: in a
 stray-field-only Zeeman bookkeeping the staged search finds no robust
 candidate surviving statistical strengthening, whereas in the
-physically transparent total-field convention an edge-pocket
-robust candidate (at $v=10$\,m/s with a deeper well) survives
+physically transparent total-field convention two edge-pocket
+robust candidates ($v=10$\,m/s with a deeper well) survive
 targeted $n_{\rm real}=30$ re-testing as robust in all four
-ans\"atze ($4/4$) at both coupling strengths; two other apparent
-full-atlas candidates vanish. Because no unique literature-standard local
-$\lambda_{sv}(x)$ exists for a shuttled Si/SiGe dot in a micromagnet
-field, these ans\"atze encode different plausible modeling
+ans\"atze ($4/4$) at the two coupling strengths; two other apparent
+full-atlas candidates vanish. Because no generally accepted local
+$\lambda_{sv}(x)$ is yet available for a shuttled Si/SiGe dot in a
+micromagnet field, these ans\"atze encode different plausible modeling
 assumptions rather than a derived microscopic coupling. We then
 quantify how strongly the coupling-ansatz choice controls the
 conclusions with a sensitivity atlas on a full validate grid (432
@@ -194,9 +199,9 @@ separately and are not a target of this study.
   % ----- moving spin qubit in the well -----
   \draw[black!55, dashed, line width=0.5pt] (1.0,3.975) -- (8.8,3.975);
   \draw[-{Stealth[length=1.6mm]}, black!75, line width=0.8pt] (3.0,3.975) -- (3.9,3.975);
-  \node[tick, anchor=west, text=black!75] at (3.94,3.975) {$v$};
-  \shade[ball color=black!75] (2.6,3.975) circle (2.8pt);
+  \node[tick, anchor=south, text=black!75] at (3.45,4.05) {$v$};
   \draw[-{Stealth[length=1.4mm]}, bzblue!80!black, line width=0.9pt] (2.44,3.76) -- (2.78,4.24);
+  \shade[ball color=black!75] (2.6,3.975) circle (2.8pt);
 
   % pocket region marked in the well
   \fill[bzblue!40, opacity=0.55] (4.5,3.85) rectangle (5.3,4.10);
@@ -237,16 +242,16 @@ separately and are not a target of this study.
   % gradient components: symmetric about the pocket centre, quarter-phase
   % shifted (|dBz/dx| has a node at the centre; |dBx/dx| is maximal there)
   \draw[axisline, black!35] (0.85,0.42) -- (9.0,0.42);
-  \draw[bzblue, line width=1.0pt]
+  \draw[tolBz, line width=1.0pt]
     (3.40,0.43) .. controls (3.70,0.43) and (3.88,1.08) .. (4.15,1.08)
     .. controls (4.42,1.08) and (4.62,0.78) .. (4.90,0.43)
     .. controls (5.18,0.78) and (5.38,1.08) .. (5.65,1.08)
     .. controls (5.92,1.08) and (6.10,0.43) .. (6.40,0.43);
-  \draw[bxorange, line width=1.0pt]
+  \draw[tolBx, line width=1.0pt]
     (4.15,0.43) .. controls (4.40,0.43) and (4.55,0.86) .. (4.90,0.86)
     .. controls (5.25,0.86) and (5.40,0.43) .. (5.65,0.43);
-  \node[bzblue, font=\tiny, anchor=east] at (3.31,0.90) {$|\partial_x B_z|$};
-  \node[bxorange, font=\tiny, anchor=west] at (5.74,0.78) {$|\partial_x B_x|$};
+  \node[tolBz, font=\tiny, anchor=south] at (4.15,1.14) {$|\partial_x B_z|$};
+  \node[tolBx, font=\tiny, anchor=south] at (4.90,0.92) {$|\partial_x B_x|$};
   \node[taglabel] at (4.9,0.18) {gradient components differ in magnitude and phase along the path};
 \end{scope}
 
@@ -272,8 +277,8 @@ separately and are not a target of this study.
 
   % A : |dBz/dx| itself -- arches with V-zeros at the centre and at
   % +- half period (rising again beyond), cf. Fig. 2; peaks ~ hot spots
-  \node[font=\scriptsize, anchor=east, text=black!70] at (0.82,4.87) {A};
-  \draw[black!70, line width=0.9pt]
+  \node[font=\scriptsize, anchor=east, text=tolA] at (0.82,4.87) {A};
+  \draw[tolA, line width=0.9pt]
     (0.95,4.62) .. controls (1.25,4.88) and (1.48,5.02) .. (1.67,5.02)
     .. controls (1.92,5.02) and (2.10,4.75) .. (2.21,4.46)
     .. controls (2.32,4.75) and (2.50,5.08) .. (2.75,5.08)
@@ -286,8 +291,8 @@ separately and are not a target of this study.
 
   % A_pocket : gradient x pocket-Gaussian -> twin peaks meeting in a
   % V-touch at the centre (|dBz/dx| ~ |x| near the node), Gaussian decay
-  \node[font=\scriptsize, anchor=east, text=black!70] at (0.82,3.72) {$\mathrm{A_{pocket}}$};
-  \draw[black!70, line width=0.9pt]
+  \node[font=\scriptsize, anchor=east, text=tolAp!70!black] at (0.82,3.72) {$\mathrm{A_{pocket}}$};
+  \draw[tolAp, line width=0.9pt, densely dashed]
     (2.20,3.31) .. controls (2.45,3.34) and (2.62,4.02) .. (2.85,4.02)
     .. controls (3.06,4.02) and (3.22,3.62) .. (3.30,3.31)
     .. controls (3.38,3.62) and (3.54,4.02) .. (3.75,4.02)
@@ -295,8 +300,8 @@ separately and are not a target of this study.
   \node[taglabel, anchor=east, align=right] at (5.68,4.14) {gradient $\times$ pocket\\ Gaussian (node at centre)};
 
   % B_z : resonance window, symmetric twin peaks on both flanks
-  \node[font=\scriptsize, anchor=east, text=bzblue] at (0.82,2.57) {$\mathrm{B}_z$};
-  \draw[bzblue, line width=0.9pt]
+  \node[font=\scriptsize, anchor=east, text=tolBz] at (0.82,2.57) {$\mathrm{B}_z$};
+  \draw[tolBz, line width=0.9pt]
     (2.30,2.16) .. controls (2.52,2.16) and (2.56,3.00) .. (2.72,3.00)
     .. controls (2.88,3.00) and (2.92,2.16) .. (3.14,2.16)
     -- (3.46,2.16)
@@ -305,14 +310,14 @@ separately and are not a target of this study.
   \node[taglabel, anchor=east, align=right] at (5.68,3.00) {$\partial_x B_z\,\times$\\ resonance};
 
   % B_x : resonance window, same flanks but narrower / phase-shifted
-  \node[font=\scriptsize, anchor=east, text=bxorange] at (0.82,1.42) {$\mathrm{B}_x$};
-  \draw[bxorange, line width=0.9pt]
+  \node[font=\scriptsize, anchor=east, text=tolBx] at (0.82,1.42) {$\mathrm{B}_x$};
+  \draw[tolBx, line width=0.9pt]
     (2.46,1.01) .. controls (2.60,1.01) and (2.62,1.82) .. (2.72,1.82)
     .. controls (2.82,1.82) and (2.84,1.01) .. (2.98,1.01)
     -- (3.62,1.01)
     .. controls (3.76,1.01) and (3.78,1.82) .. (3.88,1.82)
     .. controls (3.98,1.82) and (4.00,1.01) .. (4.14,1.01);
-  \node[bxorange, font=\tiny\bfseries, align=center] at (4.90,1.82) {narrower,\\ phase-shifted};
+  \node[tolBx!85!black, font=\tiny\bfseries, align=center] at (4.90,1.82) {narrower,\\ phase-shifted};
   \node[taglabel, anchor=east, align=right] at (5.68,1.30) {$\partial_x B_x\,\times$\\ resonance};
 
   \node[tick] at (3.3,0.62) {position $x$ along the path};
@@ -321,7 +326,24 @@ separately and are not a target of this study.
 % =============================================================
 %  (c) Analysis pipeline (vertical flowchart)
 % =============================================================
-\begin{scope}[shift={(0,-8.5)}]
+
+% ---- global ansatz legend between the panel rows ----
+\begin{scope}[shift={(0,-0.48)}]
+  \draw[tolA, line width=1.0pt] (0.30,0) -- (0.85,0);
+  \node[font=\tiny, anchor=west] at (0.92,0)
+    {A: $\propto|\partial_x B_z|$};
+  \draw[tolAp, line width=1.0pt, densely dashed] (3.10,0) -- (3.65,0);
+  \node[font=\tiny, anchor=west] at (3.72,0)
+    {$\mathrm{A_{pocket}}$: A\,$\times\,e^{-(x-x_c)^2/(2\sigma_\lambda^2)}$};
+  \draw[tolBz, line width=1.0pt, dash dot] (8.10,0) -- (8.65,0);
+  \node[font=\tiny, anchor=west] at (8.72,0)
+    {$\mathrm{B}_z$: A\,$\times\,e^{-(E_v-E_Z)^2/(2\sigma_E^2)}$};
+  \draw[tolBx, line width=1.0pt, densely dotted] (12.80,0) -- (13.35,0);
+  \node[font=\tiny, anchor=west] at (13.42,0)
+    {$\mathrm{B}_x$: $\propto|\partial_x B_x|\,e^{-(E_v-E_Z)^2/(2\sigma_E^2)}$};
+\end{scope}
+
+\begin{scope}[shift={(0,-9.05)}]
   \node[panel, minimum width=6.2cm, minimum height=8.1cm, anchor=south west] (pc) at (0,0) {};
   \node[ptitle] at (pc.north west) {(c) Analysis pipeline};
 
@@ -352,7 +374,7 @@ separately and are not a target of this study.
 % =============================================================
 %  (d) Quadrant classification + compact per-pair diagnostics
 % =============================================================
-\begin{scope}[shift={(6.6,-8.5)}]
+\begin{scope}[shift={(6.6,-9.05)}]
   \node[panel, minimum width=10.6cm, minimum height=8.1cm, anchor=south west] (pd) at (0,0) {};
   \node[ptitle] at (pd.north west) {(d) Quadrant classification and its model dependence};
 
@@ -366,12 +388,12 @@ separately and are not a target of this study.
   \draw[-{Stealth[length=1.3mm]}, axisline] (0.40,4.65) -- (4.15,4.65);
   \draw[-{Stealth[length=1.3mm]}, axisline] (2.25,3.00) -- (2.25,6.30);
   \node[tick, anchor=west]  at (4.17,4.65) {$\figDelta P_v$};
-  \node[tick, anchor=south west, inner sep=1.5pt] at (2.31,6.12) {$\figDelta\chi_\phi$};
+  \node[tick, anchor=south east, inner sep=1.5pt] at (2.20,6.10) {$\figDelta\chi_\phi$};
   \node[robustteal!80!black, font=\tiny\bfseries] at (1.37,3.40) {robust};
   \node[bxorange!85!black, font=\tiny\bfseries]  at (3.13,5.88) {both worsen};
   \node[black!50, font=\tiny] at (1.37,5.88) {spin-trade};
   \node[black!50, font=\tiny] at (3.13,3.40) {valley-trade};
-  \node[black!45, font=\tiny, anchor=west] at (2.57,4.22) {below threshold};
+  \node[black!45, font=\tiny, anchor=west] at (2.54,4.47) {below threshold};
   \fill[black!80] (1.40,3.85) circle (1.7pt);
   \draw[black!80, line width=0.7pt, fill=white] (3.30,5.45) circle (1.7pt);
   \draw[-{Stealth[length=1.4mm]}, black!55, dashed, line width=0.7pt] (1.53,3.94) -- (3.18,5.36);
@@ -422,12 +444,13 @@ separately and are not a target of this study.
   \draw[black!60, dashed, line width=0.5pt] (8.68,2.97) -- (8.68,6.50);
   \node[tick, anchor=south] at (8.68,6.52) {mean 36\%};
   \node[font=\tiny\itshape, anchor=east, text=bxorange!85!black] at (10.42,3.05) {hatched: lowest agreement};
+
 \end{scope}
 
 % =============================================================
 %  BOTTOM: message bar
 % =============================================================
-\begin{scope}[shift={(0,-9.35)}]
+\begin{scope}[shift={(0,-9.90)}]
   \node[draw=black!30, fill=black!4, rounded corners=2.5pt, line width=0.5pt,
         minimum width=17.1cm, minimum height=0.75cm, anchor=west,
         align=center, font=\footnotesize] at (0.05,0)
@@ -464,7 +487,8 @@ sensitivity atlas yields two diagnostics.
 (d)~Quadrant classification of the response
 $\mathcal{R}=(\Delta P_v,\Delta\chi_\phi)$ with a below-threshold
 zone: the same operating condition can flip quadrant between
-ans\"atze. (d1),(d2)~Pairwise Spearman rank correlation and quadrant
+ans\"atze; the legend strip between the panel rows lists the four
+kernels. (d1),(d2)~Pairwise Spearman rank correlation and quadrant
 agreement for the six ansatz pairs: the magnitude ranking is largely
 conserved across all pairs (mean $\rho\approx0.84$) while the quadrant
 interpretation remains model-dependent (mean $\approx36\%$, lowest for
@@ -499,7 +523,12 @@ can leak into the excited valley, and the spatial variation of the
 valley splitting $E_v(x)$ along the shuttling path couples motion to
 the valley sector; low-valley-splitting pockets arising from alloy
 disorder are a known threat to shuttling
-fidelity~\cite{paquelet_wuetz_atomic_2022,losert_strategies_2024,zwerver_shuttling_2023}. When combined with a micromagnet-induced synthetic
+fidelity~\cite{paquelet_wuetz_atomic_2022,losert_strategies_2024,zwerver_shuttling_2023},
+and recent shuttling-based maps measure $E_v$ varying from
+$1.5$ to $200\,\mu$eV along real conveyor
+trajectories, dominated by alloy disorder, with trajectory selection
+around low-$E_v$ spots demonstrated as a practical
+mitigation~\cite{volmer_impact_2026}. When combined with a micromagnet-induced synthetic
 spin--orbit field~\cite{unseld_baseband_2025,yoneda_quantum-dot_2018,laucht_electrically_2015},
 valley transitions become correlated with spin
 dephasing, so that geometry and trajectory choices affect spin
@@ -531,7 +560,7 @@ than reporting a single optimized operating point, we (i) show through a
 staged falsification chain and a targeted high-statistics re-test that
 whether a cross-ansatz robust operating point exists \emph{at all}
 depends on the modeling convention---no candidate survives in the
-stray-field bookkeeping, whereas a small grid-local robust candidate survives
+stray-field bookkeeping, whereas two grid-local edge-pocket robust candidates survive
 $n_{\rm real}=30$ re-testing across all four ans\"atze in the adopted
 total-field convention---and (ii) quantify the residual model
 dependence with a sensitivity atlas.
@@ -576,12 +605,28 @@ blueprint analyses and disorder-aware shuttling
 strategies~\cite{langrock_blueprint_2023,losert_strategies_2024}---and
 generic optimal-control machinery is
 available~\cite{khaneja_optimal_2005,niu_universal_2019}. In such
-studies the effective coupling model is, naturally, held fixed; how
-strongly the resulting design conclusions depend on that choice is not
-usually reported, and valley-aware co-design in the sense used
+studies the effective coupling model is held fixed, which is the right
+choice where the model is validated for the regime in question. The
+setting we address---the local spin--valley coupling of a dot shuttled
+through a micromagnet field---does not yet have a generally validated
+local $\lambda_{sv}(x)$ that can be adopted without additional modeling
+assumptions (Sec.~\ref{sec:model}), so there the model choice itself
+becomes a
+source of design risk; quantifying that risk, rather than optimizing
+under any one choice, is the purpose of this work. Recent conveyor-mode
+measurements increasingly constrain the relevant microscopic
+ingredients---spatial maps of the valley splitting along shuttling
+trajectories and, combined with valley-resolved $g$-factor maps, of the
+complex intervalley
+coupling~\cite{volmer_impact_2026,volmer_gfactor_2026}---but they do
+not by themselves determine the effective local moving-dot
+spin--valley kernel parameterized here; they instead sharpen the
+experimental target that a future
+microscopic $\lambda_{sv}(x)$ must fit. Valley-aware
+co-design in the sense used
 here---jointly tuning geometry and trajectory against both valley
-leakage and dephasing---is a prospective program rather than an
-established literature.
+leakage and dephasing---is accordingly a prospective program rather
+than an established literature.
 Our contribution is orthogonal and methodological: instead of optimizing
 under one model, we benchmark four spatial-profile ans\"atze for
 $\lambda_{sv}(x)$---four phenomenological kernels multiplying one fixed
@@ -617,7 +662,7 @@ magnet half-widths        & $25/15$\,nm      & sub-period pole geometry~\cite{la
 saturation $M_s$          & $1.4\times10^6$\,A/m & Co/CoFe micromagnet~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025} \\
 external field $B_{\rm ext}$ & $0.5$\,T         & operating Zeeman field; enters Eq.~\eqref{eq:ez} \\
 valley splitting (mean)   & $\sim\!100\,\mu$eV & Si/SiGe range $\sim\!10$--$300\,\mu$eV~\cite{paquelet_wuetz_atomic_2022,losert_practical_2023} \\
-valley pocket minimum     & $\sim\!5\,\mu$eV  & low-$E_v$ disorder pocket~\cite{paquelet_wuetz_atomic_2022,volmer_mapping_2024} \\
+valley pocket minimum     & $\sim\!5\,\mu$eV  & low-$E_v$ disorder pocket~\cite{paquelet_wuetz_atomic_2022,volmer_mapping_2024,volmer_impact_2026} \\
 valley off-diagonal $\Delta_v$ & $0.5\,\mu$eV & avoided-crossing scale (toy) \\
 resonance width $\sigma_E$ & $10\,\mu$eV     & regularized hot-spot window (toy proxy) \\
 shuttling velocity $v$    & $5$--$20$\,m/s   & conveyor-mode range~\cite{de_smet_high-fidelity_2025,seidler_conveyor-mode_2022} \\
@@ -708,12 +753,12 @@ are then
 & \text{A:} \quad \lambda_{sv}(x) = \lambda_0\,
   \frac{|\partial_x B_z(x)|}{\max_x|\partial_x B_z|}, \\
 & \text{A}_{\rm pocket}\text{:} \quad \lambda_{sv}(x) = \lambda_{sv}^{\rm A}(x)\,
-  e^{-(x-x_c)^2/2\sigma_\lambda^2}, \\
+  \exp\!\left[-\frac{(x-x_c)^2}{2\sigma_\lambda^2}\right], \\
 & \text{B}_z\text{:} \quad \lambda_{sv}(x) = \lambda_{sv}^{\rm A}(x)\,
-  e^{-(E_v(x)-E_Z(x))^2/2\sigma_E^2}, \\
+  \exp\!\left[-\frac{(E_v(x)-E_Z(x))^2}{2\sigma_E^2}\right], \\
 & \text{B}_x\text{:} \quad \lambda_{sv}(x) = \lambda_0\,
   \frac{|\partial_x B_x(x)|}{\max_x|\partial_x B_x|}\,
-  e^{-(E_v(x)-E_Z(x))^2/2\sigma_E^2},
+  \exp\!\left[-\frac{(E_v(x)-E_Z(x))^2}{2\sigma_E^2}\right],
 \end{align}
 %
 where $E_Z(x)$ is the local Zeeman energy of Eq.~\eqref{eq:ez}, so that
@@ -743,10 +788,35 @@ precisely the model uncertainty probed here. None of the four
 profiles should be
 interpreted as a literature-standard or microscopically derived
 spin--valley coupling; the Gaussian resonance window
-$e^{-(E_v-E_Z)^2/2\sigma_E^2}$ in particular is a regularized
+$e^{-(E_v-E_Z)^2/(2\sigma_E^2)}$ in particular is a regularized
 diagnostic proxy for the hot-spot enhancement, not a standard
 expression. They are diagnostic kernels used to quantify how strongly
 the conclusions depend on plausible, non-unique modeling choices.
+One might ask whether the gradient-only kernels A and
+A$_{\rm pocket}$ are physically admissible, given the known
+spin--valley enhancement near $E_v\approx E_Z$. In the diabatic
+basis of the Hamiltonian above, the operator
+$\lambda_{sv}(x)\,\sigma_x\otimes\tau_x$ couples a pair of states whose
+uncoupled energy difference is $E_v(x)-E_Z(x)$. A nonzero
+off-diagonal coupling at a flank crossing therefore produces an
+avoided crossing and resonantly enhanced spin--valley mixing through
+the four-level dynamics, even when $\lambda_{sv}(x)$ contains no
+explicit resonance window~\cite{yang_spin-valley_2013,huang_spin_2014}.
+For the profiles considered here, A and A$_{\rm pocket}$ remain
+nonzero at the relevant flank crossings. The window in B$_z$/B$_x$
+tests the distinct, stronger phenomenological assumption that the
+effective off-diagonal coupling amplitude is itself localized near
+resonance, thereby adding profile localization to the dynamical
+level-crossing enhancement. Microscopic spin--valley matrix elements
+depend on spin--orbit and field-gradient matrix elements between
+valley-dependent envelope states and need not take the particular
+Gaussian form in $E_v-E_Z$ used
+here~\cite{hosseinkhani_theory_2022,huang_spin_2014}. The A-type
+kernels should therefore be read as diagnostic detuning-independent
+profiles, not as uniquely derived microscopic matrix elements. Neither
+family is a null straw man; together they bracket complementary
+assumptions about the spatial structure of the same off-diagonal
+coupling.
 Figure~\ref{fig:profiles} shows the four profiles for a representative
 pocket: the gradient-only model A is delocalized over the whole
 period, A$_{\rm pocket}$ concentrates the gradient coupling near the
@@ -894,7 +964,7 @@ column counts model$\times$geometry combinations in stages 1 and 6
 stages 3--5 (with the two ans\"atze entering the cross-robust test);
 each entry is tracked individually. Under the adopted total-field
 convention this procedure yields a different outcome
-(Sec.~\ref{sec:results}): a small grid-local robust candidate survives.}
+(Sec.~\ref{sec:results}): two grid-local edge-pocket robust candidates survive.}
 \label{tab:chain}
 \small
 \begin{tabular}{clcccl}
@@ -911,17 +981,18 @@ stage & description & $n_{\rm real}$ & conditions & cross-robust & outcome \\
 \end{tabular}
 \end{table*}
 
-At high statistics (stage 5, $n_{\rm real}=30$) all previously
-observed cross-validated robust candidates disappear \emph{in the
-stray-field convention}, indicating they were small-sample
-fluctuations there. Extending to the four-ans\"atze family
+The stage-5 re-test raises the statistics to $n_{\rm real}=30$; every
+candidate identified in the low-statistics stages ($n_{\rm real}=2$--$5$)
+then disappears \emph{in the
+stray-field convention}---the earlier detections were fluctuations of
+the small samples, not stable operating points. Extending to the four-ans\"atze family
 (stage 6; A, A$_{\rm pocket}$, B$_z$, B$_x$) evaluates 72 model rows;
 among the 12 positive-$\lambda$ physical settings, none is robust in
 $\ge 3/4$ ans\"atze in that convention. This staged search motivated
 reframing the study from basin discovery to a coupling-ansatz
 sensitivity atlas. As we show in Sec.~\ref{sec:results}, repeating the
 $n_{\rm real}=30$ re-test in the adopted total-field convention
-reverses the stage-5/6 conclusion for a grid-local candidate, which is why we
+reverses the stage-5/6 conclusion for two grid-local candidates, which is why we
 present the atlas---and the convention- and ansatz-dependence of the
 robust/fragile verdict---rather than a single basin claim.
 
@@ -1165,8 +1236,9 @@ is governed by the coupling model in a way the geometry grid does not
 resolve.
 
 The value of this comparison is conditional on a specific fact: no
-validated microscopic spin--valley coupling for a \emph{shuttled}
-Si/SiGe dot in a micromagnet field is currently available. Were such a
+generally validated effective local spin--valley kernel is currently
+available for the specific \emph{shuttled}-dot/micromagnet regime
+considered here. Were such a
 model in hand one would simply adopt it and co-design directly---the
 family would collapse to the single true coupling and the
 model-dependence we report would be moot. It is precisely because design
@@ -1260,7 +1332,8 @@ unless checked against alternative coupling descriptions and against
 absolute full-model error proxies.
 
 The practical message for valley-aware co-design is therefore one of
-sequencing. Optimizing geometry and trajectory is premature while the
+sequencing. Geometry and trajectory optimization alone cannot settle
+the co-design verdict while the
 coupling form remains uncertain at the level we find here; effort is
 better spent first constraining the spin--valley coupling against
 microscopic theory or experiment. The atlas and its six metrics are

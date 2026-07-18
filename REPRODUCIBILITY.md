@@ -50,7 +50,7 @@ practical notes:
    POSIX shell syntax. In PowerShell use, e.g.:
 
    ```powershell
-   $env:PYTHONPATH="."; $env:JAX_ENABLE_X64="1"; $env:JAX_PLATFORM_NAME="cpu"; $env:MPLBACKEND="Agg"
+   $env:PYTHONPATH="."; $env:JAX_PLATFORM_NAME="cpu"; $env:MPLBACKEND="Agg"
    python reproduce/phase5_atlas_merge_validate.py --mode validate --ez-convention total-local --profile-norm prefactor
    $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"
    python -m pytest tests/test_convention_options.py -q -m "not slow"
@@ -65,12 +65,8 @@ practical notes:
 
 Numbers are deterministic given the fixed seeds, but bit-identical
 agreement across operating systems and BLAS builds is not guaranteed; the
-tolerances in section 6 apply. VS Code with WSL2 and the Remote - WSL
-extension is the safest setup because it stays closest to the Linux
-reference environment and provides `bash`, `sha256sum`, and LaTeX with the
-documented commands. Native Windows remains supported. A full CPU atlas
-recalculation takes roughly four minutes per case (about eight minutes for
-both cases) on the reference-class host; actual time depends on hardware.
+tolerances in section 6 apply. WSL2 reproduces the Linux reference values
+most closely.
 
 ## 2. Test suite and validations
 
@@ -186,6 +182,23 @@ is the final revision (895add02...) of the same analysis.
 ```bash
 python reproduce/v0p3_float_precision_check.py
 # expected: float64 relative error ~1e-9; float32 relative error O(1)
+```
+
+## 5c. Gradient-kernel hot-spot check
+
+Supports the Model-section passage on the physical admissibility of the
+gradient-only kernels: the E_v ~ E_Z crossing enhancement is produced by
+the four-level dynamics without any resonance window in lambda_sv(x).
+The control is shape-preserving (the Gaussian pocket is kept, with its
+minimum raised above the total-field E_Z range so only the crossing is
+removed) and the deterministic charge-noise-off M1V branch is reported.
+
+```bash
+PYTHONPATH=. python reproduce/phase5_gradient_kernel_hotspot_check.py
+# expected: lambda=0 leakage < 1e-3 in both landscapes;
+#           ansatz A leakage ~4.5e-1 with the crossing (Ev_min=5 ueV)
+#           vs ~1.8e-3 with the non-crossing pocket (Ev_min=70 ueV);
+#           ratio ~252; prints PASS  (~40 s on CPU)
 ```
 
 ## 6. Comparison tolerances

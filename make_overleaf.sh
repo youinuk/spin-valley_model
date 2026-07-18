@@ -36,5 +36,21 @@ if command -v zip >/dev/null 2>&1; then
   ( cd "$OUT" && zip -qr "../$OUT.zip" . )
   echo "wrote $OUT/ and $OUT.zip"
 else
-  echo "wrote $OUT/ (install 'zip' to also produce $OUT.zip, or zip the folder yourself)"
+  # 'zip' is absent on many Windows Git Bash installs; python is a project
+  # requirement, so fall back to the stdlib zipfile module.
+  PY="$(command -v python3 || command -v python || true)"
+  if [ -n "$PY" ]; then
+    "$PY" - "$OUT" <<'PYEOF'
+import os, sys, zipfile
+out = sys.argv[1]
+with zipfile.ZipFile(out + ".zip", "w", zipfile.ZIP_DEFLATED) as z:
+    for root, _, files in os.walk(out):
+        for f in sorted(files):
+            p = os.path.join(root, f)
+            z.write(p, os.path.relpath(p, out))
+PYEOF
+    echo "wrote $OUT/ and $OUT.zip (via python zipfile)"
+  else
+    echo "wrote $OUT/ (no 'zip' or python found; zip the folder contents yourself -- files must sit at the zip root)"
+  fi
 fi
