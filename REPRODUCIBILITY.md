@@ -319,6 +319,14 @@ The robust-candidate retest uses `n_real = 30`; two candidates survive as
 
 ## 7. Staged falsification chain: Table II
 
+> **Note (script `--help` references).** The pipeline scripts inside the
+> release tar say "see REPRODUCIBILITY.md, Sec. 7" for the
+> **Zeeman-convention decision and provenance**. In the archival
+> REPRODUCIBILITY.md shipped inside the tar that material is Section 7;
+> in this reorganized guide it has moved to
+> **[Section 10](#10-zeeman-convention-decision-and-provenance)**.
+> This section covers the Table II staged chain instead.
+
 The stages of Table II are generated as follows. Stage 1 uses the archived
 phase-4 coarse outputs and is regenerable with
 `reproduce/phase4p6_crossterm.py`.
@@ -392,6 +400,10 @@ the authority for those gate-specific thresholds; this section does not
 replace them.
 
 ## 10. Zeeman-convention decision and provenance
+
+> The release-tar pipeline scripts refer to this material as
+> "REPRODUCIBILITY.md, Sec. 7" -- the section number of the archival copy
+> inside the tar. Section numbers in this reorganized guide differ.
 
 An external-field inconsistency identified during development has been
 resolved. The archived legacy run used a stray-field-only Zeeman energy:
