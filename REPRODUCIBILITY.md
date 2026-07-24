@@ -1,10 +1,182 @@
 # Reproducibility guide
 
-This release reproduces the full sensitivity atlas, the reported pairwise
-diagnostics, and the listed supplementary validations. (Full regeneration
-of every historical stage of Table II additionally requires the exact
-script revisions noted in Section 5.) Commands and expected reference
-values follow. Run everything from the repository root with:
+This guide documents the **r31** scientific results and their reproduction.
+The immutable clean-room audit target is the r31 release archive and its
+recorded SHA-256. Later documentation-only updates may be committed to Git
+without creating a new scientific release archive, provided that they do not
+alter or replace the immutable r31 tar used by the audit.
+
+The release reproduces the full sensitivity atlas, the reported pairwise
+diagnostics, and the listed supplementary validations. Full regeneration of
+every historical stage of Table II additionally requires the exact script
+revisions noted in Section 7.
+
+## 1. Reproduction paths and version scope
+
+Two complementary reproduction paths are provided.
+
+### 1.1 Manual scientific reproduction
+
+Run the individual Python analyses from the released repository root. In the
+local audit workspace described below, that directory is:
+
+```text
+Spin-valley_model/repo/
+```
+
+The commands in Sections 4–10 are manual scientific-reproduction commands and
+assume that this repository root is the current working directory.
+
+### 1.2 Clean-room submission audit
+
+Run the external Phase 1–5 shell harness from the **external audit workspace
+root**. In the local layout used here, that directory is:
+
+```text
+Spin-valley_model/
+```
+
+It is the directory that contains `.venv/`, `dist/`, `repo/`, the Phase runners,
+and the phase-result archives. The harness validates an immutable release tar
+rather than trusting the mutable Git working tree. It records chain of custody,
+environment, numerical gates, source integrity, regenerated artifacts, and
+compact phase-result archives.
+
+The shell infrastructure is release-aware, but the scientific expectations,
+reference values, source-wiring checks, and paper-result gates are specific to
+r31. A later scientific release must re-derive those expectations rather than
+silently reusing the r31 criteria.
+
+## 2. Reference platform and environment
+
+Python 3.12 with the pinned packages in `requirements.txt` is required.
+CPU-only JAX is sufficient; no GPU is used. The reported values were verified
+with float64 enabled.
+
+Verified reference host:
+
+- Python 3.12.3, Linux x86_64 (glibc 2.39)
+- JAX on CPU (`JAX_PLATFORM_NAME=cpu`), float64 enabled
+- LaTeX build: `pdflatex` plus `bibtex` or `bibtexu`
+- `revtex4-2.cls` available, for example through `texlive-publishers`
+
+`requirements.txt` pins the direct dependencies. If a full transitive snapshot
+is needed, record `pip freeze` after installing the pinned requirements. The
+direct-pin set is the environment contract used for the reported results.
+
+### 2.1 Clean-room audit platform
+
+The Phase 1–5 shell runners target **Linux or WSL2** with GNU/POSIX command-line
+utilities. They use tools and syntax such as `bash`, `sha256sum`, GNU `find`,
+`lscpu`, process substitution, and POSIX environment assignment. Native
+Windows PowerShell and Command Prompt are not supported for the submission-gate
+harness.
+
+### 2.2 Manual reproduction on native Windows
+
+The individual Python analyses use `pathlib` and can be run on Windows x86-64
+with CPython 3.12. The pinned dependencies provide `win_amd64` wheels. This
+Windows path applies to the manual scientific commands, not to the external
+Phase shell harness.
+
+Practical notes:
+
+1. **Keep line endings as LF.** A CRLF checkout changes recorded source hashes
+   and can cause `--metadata-only` or `sha256sum -c SHA256SUMS.txt` to report
+   spurious mismatches. The included `.gitattributes` enforces LF; do not
+   override it with `core.autocrlf=true`. Extracting the release tar preserves
+   the shipped LF files.
+
+2. **Set environment variables using the host shell syntax.** For PowerShell:
+
+   ```powershell
+   $env:PYTHONPATH="."
+   $env:JAX_PLATFORM_NAME="cpu"
+   $env:JAX_ENABLE_X64="1"
+   $env:MPLBACKEND="Agg"
+   python reproduce/phase5_atlas_merge_validate.py --mode validate --ez-convention total-local --profile-norm prefactor
+   $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"
+   python -m pytest tests/test_convention_options.py -q -m "not slow"
+   ```
+
+3. **Repository shell helpers still require Bash.** `docs/collect_figures.sh`
+   and `make_overleaf.sh`, including tests that invoke them, require `bash` on
+   `PATH`. Git Bash or WSL2 provides it. For the manuscript, install a TeX
+   distribution containing `revtex4-2.cls`, or use Overleaf as described in
+   `docs/BUILD.md`.
+
+Fixed seeds make the numerical workflow deterministic, but bit-identical output
+across operating systems, BLAS builds, or library implementations is not
+assumed. Use the documented numerical tolerances. WSL2 most closely matches the
+Linux reference environment.
+
+## 3. External clean-room audit workspace
+
+The local audit workspace keeps the immutable release, mutable Git checkout,
+virtual environment, runners, and evidence outside one another:
+
+```text
+Spin-valley_model/
+├── .venv/
+├── dist/
+│   └── spinshuttle-shuttling-atlas-release-r31.tar.gz
+├── repo/                       # Git working tree and released-code root
+├── r31-repro/                  # recreated from the immutable tar per phase
+├── repro-runs/                 # temporary expanded evidence
+├── run_phase1.sh
+├── run_phase2.sh
+├── run_phase3.sh
+├── run_phase4.sh
+├── run_phase5.sh               # added for the final submission audit
+├── PHASE1_PROTOCOL.md
+├── PHASE2_PROTOCOL.md
+├── PHASE3_PROTOCOL.md
+├── PHASE4_PROTOCOL.md
+├── PHASE5_PROTOCOL.md
+└── phase*-r31-results-<RUN_ID>.tar.gz
+```
+
+The audit is organized as follows:
+
+1. **Phase 1 — release and execution foundation:** archive safety, manifest,
+   pinned environment, tests, provenance, float64, and source integrity.
+2. **Phase 2 — V1–V9 benchmarks:** literature and physics benchmarks,
+   geometry, autodiff, periodicity, Fourier content, and field scales.
+3. **Phase 3 — coupled-model validation:** M1/M1V/M2 wiring, separable limit,
+   coupling ablation, CRN response engine, and hot-spot control.
+4. **Phase 4 — paper-result reproduction:** Table II, legacy and adopted
+   atlases, robust retest, robustness, absolute performance, and geometry
+   sensitivity.
+5. **Phase 5 — submission audit:** figures, tables, claim-to-evidence mapping,
+   citations, manuscript consistency, and final PDF builds.
+
+Each phase accepts the immutable release tar and, after Phase 1, the accepted
+result archive from the preceding phase. Documentation and examples use
+`<RUN_ID>` rather than a specific timestamped filename.
+
+Local result archives retain timestamps:
+
+```text
+phase3-r31-results-YYYYMMDD_HHMMSS.tar.gz
+```
+
+This prevents accidental overwrite and preserves run-level provenance. These
+local archives and temporary work trees should not be committed to ordinary Git
+history. A sanitized, stable-name evidence bundle may be published separately
+after the complete audit.
+
+### Phase-3 maintenance note
+
+The static wiring audit is derived from the released r31 source representation.
+For a later scientific release, its source literals and expected structures
+must be re-derived. A variable rename, comment change, or source reorganization
+may require updating the audit even when the physical model is unchanged; the
+checks must not be silently weakened or removed.
+
+## 4. Manual test suite and supplementary validations
+
+Run the commands in this and subsequent sections from the released repository
+root (`repo/` in the external workspace):
 
 ```bash
 export PYTHONPATH=.
@@ -13,247 +185,288 @@ export JAX_PLATFORM_NAME=cpu
 export MPLBACKEND=Agg
 ```
 
-## 1. Environment
-
-Python 3.12 with the pinned packages in `requirements.txt` (CPU-only JAX
-is sufficient; no GPU is used). All results below were verified on CPU
-with float64 enabled.
-
-Verified host:
-
-- python 3.12.3, Linux x86_64 (glibc 2.39)
-- JAX on CPU (`JAX_PLATFORM_NAME=cpu`), float64 via
-  `jax.config.update("jax_enable_x64", True)`
-- LaTeX build: `pdflatex` + (`bibtex` or `bibtexu`); the `revtex4-2`
-  class is required (e.g. `texlive-publishers`)
-
-`requirements.txt` pins the direct dependencies. If you need a
-byte-exact transitive environment, regenerate a full freeze on your host
-with `pip freeze` after installing `requirements.txt`; the direct-pin set
-above is what the reported numbers were produced with.
-
-### Running on Windows
-
-The pipeline is pure Python and uses `pathlib` throughout, so it runs on
-Windows (x86-64). All pinned dependencies ship `win_amd64` wheels for
-CPython 3.12, so `pip install -r requirements.txt` works as-is. Three
-practical notes:
-
-1. **Line endings must stay LF.** The scripts hash their own source, so a
-   CRLF checkout changes the recorded script SHA and makes both
-   `--metadata-only` and `sha256sum -c SHA256SUMS.txt` report spurious
-   mismatches. The included `.gitattributes` enforces LF; do not override
-   it with `core.autocrlf=true`. (If you extract the release tarball
-   rather than cloning, the files are already LF.)
-
-2. **Environment variables.** The `VAR=value cmd` form in this document is
-   POSIX shell syntax. In PowerShell use, e.g.:
-
-   ```powershell
-   $env:PYTHONPATH="."; $env:JAX_PLATFORM_NAME="cpu"; $env:MPLBACKEND="Agg"
-   python reproduce/phase5_atlas_merge_validate.py --mode validate --ez-convention total-local --profile-norm prefactor
-   $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"
-   python -m pytest tests/test_convention_options.py -q -m "not slow"
-   ```
-
-3. **The two `.sh` helpers need a POSIX shell.** `docs/collect_figures.sh`
-   and `make_overleaf.sh` (and the test that invokes the former) require
-   `bash` on `PATH` — Git for Windows ("Git Bash") or WSL both provide it.
-   Everything else runs from PowerShell. For the manuscript, either
-   install a TeX distribution with the `revtex4-2` class (MiKTeX/TeX Live)
-   or use Overleaf via `docs/BUILD.md`.
-
-Numbers are deterministic given the fixed seeds, but bit-identical
-agreement across operating systems and BLAS builds is not guaranteed; the
-tolerances in section 6 apply. WSL2 reproduces the Linux reference values
-most closely.
-
-## 2. Test suite and validations
-
 ```bash
-# Fast gate (stable across environments; run the convention and geometry
-# suites separately -- a single combined pytest invocation can hang on
-# some sandboxes during JAX/subprocess teardown):
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_convention_options.py -q -m "not slow"   # 14 passed, 1 deselected
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_geometry_autodiff.py tests/test_fourier_projection_geometry_autodiff.py tests/test_step1_sanity.py -q   # 3 passed
-# Slow end-to-end (subprocess; run on its own):
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_convention_options.py::test_save_raw_e2e_tagged -q -s   # 1 passed
-# (Use the split commands above as the release gate; a single combined
-#  `pytest tests/ -q` is not used as a release criterion.)
-python field_landscape.py             # analytic vs jax.grad rel. err ~ 4e-9
-python tests/test_step1_sanity.py     # bounded phase; quasi-static T2* within 1%
-python geometry/prism_field.py        # far-field dipole error ~ 0.06%
-python geometry/periodic_array.py     # periodicity deviation ~ 0.04%
-python geometry/fourier_field.py
-python reproduce/krzywda_B1_stationary.py   # T2* ratio ~ 2.20
-python reproduce/krzywda_B2_motional.py     # motional narrowing up to ~64x
-python reproduce/krzywda_B3_filter.py       # F ~ 2e5, chi ~ 5.8e3 suppression
-python reproduce/oda_C1_lz_single.py        # max LZ error < 0.28%
-python reproduce/oda_C2v2_scan.py           # OFFICIAL V4 deep-pocket check:
-                                            # P_e<1e-5 at low v; LZ order-of-magnitude
-                                            # agreement for v>=30 m/s
-# (oda_C2_pocket.py tests a legacy 10x-improvement heuristic and is
-#  EXPECTED to print "C2 PASS: False"; it is not a validation gate.)
+# Fast convention gate.
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_convention_options.py -q -m "not slow"
+
+# Geometry, Fourier-projection, and foundation checks.
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest \
+  tests/test_geometry_autodiff.py \
+  tests/test_fourier_projection_geometry_autodiff.py \
+  tests/test_step1_sanity.py -q
+
+# Slow end-to-end test, run separately.
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest \
+  tests/test_convention_options.py::test_save_raw_e2e_tagged -q -s
+
+# Do not replace the split release gates above with one combined
+# `pytest tests/ -q` invocation.
+python field_landscape.py
+python tests/test_step1_sanity.py
+python geometry/prism_field.py
+python geometry/periodic_array.py
+python geometry/fourier_field.py --full
+python reproduce/krzywda_B1_stationary.py
+python reproduce/krzywda_B2_motional.py
+python reproduce/krzywda_B3_filter.py
+python reproduce/oda_C1_lz_single.py
+python reproduce/oda_C2v2_scan.py
 ```
 
-## 3. Main atlas (432 model-conditions)
+Expected reference behavior includes:
 
-A. Archived-legacy reproduction (no recomputation; the archived raws
-predate config recording, hence `--allow-legacy`):
+- analytic versus `jax.grad` field agreement at approximately `4e-9` relative
+  error;
+- prism far-field dipole error of approximately `0.06%`;
+- periodicity deviation of approximately `0.04%`;
+- stationary-gradient-halving ratio of approximately `2.20`;
+- motional-narrowing improvement up to approximately `64x`;
+- filter and PSD-weighted suppression of approximately `2e5` and `5.8e3`;
+- Landau–Zener maximum error below approximately `0.28%`;
+- official deep-pocket validation with `P_e < 1e-5` at low velocity and
+  order-of-magnitude agreement for `v >= 30 m/s`.
+
+`reproduce/oda_C2_pocket.py` tests a retained legacy 10x-improvement heuristic
+and is expected to print `C2 PASS: False`; it is not a validation gate. The
+official V4 pocket gate is `reproduce/oda_C2v2_scan.py`.
+
+## 5. Main atlas: 432 model-conditions
+
+### 5.1 Archived legacy reproduction
+
+The archived raw files predate config recording, so merge them without
+recomputation using `--allow-legacy`:
 
 ```bash
 python reproduce/phase5_atlas_merge_validate.py --mode validate --allow-legacy
 ```
 
-B. Fresh legacy recomputation (provenance; freshly generated raws carry
-a config block and merge WITHOUT `--allow-legacy`):
+### 5.2 Fresh legacy recomputation
+
+Fresh raw files contain a config block and merge without `--allow-legacy`:
 
 ```bash
-python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_i_center  --save-raw --no-plots
-python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_ii_edge   --save-raw --no-plots
+python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_i_center --save-raw --no-plots
+python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_ii_edge  --save-raw --no-plots
 python reproduce/phase5_atlas_merge_validate.py --mode validate
 ```
 
-Legacy reference values (both A and B; preserved for provenance):
+Legacy reference values, preserved for provenance:
 
-- mean Spearman rank correlation = 0.6768746367906103 (legacy)
-- mean quadrant agreement = 0.28858024691358025 (legacy)
+- mean Spearman rank correlation = `0.6768746367906103`
+- mean quadrant agreement = `0.28858024691358025`
 
-C. Adopted result — paper headline (total-field convention; tagged
-dataset, archive untouched):
+Archived legacy raw files are not required to be byte-identical to fresh raw
+files because the archived data predate config recording. Keys, numerical
+values within tolerance, and the documented expected legacy-provenance state
+are the relevant checks.
+
+### 5.3 Adopted paper result
+
+The adopted result uses the total-local Zeeman convention and prefactor profile
+normalization. Tagged outputs leave the archived legacy dataset untouched.
 
 ```bash
-python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_i_center  --save-raw --no-plots --ez-convention total-local --profile-norm prefactor
-python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_ii_edge   --save-raw --no-plots --ez-convention total-local --profile-norm prefactor
+python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_i_center --save-raw --no-plots --ez-convention total-local --profile-norm prefactor
+python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_ii_edge  --save-raw --no-plots --ez-convention total-local --profile-norm prefactor
 python reproduce/phase5_atlas_merge_validate.py --mode validate --ez-convention total-local --profile-norm prefactor
 ```
 
-Expected merged reference values (these are the paper's numbers):
+Expected merged values:
 
-- n_conditions = 432, n_real = 5
-- mean Spearman rank correlation = 0.8373806370891169 (paper: 0.84)
-- mean quadrant agreement = 0.3595679012345679 (paper: 36%)
-- pairwise (rho / agreement): A-Ap 0.785/36.1%, A-Bz 0.913/45.4%,
-  A-Bx 0.789/29.6%, Ap-Bz 0.881/31.5%, Ap-Bx 0.855/44.4%, Bz-Bx 0.801/28.7%
-- quadrant category counts: below_threshold 129, P_only_improve 106,
-  P_only_worsen 82, spin_trade 40, both_worsen 30, robust 30,
-  valley_trade 15
+- `n_conditions = 432`, `n_real = 5`
+- mean Spearman rank correlation = `0.8373806370891169` (paper: `0.84`)
+- mean quadrant agreement = `0.3595679012345679` (paper: `36%`)
+- pairwise rho/agreement:
+  - A–A_pocket: `0.785 / 36.1%`
+  - A–B_z: `0.913 / 45.4%`
+  - A–B_x: `0.789 / 29.6%`
+  - A_pocket–B_z: `0.881 / 31.5%`
+  - A_pocket–B_x: `0.855 / 44.4%`
+  - B_z–B_x: `0.801 / 28.7%`
+- quadrant category counts:
+  - `below_threshold = 129`
+  - `P_only_improve = 106`
+  - `P_only_worsen = 82`
+  - `spin_trade = 40`
+  - `both_worsen = 30`
+  - `robust = 30`
+  - `valley_trade = 15`
 
-The shift from B to C (ρ 0.68→0.84, agreement 29%→36%, and the
-disappearance of the legacy B_x ranking divergence) is itself a reported
-result: the Zeeman-energy convention moves design-level conclusions.
+The shift from legacy to adopted convention — rho `0.68 -> 0.84`, agreement
+`29% -> 36%`, and disappearance of the legacy B_x ranking divergence — is a
+reported result: the Zeeman-energy convention changes design-level conclusions.
 
-## 4. Post-processing
+## 6. Post-processing and robust retest
 
 ```bash
+python reproduce/phase5_robust_candidate_retest.py
 python reproduce/phase5_supp_robustness.py --dataset-suffix __ez-total-local__norm-prefactor
 python reproduce/phase5_absolute_performance.py --ez-convention total-local --profile-norm prefactor
 python reproduce/phase5_paper_figures.py --ez-convention total-local --profile-norm prefactor
 python reproduce/phase5_atlas_figure.py --mode validate --dataset-suffix __ez-total-local__norm-prefactor
 ```
 
-Robustness reference values (adopted total-local): weighting sweep
-0.837 / 0.769 / 0.751 / 0.845; threshold sweep 49.4% / 36.3% / 36.0% /
-58.0%; Cohen kappa A-Bx 0.145, Bz-Bx 0.135. Absolute full-model means as
-tabulated in the supplement.
+Adopted total-local robustness references:
 
-## 5. Staged falsification chain (Table II)
+- weighting sweep: `0.837 / 0.769 / 0.751 / 0.845`
+- threshold sweep: `49.4% / 36.3% / 36.0% / 58.0%`
+- Cohen kappa: A–B_x `0.145`, B_z–B_x `0.135`
+- absolute full-model means: as tabulated in the supplement
 
-The stages of Table II are generated as follows (stage 1 uses the
-archived phase-4 coarse outputs, regenerable with
-`reproduce/phase4p6_crossterm.py`):
+The robust-candidate retest uses `n_real = 30`; two candidates survive as
+4/4-robust under the adopted total-local convention.
+
+## 7. Staged falsification chain: Table II
+
+The stages of Table II are generated as follows. Stage 1 uses the archived
+phase-4 coarse outputs and is regenerable with
+`reproduce/phase4p6_crossterm.py`.
 
 ```bash
-python reproduce/phase5_objective_analysis.py           # stage 2: objective-weight sweep
-python reproduce/phase5_narrow_scope.py --mode preview  # stage 3: local refinement
-python reproduce/phase5_narrow_scope.py --mode full     # stage 4: full local grid
-python reproduce/phase5_narrow_scope.py --mode targeted # stage 5: n_real=30 re-test
+python reproduce/phase5_objective_analysis.py
+python reproduce/phase5_narrow_scope.py --mode preview
+python reproduce/phase5_narrow_scope.py --mode full
+python reproduce/phase5_narrow_scope.py --mode targeted
 ```
 
-Stage 6 (the four-ansatz family re-test) is the early four-model run of
-`reproduce/phase5_sensitivity_atlas.py`, whose full-statistics successor
-is the released 432-condition atlas of Section 3. Provenance note: the
-archived narrow-scope metadata records the script SHA of an earlier
-revision (529c03aa...) of `phase5_narrow_scope.py`; the included script
-is the final revision (895add02...) of the same analysis.
+These correspond to the objective-weight sweep, local preview, full local grid,
+and `n_real = 30` targeted retest. Stage 6 is the early four-model run of
+`reproduce/phase5_sensitivity_atlas.py`; its full-statistics successor is the
+released 432-condition atlas in Section 5.
 
-## 5b. Float-precision check (V0.3)
+The archived narrow-scope metadata records the SHA of an earlier revision
+(`529c03aa...`) of `phase5_narrow_scope.py`; the included script is the final
+revision (`895add02...`) of the same analysis. Exact historical revisions are
+not included for every stage. Table II is therefore approved as archived
+provenance when its table entries, retained outputs, and executable final-stage
+scripts agree; it is not claimed as byte-exact full forensic regeneration of
+every historical development step.
+
+## 8. Additional numerical and physical controls
+
+### 8.1 Float-precision check (V0.3)
 
 ```bash
 python reproduce/v0p3_float_precision_check.py
-# expected: float64 relative error ~1e-9; float32 relative error O(1)
 ```
 
-## 5c. Gradient-kernel hot-spot check
+The float64 branch must print its PASS marker and remain close to the reference
+calculation; float32 is intentionally inadequate for this check.
 
-Supports the Model-section passage on the physical admissibility of the
-gradient-only kernels: the E_v ~ E_Z crossing enhancement is produced by
-the four-level dynamics without any resonance window in lambda_sv(x).
-The control is shape-preserving (the Gaussian pocket is kept, with its
-minimum raised above the total-field E_Z range so only the crossing is
-removed) and the deterministic charge-noise-off M1V branch is reported.
+### 8.2 Gradient-kernel hot-spot check
+
+This supports the Model-section statement that the E_v approximately equal to
+E_Z crossing enhancement is generated by the four-level dynamics without an
+artificial resonance window in `lambda_sv(x)`. The control preserves the
+Gaussian-pocket shape while raising its minimum above the total-field E_Z
+range, and reports the deterministic charge-noise-off M1V branch.
 
 ```bash
 PYTHONPATH=. python reproduce/phase5_gradient_kernel_hotspot_check.py
-# expected: lambda=0 leakage < 1e-3 in both landscapes;
-#           ansatz A leakage ~4.5e-1 with the crossing (Ev_min=5 ueV)
-#           vs ~1.8e-3 with the non-crossing pocket (Ev_min=70 ueV);
-#           ratio ~252; prints PASS  (~40 s on CPU)
 ```
 
-## 6. Comparison tolerances
+Expected behavior:
 
-Raw continuous values: `np.allclose(rtol=1e-7, atol=1e-10)`. Summary
-metrics: absolute difference < 5e-4; all three-significant-figure values
-quoted in the paper must match exactly. Category counts and row keys must
-match exactly; PDF/PNG byte hashes are not expected to match.
+- lambda-zero leakage below `1e-3` in both landscapes;
+- ansatz A leakage approximately `4.5e-1` with the crossing
+  (`Ev_min = 5 ueV`);
+- leakage approximately `1.8e-3` with the non-crossing pocket
+  (`Ev_min = 70 ueV`);
+- ratio approximately `252` and a final PASS marker.
 
-## 7. Zeeman-convention decision and provenance (RESOLVED)
+## 9. Comparison tolerances
+
+For the manual scientific comparisons:
+
+- raw continuous values: `np.allclose(rtol=1e-7, atol=1e-10)`;
+- summary metrics: absolute difference below `5e-4`;
+- values quoted to three significant figures in the paper: exact agreement at
+  that displayed precision;
+- category counts and row keys: exact match;
+- PDF and PNG byte hashes: not expected to match.
+
+The clean-room Phase runners may define stricter or more specialized hard and
+reference tolerances for individual gates. The corresponding Phase protocol is
+the authority for those gate-specific thresholds; this section does not
+replace them.
+
+## 10. Zeeman-convention decision and provenance
 
 An external-field inconsistency identified during development has been
-resolved. The original legacy run used
-a stray-field-only Zeeman energy (`Defaults.B_ext_T = 0.5` defined but
-not entering the atlas Zeeman energy, giving mean E_Z ~ 3 ueV). This was
-retained for archive reproducibility but is **not** the adopted paper
-convention. The adopted paper result uses the **total-local** convention,
-E_Z(x) = g mu_B [B_ext + B_z(x)], with the full 432-condition atlas
-recomputed under it, the paper numbers, figures, and collected artifacts
-regenerated, and the legacy archive preserved via tagged filenames. The
-difference between the two conventions is itself reported as a result.
+resolved. The archived legacy run used a stray-field-only Zeeman energy:
+`Defaults.B_ext_T = 0.5` was defined but did not enter the atlas Zeeman energy,
+giving mean E_Z of approximately `3 ueV`. This state is retained for archive
+reproducibility but is not the adopted paper convention.
 
-The profile-normalization axis remains available but is **optional** and
-is not required before freezing the paper numbers: the adopted result
-uses `--profile-norm prefactor`, and the alternative `final-peak` / `l2`
-normalizations are provided for sensitivity checks only (the `l2`
-variant is documented as divergent and is retained only as a reference
-point). No `final-peak` full-atlas run is required for the paper.
+The adopted result uses the total-local convention,
 
-The pipeline exposes the options end to end (defaults reproduce the
-archived legacy behaviour):
+```text
+E_Z(x) = g mu_B [B_ext + B_z(x)]
+```
+
+with the full 432-condition atlas recomputed, the paper values and figures
+regenerated, and the legacy archive preserved through tagged filenames. The
+difference between the two conventions is itself a reported result.
+
+The adopted profile normalization is `prefactor`. The `final-peak` and `l2`
+variants remain optional sensitivity checks; the `l2` variant is documented as
+divergent and is retained only as a reference point. No `final-peak` full-atlas
+run is required for the paper.
+
+The pipeline exposes the decisions end to end:
 
 - `phase5_sensitivity_atlas.py --ez-convention {stray-mean,total-local,total-mean}
-  --profile-norm {prefactor,final-peak,l2}`; non-legacy runs write to
-  suffixed filenames (`...__ez-<conv>__norm-<norm>...`) and embed a
-  `config` block (conventions, B_ext, sigma_E, seeds, both script SHAs,
-  archive version) in the raw pickles.
-- `phase5_atlas_merge_validate.py` takes the same flags, refuses to merge
-  raws whose configs disagree, requires `--allow-legacy` for archived
-  raws that predate config recording, and stamps the metadata with the
-  RAW-recorded atlas SHA (never the current script's) plus the full raw
-  config.
-- `phase5_paper_figures.py --ez-convention {legacy-50ueV,stray-mean,total-mean,total-local}
-  --profile-norm ...` uses the same kernel as the simulator, including
-  local E_Z(x); non-legacy outputs are suffixed.
-- `phase5_atlas_figure.py / phase5_supp_robustness.py /
-  phase5_absolute_performance.py` accept `--dataset-suffix` to read the
-  suffixed datasets.
-- `phase5_robust_candidate_retest.py` re-tests the cross-ansatz robust
-  candidates flagged by the adopted atlas at `n_real=30` (total-local);
-  two survive as 4/4-robust (edge pocket, v=10, deeper well).
-- `tests/test_convention_options.py` covers global normalization,
-  dataset-tag uniqueness, merge config validation, the Hamiltonian-level
-  effect of the convention, and the flank-peak symmetry of the centred
-  pocket.
+  --profile-norm {prefactor,final-peak,l2}` writes non-legacy results to tagged
+  filenames and embeds a config block containing conventions, external field,
+  noise scale, seeds, relevant script SHAs, and archive version.
+- `phase5_atlas_merge_validate.py` accepts the same flags, refuses mismatched
+  raw configs, requires `--allow-legacy` for archived raws that predate config
+  recording, and stamps metadata with the raw-recorded atlas SHA rather than
+  the current script SHA.
+- `phase5_paper_figures.py --ez-convention
+  {legacy-50ueV,stray-mean,total-mean,total-local} --profile-norm ...` uses the
+  simulator kernel, including local E_Z(x), and tags non-legacy outputs.
+- `phase5_atlas_figure.py`, `phase5_supp_robustness.py`, and
+  `phase5_absolute_performance.py` accept `--dataset-suffix` to select the
+  tagged data.
+- `phase5_robust_candidate_retest.py` retests the adopted cross-ansatz robust
+  candidates at `n_real = 30`.
+- `tests/test_convention_options.py` covers normalization, dataset-tag
+  uniqueness, merge-config validation, Hamiltonian-level convention effects,
+  and centered-pocket flank symmetry.
 
-The pinned direct dependencies are in `requirements.txt`; host and
-runtime details are in section 1 above.
+## 11. Git and evidence publication policy
+
+The mutable Git repository and immutable r31 audit tar have different roles.
+A documentation-only Git update does not create a new r32 scientific release
+and must not replace the r31 tar or its recorded SHA in the audit chain.
+
+Commit to Git:
+
+- source code and tests;
+- `REPRODUCIBILITY.md` and build documentation;
+- finalized Phase runners and protocols after the audit is complete;
+- stable expected criteria and a final reproduction summary.
+
+Do not commit ordinary local runtime state:
+
+```gitignore
+/.venv/
+/r*-repro/
+/repro-runs/
+/phase*-r*-results-*.tar.gz
+/phase*-r*-results-*.tar.gz.sha256
+```
+
+Keep timestamped phase archives locally as full audit evidence. After Phase 5,
+a sanitized final evidence package may be published separately, for example as
+a GitHub Release or Zenodo deposit, using a stable name such as:
+
+```text
+spinshuttle-r31-reproduction-evidence.tar.gz
+```
+
+The stable public bundle should record the accepted phase run IDs and hashes in
+its internal manifest without hardcoding a particular timestamped result name
+into the reusable runners or canonical protocols.
