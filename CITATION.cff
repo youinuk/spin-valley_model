@@ -6,6 +6,16 @@ authors:
     given-names: "Inuk"
     email: "youinuk@gmail.com"
 license: MIT
+version: "r32"
+doi: 10.5281/zenodo.21588784
+repository-code: "https://github.com/youinuk/spin-valley_model"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21588784
+    description: "Archived snapshot of release r32"
+  - type: doi
+    value: 10.5281/zenodo.21588003
+    description: "Concept DOI resolving to the latest archived release"
 preferred-citation:
   type: article
   title: "Spin-valley model uncertainty in micromagnet-assisted shuttling: a periodic-reference sensitivity atlas"

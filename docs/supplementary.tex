@@ -1,5 +1,5 @@
 % Supplementary Material
-% Numerical-consistency and literature-reproduction validations
+% Numerical-consistency, literature, and physical benchmark validations
 % underpinning the simulator used in the main text.
 % Target journal: Physical Review Applied (REVTeX 4-2).
 %
@@ -26,7 +26,7 @@
 \begin{document}
 
 \title{Supplementary Material: Numerical-consistency and
-literature-reproduction validations}
+literature and physical benchmark validations}
 
 \author{Inuk You}
 \affiliation{Department of Science, Kyungdong High School, Seoul, Republic of Korea}
@@ -41,7 +41,8 @@ analytic limits to machine precision, and (ii) the representative
 parameter values quoted in the main text are consistent with
 independent literature results. We group the checks into
 \emph{numerical-consistency} validations (Sec.~\ref{sec:numerics}) and
-\emph{literature-reproduction} validations (Sec.~\ref{sec:literature}).
+\emph{literature and physical benchmark} validations
+(Sec.~\ref{sec:literature}).
 Every check is reproducible from the released code with a fixed seed;
 the relevant script is named in each case. Throughout, ``relative
 error'' means $|x_{\rm num}-x_{\rm ref}|/|x_{\rm ref}|$.
@@ -99,7 +100,7 @@ guarantees the accuracy of the geometry-derivative checks below.
 
 \subsection{Position and geometry autodifferentiation (V6)}
 Automatic differentiation of $B_z,B_x$ with respect to both position
-\emph{and} device-geometry parameters (magnet half-widths
+\emph{and} device-geometry parameters (magnet half-extents
 $\mathrm{half}_x,\mathrm{half}_z$, spatial period, 2DEG depth) agrees
 with finite differences to a relative error
 $\le 4\times10^{-6}$: position derivatives reach
@@ -123,7 +124,8 @@ $B_z^{(3)}/B_z^{(1)}=8.8\%$ and $B_x^{(3)}/B_x^{(1)}=10.0\%$; for the
 small-magnet baseline ($50^3$\,nm, $a=150$\,nm, $33\%$ duty) even
 harmonics also appear, with $B_z^{(2)}/B_z^{(1)}=9.2\%$. We therefore
 retain three harmonics ($N_{\rm harm}=3$) in the field descriptor so
-that both regimes are represented.
+that both regimes are represented. Table~\ref{tab:numerics} summarizes
+the numerical-consistency checks of this section.
 
 \begin{table}[t]
 \centering
@@ -146,7 +148,7 @@ V8   & harmonic content             & FFT spectrum               & $N_{\rm harm}
 \end{tabular}
 \end{table}
 
-\section{Literature-reproduction validations}
+\section{Literature and physical benchmark validations}
 \label{sec:literature}
 
 These checks reproduce independently published results in the regime
@@ -158,12 +160,16 @@ as ratios.
 \subsection{Gradient-halving dephasing ratio (V1)}
 Halving a monotonic magnetic gradient roughly doubles the static-dot
 $T_2^\ast$, consistent with the ratio reported by Krzywda
-\emph{et~al.}~\cite{struck_low-frequency_2020}: at $g_{\rm grad}=0.1\to0.05$\,mT/nm
-we find $T_2^\ast=302\to664$\,ns, a ratio of $2.20$, inside the
-literature window $[1.55,2.32]$. \emph{Caveat:} the absolute values are
+\emph{et~al.}~\cite{krzywda_coherence_2026}, who observe
+$T_2^\ast=4.4\to8.5\,\mu$s on reducing the longitudinal gradient, a ratio
+of $1.93$. At $g_{\rm grad}=0.1\to0.05$\,mT/nm we find
+$T_2^\ast=302\to664$\,ns, a ratio of $2.20$. Our acceptance interval is
+$\pm20\%$ of the reported ratio, that is $[1.55,2.32]$; the interval is
+our own tolerance, not a range reported in the reference. \emph{Caveat:} the absolute values are
 about $10\times$ shorter than the reference because our noise amplitude
 $\sigma_{\delta x}=0.3$\,nm is a representative, not device-calibrated,
-value; only the ratio is claimed.
+value; only the ratio is claimed. Figure~\ref{fig:v1} shows the two
+decay curves.
 
 \begin{figure}[t]
 \centering
@@ -171,7 +177,8 @@ value; only the ratio is claimed.
 \caption{Validation V1. Static-dot coherence decay $|C(T)|$ under
 $1/f$ charge noise for a high and a halved magnetic gradient. Halving
 the gradient increases $T_2^\ast$ from $302$ to $664$\,ns (ratio
-$2.20$), inside the literature window. Only the ratio is claimed; the
+$2.20$), within our $\pm20\%$ acceptance interval around the reported
+ratio. Only the ratio is claimed; the
 absolute values depend on the representative noise amplitude.}
 \label{fig:v1}
 \end{figure}
@@ -180,6 +187,9 @@ absolute values depend on the representative noise amplitude.}
 For a periodic landscape with $1/f$ charge noise, the effective
 $T_2^\ast$ improves as the shuttling velocity increases, from
 $50$\,ns at $v=0$ to $3215$\,ns at $v=20$\,m/s (up to $64\times$),
+reproducing the direction of the motional-narrowing improvement reported
+in Ref.~\cite{krzywda_coherence_2026}; the $64\times$ magnitude is
+specific to the present model and parameter set. This occurs
 once the drive frequency $f_{\rm drive}=v/a$ moves above the dominant
 noise band. The stationary baseline here is an effective static-gradient
 model with the mean absolute periodic gradient
@@ -199,7 +209,8 @@ suppressed by about $5.8\times10^3$ ($T=1\,\mu$s, $v=10$\,m/s).
 differ; a $10^5$-fold suppression of $F$ corresponds to only a
 $10^3$-fold suppression of $\chi$, because dynamical decoupling lowers
 the low-frequency response but introduces a sensitivity peak near
-$f_{\rm drive}$ that overlaps the $1/f$ tail.
+$f_{\rm drive}$ that overlaps the $1/f$ tail. Figure~\ref{fig:v3} shows
+the filter function and the PSD-weighted integrand.
 
 \begin{figure*}[t]
 \centering
@@ -224,14 +235,15 @@ P_{\rm diab}=\exp\!\left(-\frac{2\pi\Delta_{v}^2}{\hbar\,|\dot \varepsilon_v|}\r
 \end{equation}
 %
 (where $\Delta_v$ is the valley avoided-crossing coupling and
-$\varepsilon_v$ the diabatic valley detuning)
+$\varepsilon_v$ the diabatic valley detuning; Fig.~\ref{fig:v4})
 to within $0.28\%$ over a sweep-rate parameter range
 $\gamma\in[0.1,10]$. In the adiabatic limit ($v\to0$) deep-pocket
 traversal gives an excitation probability $P_e<10^{-5}$, and in the
 diabatic limit ($v\ge30$\,m/s) the numerical and analytic predictions
 agree to order of magnitude. \emph{Caveat:} this validates the
 \emph{reduced} valley Landau--Zener physics of
-Oda~\emph{et~al.}, not their full optimized-protocol sequence; at
+Oda~\emph{et~al.}~\cite{oda_suppressing_2026}, not their full
+optimized-protocol sequence; at
 intermediate velocity ($1\le v\le10$\,m/s) St\"uckelberg interference
 produces the expected order-of-magnitude departure from the single-event
 formula, evidence that phase-coherent evolution between two crossings
@@ -253,7 +265,8 @@ The analytic stray field of a uniformly magnetized rectangular prism
 (Engel-Herbert \& Hesjedal) is implemented in JAX and matches the
 far-field dipole limit $B_z\to\mu_0 m/(2\pi d^3)$ to $0.06\%$:
 $8.95\,\mu$T (numerical) versus $8.96\,\mu$T (dipole) on the $z$-axis at
-$d=5\,\mu$m.
+$d=5\,\mu$m. Figure~\ref{fig:v5} shows the array field and its gradients
+at two depths.
 
 \begin{figure}[t]
 \centering
@@ -269,18 +282,24 @@ validated against finite differences to $\le4\times10^{-6}$ (V6).}
 \subsection{Field- and gradient-scale consistency (V9)}
 For a $50\times50\times30$\,nm magnet ($a=150$\,nm, depth $-50$\,nm) the
 descriptor yields $\delta B_z=26.9$\,mT, peak gradient $1.19$\,mT/nm,
-and mean gradient $0.72$\,mT/nm, consistent with the micromagnet
-parameter window $\delta B_z\sim5$--$30$\,mT and gradient
+and mean gradient $0.72$\,mT/nm. These are comparable to the micromagnet
+parameter scales $\delta B_z\sim5$--$30$\,mT and gradient
 $\sim0.1$--$1$\,mT/nm used in the main text and reported for comparable
-devices~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,langrock_blueprint_2023}.
+devices~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,langrock_blueprint_2023}:
+$\delta B_z$ and the mean gradient fall inside those scales, and the peak
+gradient sits just above the upper end. This check bears on the field and
+gradient scales the chosen geometry produces, not on the magnet
+dimensions themselves; the velocity range is motivated separately by
+conveyor-mode shuttling studies.
 \emph{Caveat:} a large magnet ($200\times200\times100$\,nm) gives
 $\delta B_z\approx197$\,mT, about $10\times$ stronger; the main-text
 baseline uses the small-magnet configuration, and the large-magnet case
 is reserved as a strong-gradient stress test.
+Table~\ref{tab:literature} summarizes the checks of this section.
 
 \begin{table}[t]
 \centering
-\caption{Summary of literature-reproduction validations. Quantities
+\caption{Summary of literature and physical benchmark validations. Quantities
 validated as ratios or trends are marked; absolute magnitudes that
 depend on representative noise amplitudes are not claimed beyond the
 stated sense.}
@@ -289,40 +308,43 @@ stated sense.}
 \toprule
 ID & quantity & reference / regime & result \\
 \midrule
-V1 & gradient-halving $T_2^\ast$ ratio & Krzywda window $[1.55,2.32]$ & $2.20$ (ratio only) \\
-V2 & motional-narrowing trend          & periodic $1/f$ noise         & up to $64\times$ (trend) \\
-V3 & filter-function suppression       & static vs shuttling          & $F:2\times10^5$, $\chi:5.8\times10^3$ \\
-V4 & valley Landau--Zener              & analytic $P_{\rm diab}$      & $<0.28\%$ \\
+V1 & gradient-halving $T_2^\ast$ ratio & Krzywda~\cite{krzywda_coherence_2026}: reported $1.93$, our $\pm20\%$ band & $2.20$ (ratio) \\
+V2 & motional-narrowing trend          & Krzywda~\cite{krzywda_coherence_2026}: direction only & up to $64\times$ \\
+V3 & filter-function suppression       & static vs shuttling, this model & $F:2\times10^5$, $\chi:5.8\times10^3$ \\
+V4 & valley Landau--Zener              & reduced Oda model~\cite{oda_suppressing_2026} & $<0.28\%$ \\
 V5 & single-prism stray field          & dipole far-field limit       & $0.06\%$ \\
-V9 & field/gradient scale              & device parameter window      & within window \\
+V9 & field/gradient scale              & device parameter scales      & comparable; peak gradient at upper end \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \section{Robustness of the response metrics}
 The main-text conclusions rest on two derived quantities: the
-magnitude ranking (Spearman $\rho$) and the quadrant agreement. Here we
-check that the central finding---quadrant-level interpretation is much
-more ansatz-dependent than magnitude ranking, especially for
-$\partial_x B_x$-based coupling---is robust to the analysis choices.
+magnitude ranking (Spearman $\rho$) and the classification agreement. Here we
+check that the analysis choices do not drive the central finding: the
+thresholded classification is much more ansatz-dependent than magnitude
+ranking, with the lowest agreement in the A--B$_x$ and B$_z$--B$_x$
+comparisons.
 
-\subsection{Ranking depends on channel weighting; quadrant does not}
+\subsection{Ranking depends on channel weighting; the classification does not}
 The magnitude $|\mathcal{R}|=\sqrt{\Delta P_v^2+\Delta\chi_\phi^2}$
 weights the two channels equally in raw units, but $|\Delta\chi_\phi|$
 is typically larger than $|\Delta P_v|$, so the raw-norm ranking is
 effectively dominated by the dephasing channel. Table~\ref{tab:weight}
 shows the mean rank correlation under several weightings: it ranges
 from $\rho\approx0.75$ ($|\Delta P_v|$-only) to $\rho\approx0.85$
-($|\Delta\chi_\phi|$-only), with the raw norm at $0.84$. The ranking is
-high but still weighting-dependent, and remains an auxiliary
-diagnostic; the quadrant, which uses only signs, has no such
-dependence.
+($|\Delta\chi_\phi|$-only), with the raw norm at $0.84$. The ranking remains
+high but varies with channel weighting. We therefore use it as a
+complementary magnitude-ordering diagnostic. The classification depends
+only on which channels clear their floors and on their signs, so it is
+unaffected by this weighting choice.
 
 \begin{table}[t]
 \centering
 \caption{Mean pairwise rank correlation under different definitions of
-the response magnitude. The ranking is high but weighting-dependent;
-the primary conclusion rests on the quadrant, not the ranking.}
+the response magnitude. The ranking is high but weighting-dependent.
+The classification provides the decision-facing sign diagnostic, while
+the ranking provides complementary magnitude-ordering information.}
 \label{tab:weight}
 \begin{tabular}{lc}
 \toprule
@@ -338,13 +360,22 @@ $P_{\rm ref}{=}10^{-4},\chi_{\rm ref}{=}10^{-3}$ & $0.769$ \\
 \end{tabular}
 \end{table}
 
-\subsection{Quadrant agreement is low across thresholds}
-The quadrant classification uses effect-size thresholds. Across a wide
-range of thresholds the mean quadrant agreement remains far from
-model-independent (Table~\ref{tab:thresh}): roughly $36$--$58\%$,
-always well below the rank correlation. The qualitative
-conclusion---trade-off interpretation is poorly conserved across
-ans\"atze---is threshold-robust.
+\subsection{Classification agreement is low across floors}
+The thresholded classification uses operational effect-size floors rather
+than statistical confidence bounds. Moving both floors a decade below and
+a decade above the main choice gives mean raw agreement between $36$ and
+$58\%$ (Table~\ref{tab:thresh}); the classification therefore remains far
+from model-independent throughout the sweep. The rise at the strictest
+floors should not be read as improved agreement among classified
+conditions: it is driven mainly by the two ans\"atze more often sharing
+the \emph{below-threshold} label, which accounts for $336$ of the $376$
+agreeing comparisons there. Restricted to comparisons in which both
+ans\"atze land in a two-channel quadrant, agreement is $44.8\%$ ($47/105$)
+at the main floors and $31.8\%$ ($7/22$) at the strictest floors. The
+qualitative conclusion, that the two-channel sign interpretation is poorly
+conserved across ans\"atze, is not tied to the particular floor choice. Candidate
+stability is assessed separately by the targeted $n_{\rm real}=30$ re-test
+in the main text. Figure~\ref{fig:supp_robust} shows both sweeps.
 
 \begin{figure}[t]
 \centering
@@ -352,20 +383,24 @@ ans\"atze---is threshold-robust.
 \caption{Robustness of the two response metrics. Left: mean rank
 correlation under different channel weightings (dashed line: raw-norm
 value $0.837$); the ranking is high but weighting-dependent. Right:
-mean quadrant agreement under different effect-size thresholds; it
-stays low throughout, well below the rank correlation.}
+mean classification agreement under different effect-size floors; it
+remains far from model-independent throughout the sweep. The archived
+right-panel title uses the earlier shorthand ``quadrant agreement''; the
+plotted quantity is exact agreement of the full nine-category thresholded
+label.}
 \label{fig:supp_robust}
 \end{figure}
 
 \begin{table}[t]
 \centering
-\caption{Mean quadrant agreement under different effect-size
-thresholds $(|\Delta P_v|_{\min}, |\Delta\chi_\phi|_{\min})$,
-with one-channel cases separated.}
+\caption{Mean classification agreement (exact agreement of the
+thresholded response label) under different effect-size floors
+$(|\Delta P_v|_{\min}, |\Delta\chi_\phi|_{\min})$, with one-channel
+cases separated.}
 \label{tab:thresh}
 \begin{tabular}{lc}
 \toprule
-threshold & mean quadrant agreement \\
+floors & mean classification agreement \\
 \midrule
 none                 & $49.4\%$ \\
 $(10^{-5},10^{-4})$  & $36.3\%$ \\
@@ -376,22 +411,25 @@ $(10^{-3},10^{-2})$  & $58.0\%$ \\
 \end{table}
 
 \subsection{Chance-corrected agreement is modest across pairs}
-Raw agreement can be inflated by skewed marginal distributions. The
-chance-corrected Cohen's $\kappa$ (Table~\ref{tab:kappa}) is modest
+Raw agreement can be inflated by skewed marginal distributions, and here
+the \emph{below-threshold} category is the largest. Cohen's $\kappa$ is
+computed on the same nine-category label set and corrects for exactly
+that. It (Table~\ref{tab:kappa}) is modest
 throughout ($\kappa\approx0.14$--$0.33$): no pair reaches strong
 agreement. The two lowest $\kappa$ values are the B$_z$ vs.\ B$_x$ and
 A vs.\ B$_x$ pairs, both pairing the $\partial_x B_x$-based model with a
 $\partial_x B_z$-based one. B$_x$ is not a uniform outlier, however: the
 third such pair, A$_{\rm pocket}$ vs.\ B$_x$, has comparatively high
-$\kappa$, because the pocket-localized A$_{\rm pocket}$ shares B$_x$'s
-concentration near the flanks. The decisive axis is thus the gradient
+$\kappa$; this is consistent with the pocket-localized A$_{\rm pocket}$
+sharing B$_x$'s concentration near the flanks. The decisive axis is thus the gradient
 component modulated by spatial localization, consistent with the
 main-text finding, rather than a blanket property of the $B_x$ ansatz.
 
 \begin{table}[t]
 \centering
-\caption{Pairwise quadrant agreement and chance-corrected Cohen's
-$\kappa$ at full validate (total-field convention). Agreement is modest
+\caption{Pairwise classification agreement and chance-corrected Cohen's
+$\kappa$ at full validate (total-field convention), both over the
+nine-category thresholded label. Agreement is modest
 throughout; the two lowest values are the B$_z$/B$_x$ and A/B$_x$
 pairs.}
 \label{tab:kappa}
@@ -443,10 +481,13 @@ B$_x$              & $0.107$ & $0.0169$ & $0.0042$ \\
 \section{Relation to the main text}
 The numerical-consistency checks (V0--V8) certify the field model, its
 gradients, and the time-evolution engine that produce every quantity in
-the main-text atlas. The literature-reproduction checks (V1--V9) justify
-the representative parameter values (Table~I of the main text): magnet
-geometry and velocity ranges (V9), the dephasing response to gradients
-(V1, V2, V3), and the valley dynamics (V4). None of these checks
+the main-text atlas. The literature and physical benchmark checks
+(V1--V9) support the representative parameter values (Table~I of the main
+text). V9 verifies that the controlled-reference geometry produces field
+and gradient scales comparable to those of relevant micromagnet devices,
+while the velocity sweep is motivated separately by conveyor-mode
+shuttling studies. V1--V3 test the dephasing response to gradients, and
+V4 tests the reduced valley dynamics. None of these checks
 validates the spin--valley coupling profile $\lambda_{sv}(x)$ itself,
 which is treated in the main text as a phenomenological diagnostic
 ansatz rather than a microscopically derived coupling; the sensitivity
