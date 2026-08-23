@@ -31,7 +31,12 @@ FIG = Path(__file__).resolve().parents[1] / "figures" / "phase5"
 
 REQUIRED_CONFIG_KEYS = ["ez_convention", "profile_norm", "B_ext_T", "sigma_E_ueV",
                         "mode", "n_real", "atlas_script_sha256_16",
-                        "kernel_script_sha256_16", "archive_version"]
+                        "kernel_script_sha256_16", "archive_version",
+                        # T0: merging an "r31"-mode case with a "cross-ansatz"
+                        # case would silently mix seeding schemes. Archived
+                        # raws lack the key entirely; .get() then yields None
+                        # on both sides, so legacy merges are unaffected.
+                        "seed_scheme", "base_seed"]
 
 
 def validate_raw_configs(cfgs, expect_ez, expect_norm, allow_legacy=False):

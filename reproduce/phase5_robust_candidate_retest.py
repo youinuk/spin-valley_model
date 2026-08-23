@@ -60,7 +60,7 @@ def evaluate_n(model, x_c, v, lambda_uev, geom, n_real, noise,
         v=v, case_label="atlas", pocket_x_center=x_c,
         lambda_0=lambda_uev * 1e-6 * e_C, coupling_model=model,
         n_real=n_real, noise=noise, ff=ff,
-        Ev_baseline=100e-6 * e_C, Ev_min=5e-6 * e_C, pocket_width=pocket_width,
+        eps_v_baseline=100e-6 * e_C, eps_v_min=5e-6 * e_C, pocket_width=pocket_width,
         Delta_v=0.5e-6 * e_C, N_max=500, base_seed=41, T_traj_for_noise=T,
     )
     dP = R["M2"]["P_v_dia"]["mean"] - R["M1V"]["P_v_dia"]["mean"]

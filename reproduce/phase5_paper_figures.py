@@ -6,16 +6,23 @@ Manuscript figures:
 Profiles are drawn by importing the actual lambda_sv_profile / FilterFunction,
 so they match the manuscript Model definitions. The schematic matches the Method thresholds.
 
-Usage:
-  PYTHONPATH=. python reproduce/phase5_paper_figures.py
-Output: figures/phase5/phase5_coupling_profiles.png/.pdf
-      figures/phase5/phase5_quadrant_schematic.png
+Usage (manuscript figures -- the options are REQUIRED):
+  PYTHONPATH=. python reproduce/phase5_paper_figures.py \
+      --ez-convention total-local --profile-norm prefactor
+
+The bare invocation defaults to --ez-convention legacy-50ueV, which
+reproduces the archival r31 figure, NOT the current manuscript figure.
+
+Output: figures/phase5/phase5_coupling_profiles<suffix>.png/.pdf   (Fig. 2)
+        figures/phase5/phase5_quadrant_schematic.png/.pdf          (Fig. 3)
 """
 from __future__ import annotations
 from pathlib import Path
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
+matplotlib.rcParams["pdf.fonttype"] = 42
+matplotlib.rcParams["ps.fonttype"] = 42
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
@@ -78,28 +85,33 @@ def make_coupling_profiles(ez_convention="legacy-50ueV", profile_norm="prefactor
         profiles[m] = lambda_sv_profile(
             x, ff, m, lambda_0, profile_norm=profile_norm,
             pocket_x_center=pocket_x_center, sigma_lambda=pocket_width,
-            Ev_x=Ev_x, E_Z=E_Z, sigma_E=sigma_E)
+            eps_v_x=Ev_x, E_Z=E_Z, sigma_E=sigma_E)
 
     # ---- plot ----
-    fig, axes = plt.subplots(2, 1, figsize=(6.0, 5.2), sharex=True,
+    plt.rcParams.update({"axes.labelsize": 14, "xtick.labelsize": 14,
+                         "ytick.labelsize": 14})
+    fig, axes = plt.subplots(2, 1, figsize=(5.0, 5.0), sharex=True,
                              gridspec_kw={"height_ratios": [1, 2.2]})
     xnm = x * 1e9
 
     # top: E_v(x) and resonance location
     ax0 = axes[0]
     ax0.plot(xnm, Ev_x / e_C * 1e6, color="#333333", lw=1.8,
-             label=r"$E_v(x)$")
+             label=r"$\varepsilon_v(x)$")
     _EZ_ueV = np.asarray(E_Z) / e_C * 1e6
     if _EZ_ueV.ndim == 0 or _EZ_ueV.size == 1:
         ax0.axhline(float(_EZ_ueV), color="#cc3311", ls="--", lw=1.2,
-                    label=r"$E_Z$ (resonance)")
+                    label=r"$E_Z$ (proxy resonance)")
     else:  # total-local: local E_Z(x) curve
         ax0.plot(xnm, _EZ_ueV, color="#cc3311", ls="--", lw=1.2,
-                 label=r"$E_Z(x)$ (resonance)")
-    ax0.set_ylabel(r"$E_v$ ($\mu$eV)")
-    ax0.legend(fontsize=8, loc="upper right", framealpha=0.9)
-    ax0.set_title("Valley splitting profile and spin--valley resonance",
-                  fontsize=9)
+                 label=r"$E_Z(x)$ (proxy resonance)")
+    ax0.set_ylabel(r"$\varepsilon_v$ ($\mu$eV)")
+    ax0.legend(fontsize=14, loc="upper center", ncol=2, framealpha=0.9,
+               handlelength=1.6, columnspacing=1.2, borderaxespad=0.25)
+    ax0.set_ylim(0.0, 178.0)
+    ax0.set_yticks([0, 50, 100])
+    ax0.set_title("Diabatic valley detuning and proxy spin-valley resonance",
+                  fontsize=14)
     ax0.grid(alpha=0.25)
 
     # bottom: 4 coupling profiles
@@ -107,7 +119,7 @@ def make_coupling_profiles(ez_convention="legacy-50ueV", profile_norm="prefactor
     styles = {
         "A":        ("#0077bb", "-",  r"A: $\propto|\partial_x B_z|$ (gradient-only)"),
         "A_pocket": ("#33bbee", "--", r"$\mathrm{A_{pocket}}$: A $\times$ Gauss$(x_c)$"),
-        "B_z":      ("#009988", "-.", r"$\mathrm{B_z}$: A $\times$ resonance$(E_v{=}E_Z)$"),
+        "B_z":      ("#009988", "-.", r"$\mathrm{B_z}$: A $\times$ resonance$(\varepsilon_v{\simeq}E_Z)$"),
         "B_x":      ("#ee7733", ":",  r"$\mathrm{B_x}$: $\propto|\partial_x B_x|\times$ resonance"),
     }
     for m, (c, ls, lab) in styles.items():
@@ -116,9 +128,11 @@ def make_coupling_profiles(ez_convention="legacy-50ueV", profile_norm="prefactor
                  lw=2.0, label=lab)
     ax1.set_xlabel("position along shuttling path $x$ (nm)")
     ax1.set_ylabel(r"normalized $\lambda_{sv}(x)$")
-    ax1.legend(fontsize=8, loc="upper right", framealpha=0.9)
+    ax1.legend(fontsize=14, loc="upper right", framealpha=0.9)
+    ax1.set_ylim(-0.05, 2.75)
+    ax1.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
     ax1.set_title(r"Four phenomenological coupling ansatze $\lambda_{sv}(x)$",
-                  fontsize=9)
+                  fontsize=14)
     ax1.grid(alpha=0.25)
     # mark pocket center
     for ax in axes:
@@ -141,10 +155,11 @@ def make_coupling_profiles(ez_convention="legacy-50ueV", profile_norm="prefactor
 
 def make_quadrant_schematic():
     """dP_v vs dchi 4-quadrant schematic + ranking-vs-interpretation illustration."""
+    plt.rcParams.update({"axes.labelsize": 12.5})
     fig, ax = plt.subplots(figsize=(5.2, 5.0))
 
     # thresholds (Method definitions)
-    P_th, chi_th = 1.0, 1.0   # schematic units (actual dead-zone 1e-4, 1e-3)
+    P_th, chi_th = 1.0, 1.0   # schematic units (actual floors 1e-4, 1e-3)
 
     lim = 4
     # quadrant background colors
@@ -165,12 +180,12 @@ def make_quadrant_schematic():
                                lim, lim, color=c, alpha=0.12, zorder=0))
         tx, ty = labels[name][1], labels[name][2]
         ax.text(tx, ty, labels[name][0], ha="center", va="center",
-                fontsize=8.5, color=c, fontweight="bold")
+                fontsize=12.5, color=c, fontweight="bold")
 
     # dead zone (effect-size threshold)
     ax.add_patch(Rectangle((-P_th, -chi_th), 2 * P_th, 2 * chi_th,
                            color="grey", alpha=0.18, zorder=1))
-    ax.text(0, 0, "dead\nzone", ha="center", va="center", fontsize=7,
+    ax.text(0, 0, "below\nthreshold", ha="center", va="center", fontsize=12.5,
             color="#555555")
 
     # the same condition lands in different quadrants for two models: schematic points
@@ -192,13 +207,13 @@ def make_quadrant_schematic():
     ax.set_xlabel(r"$\Delta P_v$  (valley leakage change)")
     ax.set_ylabel(r"$\Delta\chi_\phi$  (dephasing change)")
     ax.set_title("Quadrant interpretation can flip between ansatze\n"
-                 "even when the magnitude ranking is similar", fontsize=9)
+                 "even when the magnitude ranking is similar", fontsize=14)
     ax.set_xticks([]); ax.set_yticks([])
     # legend
     ax.plot([], [], "o", color="#222222", ms=7, label="ansatz 1")
     ax.plot([], [], "o", mfc="white", mec="#222222", mew=1.5, ms=7,
             label="ansatz 2 (same condition)")
-    ax.legend(fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.08),
+    ax.legend(fontsize=12.5, loc="upper center", bbox_to_anchor=(0.5, -0.08),
               ncol=2, framealpha=0.9)
 
     fig.tight_layout()
@@ -225,8 +240,8 @@ if __name__ == "__main__":
     # LaTeX rendering (consistent paper font) -- mathtext fallback on failure
     try:
         plt.rcParams.update({"text.usetex": False,
-                             "font.family": "serif",
-                             "mathtext.fontset": "dejavuserif"})
+                             "font.family": "sans-serif",
+                             "mathtext.fontset": "dejavusans"})
     except Exception:
         pass
     make_coupling_profiles(ez_convention=ez_convention, profile_norm=profile_norm)

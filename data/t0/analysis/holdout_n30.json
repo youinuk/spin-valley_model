@@ -1,0 +1,561 @@
+{
+  "meta": {
+    "files": [
+      "step3/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed300041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed300041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed400041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed400041__n30.pkl"
+    ],
+    "blocks": [
+      4,
+      5
+    ],
+    "schemes": [
+      "cross-ansatz"
+    ],
+    "n_real": [
+      30
+    ],
+    "conditions": 108,
+    "ansatz_conditions": 432
+  },
+  "U_disc": [
+    [
+      "case_i_center",
+      5.0,
+      1.0,
+      "period_nm-"
+    ],
+    [
+      "case_ii_edge",
+      10.0,
+      0.5,
+      "depth_nm+"
+    ],
+    [
+      "case_ii_edge",
+      10.0,
+      1.0,
+      "depth_nm+"
+    ],
+    [
+      "case_ii_edge",
+      20.0,
+      1.0,
+      "baseline"
+    ],
+    [
+      "case_ii_edge",
+      20.0,
+      1.0,
+      "half_z_nm+"
+    ],
+    [
+      "case_ii_edge",
+      20.0,
+      1.0,
+      "half_z_nm-"
+    ],
+    [
+      "case_ii_edge",
+      20.0,
+      1.0,
+      "period_nm+"
+    ],
+    [
+      "case_ii_edge",
+      5.0,
+      1.0,
+      "depth_nm-"
+    ],
+    [
+      "case_ii_edge",
+      5.0,
+      1.0,
+      "half_z_nm-"
+    ],
+    [
+      "case_ii_edge",
+      5.0,
+      1.0,
+      "period_nm+"
+    ]
+  ],
+  "rows": [
+    {
+      "condition": [
+        "case_i_center",
+        5.0,
+        1.0,
+        "period_nm-"
+      ],
+      "discovered_by": [
+        "A_pocket"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "both_worsen",
+            "5": "trade_Pimp_chiwor"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "trade_Pimp_chiwor",
+            "5": "trade_Pimp_chiwor"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        10.0,
+        0.5,
+        "depth_nm+"
+      ],
+      "discovered_by": [
+        "A",
+        "B_z",
+        "B_x"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        10.0,
+        1.0,
+        "depth_nm+"
+      ],
+      "discovered_by": [
+        "A",
+        "A_pocket",
+        "B_z",
+        "B_x"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        20.0,
+        1.0,
+        "baseline"
+      ],
+      "discovered_by": [
+        "B_z",
+        "B_x"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "P_only_worsen",
+            "5": "chi_only_improve"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "P_only_worsen",
+            "5": "P_only_worsen"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "below_threshold",
+            "5": "chi_only_improve"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 1,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "chi_only_improve",
+            "5": "robust"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        20.0,
+        1.0,
+        "half_z_nm+"
+      ],
+      "discovered_by": [
+        "A",
+        "B_z",
+        "B_x"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "P_only_improve",
+            "5": "P_only_improve"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        20.0,
+        1.0,
+        "half_z_nm-"
+      ],
+      "discovered_by": [
+        "B_x"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 1,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "P_only_improve",
+            "5": "robust"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "below_threshold",
+            "5": "P_only_improve"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "P_only_improve",
+            "5": "P_only_improve"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        20.0,
+        1.0,
+        "period_nm+"
+      ],
+      "discovered_by": [
+        "A",
+        "B_z",
+        "B_x"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "below_threshold",
+            "5": "P_only_improve"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 1,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "P_only_improve",
+            "5": "robust"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 1,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "P_only_improve",
+            "5": "robust"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        5.0,
+        1.0,
+        "depth_nm-"
+      ],
+      "discovered_by": [
+        "A",
+        "A_pocket",
+        "B_z",
+        "B_x"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        5.0,
+        1.0,
+        "half_z_nm-"
+      ],
+      "discovered_by": [
+        "A"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 1,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "trade_Pimp_chiwor",
+            "5": "robust"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "trade_Pimp_chiwor",
+            "5": "trade_Pimp_chiwor"
+          }
+        }
+      }
+    },
+    {
+      "condition": [
+        "case_ii_edge",
+        5.0,
+        1.0,
+        "period_nm+"
+      ],
+      "discovered_by": [
+        "A",
+        "A_pocket"
+      ],
+      "holdout": {
+        "A": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "A_pocket": {
+          "robust_blocks": 2,
+          "confirmed_2of2": true,
+          "labels": {
+            "4": "robust",
+            "5": "robust"
+          }
+        },
+        "B_z": {
+          "robust_blocks": 0,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "trade_Pimp_chiwor",
+            "5": "trade_Pimp_chiwor"
+          }
+        },
+        "B_x": {
+          "robust_blocks": 1,
+          "confirmed_2of2": false,
+          "labels": {
+            "4": "trade_Pimp_chiwor",
+            "5": "robust"
+          }
+        }
+      }
+    }
+  ],
+  "within_ansatz_replication": {
+    "confirmed": 20,
+    "total": 24
+  },
+  "cross_ansatz_transport": {
+    "0": 1,
+    "1": 2,
+    "2": 3,
+    "3": 1,
+    "4": 3
+  }
+}

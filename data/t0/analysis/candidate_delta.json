@@ -1,0 +1,239 @@
+{
+  "n_ref": 30,
+  "n_new": 100,
+  "per_ansatz": {
+    "A": {
+      "ref": 7,
+      "new": 11,
+      "retained": 7,
+      "lost": 0,
+      "gained": 4,
+      "lost_conditions": [],
+      "gained_conditions": [
+        [
+          "case_i_center",
+          5.0,
+          0.5,
+          "baseline"
+        ],
+        [
+          "case_i_center",
+          5.0,
+          0.5,
+          "period_nm-"
+        ],
+        [
+          "case_ii_edge",
+          20.0,
+          1.0,
+          "baseline"
+        ],
+        [
+          "case_ii_edge",
+          20.0,
+          1.0,
+          "depth_nm+"
+        ]
+      ]
+    },
+    "A_pocket": {
+      "ref": 4,
+      "new": 4,
+      "retained": 3,
+      "lost": 1,
+      "gained": 1,
+      "lost_conditions": [
+        [
+          "case_ii_edge",
+          5.0,
+          1.0,
+          "period_nm+"
+        ]
+      ],
+      "gained_conditions": [
+        [
+          "case_ii_edge",
+          10.0,
+          0.5,
+          "depth_nm+"
+        ]
+      ]
+    },
+    "B_z": {
+      "ref": 6,
+      "new": 7,
+      "retained": 5,
+      "lost": 1,
+      "gained": 2,
+      "lost_conditions": [
+        [
+          "case_ii_edge",
+          5.0,
+          1.0,
+          "depth_nm-"
+        ]
+      ],
+      "gained_conditions": [
+        [
+          "case_i_center",
+          5.0,
+          0.5,
+          "period_nm-"
+        ],
+        [
+          "case_ii_edge",
+          20.0,
+          1.0,
+          "depth_nm+"
+        ]
+      ]
+    },
+    "B_x": {
+      "ref": 7,
+      "new": 9,
+      "retained": 7,
+      "lost": 0,
+      "gained": 2,
+      "lost_conditions": [],
+      "gained_conditions": [
+        [
+          "case_i_center",
+          5.0,
+          1.0,
+          "period_nm-"
+        ],
+        [
+          "case_ii_edge",
+          20.0,
+          1.0,
+          "depth_nm+"
+        ]
+      ]
+    }
+  },
+  "total": {
+    "ref": 24,
+    "new": 31,
+    "retained": 22,
+    "lost": 2,
+    "gained": 9
+  },
+  "U_disc": {
+    "ref": 10,
+    "new": 13,
+    "overlap": 10,
+    "only_ref": [],
+    "only_new": [
+      [
+        "case_i_center",
+        5.0,
+        0.5,
+        "baseline"
+      ],
+      [
+        "case_i_center",
+        5.0,
+        0.5,
+        "period_nm-"
+      ],
+      [
+        "case_ii_edge",
+        20.0,
+        1.0,
+        "depth_nm+"
+      ]
+    ]
+  },
+  "unanimous_discovery": {
+    "ref": [
+      [
+        "case_ii_edge",
+        10.0,
+        1.0,
+        "depth_nm+"
+      ],
+      [
+        "case_ii_edge",
+        5.0,
+        1.0,
+        "depth_nm-"
+      ]
+    ],
+    "new": [
+      [
+        "case_ii_edge",
+        10.0,
+        0.5,
+        "depth_nm+"
+      ],
+      [
+        "case_ii_edge",
+        10.0,
+        1.0,
+        "depth_nm+"
+      ]
+    ]
+  },
+  "confirmed_4of4": {
+    "ref": [
+      [
+        "case_ii_edge",
+        10.0,
+        0.5,
+        "depth_nm+"
+      ],
+      [
+        "case_ii_edge",
+        10.0,
+        1.0,
+        "depth_nm+"
+      ],
+      [
+        "case_ii_edge",
+        5.0,
+        1.0,
+        "depth_nm-"
+      ]
+    ],
+    "new": [
+      [
+        "case_ii_edge",
+        10.0,
+        0.5,
+        "depth_nm+"
+      ],
+      [
+        "case_ii_edge",
+        10.0,
+        1.0,
+        "depth_nm+"
+      ],
+      [
+        "case_ii_edge",
+        5.0,
+        1.0,
+        "depth_nm-"
+      ]
+    ],
+    "common": [
+      [
+        "case_ii_edge",
+        10.0,
+        0.5,
+        "depth_nm+"
+      ],
+      [
+        "case_ii_edge",
+        10.0,
+        1.0,
+        "depth_nm+"
+      ],
+      [
+        "case_ii_edge",
+        5.0,
+        1.0,
+        "depth_nm-"
+      ]
+    ]
+  }
+}

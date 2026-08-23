@@ -56,7 +56,7 @@ def leakage_m1v(lambda_uev: float, ev_min_uev: float) -> float:
         v=v, case_label="hotspot_check", pocket_x_center=0.0,
         lambda_0=lambda_uev * 1e-6 * E_C, coupling_model="A", n_real=3,
         noise=noise, ff=ff,
-        Ev_baseline=100e-6 * E_C, Ev_min=ev_min_uev * 1e-6 * E_C,
+        eps_v_baseline=100e-6 * E_C, eps_v_min=ev_min_uev * 1e-6 * E_C,
         pocket_width=pocket_width, Delta_v=0.5e-6 * E_C,
         N_max=500, base_seed=1234, T_traj_for_noise=T,
         ez_convention="total-local", profile_norm="prefactor")

@@ -1,20 +1,23 @@
 % Supplementary Material
-% Numerical-consistency, literature, and physical benchmark validations
-% underpinning the simulator used in the main text.
-% Target journal: Physical Review Applied (REVTeX 4-2).
+% Simulator validations and response-metric robustness analyses
+% supporting the main text.
+% Target journal: Journal of Applied Physics (AIP; REVTeX 4-2, jap substyle).
 %
 % Build (same directory as ref.bib):
 %   pdflatex supplementary
 %   bibtex   supplementary
 %   pdflatex supplementary  (x2)
 
-\documentclass[aps,prapplied,onecolumn,superscriptaddress,longbibliography]{revtex4-2}
+%% reprint+onecolumn: `onecolumn` alone leaves REVTeX in its preprint layout
+%% (12 pt, double-spaced, separate title page). `reprint` selects the compact
+%% single-spaced journal layout and `onecolumn` overrides its column count.
+\documentclass[aip,jap,reprint,onecolumn,superscriptaddress,longbibliography]{revtex4-2}
 \pdfoutput=1
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,graphicx,bm}
 \usepackage{booktabs}
 \usepackage[colorlinks=true,allcolors=blue]{hyperref}
-\hypersetup{pdftitle={Supplementary Material: Spin-valley model uncertainty in micromagnet-assisted shuttling},
+\hypersetup{pdftitle={Supplementary Material: Model-form versus finite-sampling uncertainty in micromagnet-assisted spin-valley shuttling},
             pdfauthor={Inuk You}}
 
 % Renumber as supplementary (S1, S2, ...)
@@ -25,24 +28,29 @@
 
 \begin{document}
 
-\title{Supplementary Material: Numerical-consistency and
-literature and physical benchmark validations}
+\title{Supplementary Material: Simulator validations and
+response-metric robustness analyses}
 
 \author{Inuk You}
 \affiliation{Department of Science, Kyungdong High School, Seoul, Republic of Korea}
 
 \maketitle
 
-This supplement documents the validation suite that underpins the
-valley-aware spin-shuttling simulator used in the main text. The goal
-is not to establish new
-physics but to certify that (i) the numerical engine reproduces
-analytic limits to machine precision, and (ii) the representative
-parameter values quoted in the main text are consistent with
-independent literature results. We group the checks into
-\emph{numerical-consistency} validations (Sec.~\ref{sec:numerics}) and
-\emph{literature and physical benchmark} validations
-(Sec.~\ref{sec:literature}).
+This supplement has two parts. The first documents the validation suite
+underpinning the valley-aware spin-shuttling simulator used in the main text.
+Its goal is to certify that (i) the numerical engine reproduces analytic limits
+to machine precision, and (ii) the representative parameter values quoted in
+the main text are consistent with independent literature results. These checks
+are grouped into \emph{numerical-consistency} validations
+(Sec.~\ref{sec:numerics}) and \emph{literature and physical benchmark}
+validations (Sec.~\ref{sec:literature}).
+
+The second part (Sec.~\ref{sec:robustness}) is analysis, not validation. It
+tests the robustness of the post-hoc ranking--classification decoupling
+reported in the main text, the contribution of shared inactivity to the
+measured agreement, and the sensitivity of the primary label comparison to
+restricting attention to comparisons with at least one two-channel quadrant
+label.
 Every check is reproducible from the released code with a fixed seed;
 the relevant script is named in each case. Throughout, ``relative
 error'' means $|x_{\rm num}-x_{\rm ref}|/|x_{\rm ref}|$.
@@ -52,8 +60,7 @@ in a \emph{ratio} or \emph{trend} sense; the accompanying caveats state
 exactly what is and is not claimed. Second, these validations concern
 the spin and field sectors and the generic valley two-level dynamics;
 they do not validate the phenomenological spin--valley coupling
-ansatz, which by construction is a diagnostic choice rather than a
-microscopically derived form (see the main-text Model section).
+ansatz, which is a diagnostic choice (see the main-text Model section).
 
 \section{Numerical-consistency validations}
 \label{sec:numerics}
@@ -235,7 +242,8 @@ P_{\rm diab}=\exp\!\left(-\frac{2\pi\Delta_{v}^2}{\hbar\,|\dot \varepsilon_v|}\r
 \end{equation}
 %
 (where $\Delta_v$ is the valley avoided-crossing coupling and
-$\varepsilon_v$ the diabatic valley detuning; Fig.~\ref{fig:v4})
+$\varepsilon_v$ the diabatic valley detuning of the main text, distinct from
+the physical valley splitting $E_{\rm VS}$; Fig.~\ref{fig:v4})
 to within $0.28\%$ over a sweep-rate parameter range
 $\gamma\in[0.1,10]$. In the adiabatic limit ($v\to0$) deep-pocket
 traversal gives an excitation probability $P_e<10^{-5}$, and in the
@@ -319,153 +327,176 @@ V9 & field/gradient scale              & device parameter scales      & comparab
 \end{table}
 
 \section{Robustness of the response metrics}
-The main-text conclusions rest on two derived quantities: the
-magnitude ranking (Spearman $\rho$) and the classification agreement. Here we
-check that the analysis choices do not drive the central finding: the
-thresholded classification is much more ansatz-dependent than magnitude
-ranking, with the lowest agreement in the A--B$_x$ and B$_z$--B$_x$
-comparisons.
+\label{sec:robustness}
+The main text's primary comparison is between cross-ansatz and cross-seed
+disagreement in the nine-category thresholded label. This section examines three
+robustness questions around it: whether the post-hoc ranking--classification
+decoupling survives alternative ranked quantities, how much shared inactivity
+contributes to the measured agreement, and how the label comparison behaves
+when attention is restricted to comparisons with at least one two-channel
+quadrant label.
+Two candidate explanations are examined -- that the ranking and the classifier
+simply weight the response channels differently, and that the comparison is
+carried by conditions inactive in both members of a pair. Neither accounts for
+the result.
 
-\subsection{Ranking depends on channel weighting; the classification does not}
-The magnitude $|\mathcal{R}|=\sqrt{\Delta P_v^2+\Delta\chi_\phi^2}$
-weights the two channels equally in raw units, but $|\Delta\chi_\phi|$
-is typically larger than $|\Delta P_v|$, so the raw-norm ranking is
-effectively dominated by the dephasing channel. Table~\ref{tab:weight}
-shows the mean rank correlation under several weightings: it ranges
-from $\rho\approx0.75$ ($|\Delta P_v|$-only) to $\rho\approx0.85$
-($|\Delta\chi_\phi|$-only), with the raw norm at $0.84$. The ranking remains
-high but varies with channel weighting. We therefore use it as a
-complementary magnitude-ordering diagnostic. The classification depends
-only on which channels clear their floors and on their signs, so it is
-unaffected by this weighting choice.
+\subsection{Channel weighting does not explain the decoupling}
+The released magnitude $|\mathcal{R}|=\sqrt{\Delta P_v^2+\Delta\chi_\phi^2}$
+weights the two channels equally in raw units, while the classifier judges each
+channel against its own floor. Since $|\Delta\chi_\phi|$ is typically about a
+decade larger than $|\Delta P_v|$, the raw-norm ranking is effectively
+dominated by the dephasing channel, and this mismatch is the leading
+alternative explanation of the decoupling reported in the main text.
+
+Table~\ref{tab:weight} recomputes the pairwise rank correlations under
+alternative ranked quantities. The diagnostic quantity is the gap between the
+A/A$_{\rm pocket}$ and A/B$_z$ pairs, which differ by $33.3$ percentage points
+in classification agreement at $n_{\rm real}=100$ ($35.9$ at $30$). If raw-unit
+channel weighting were the main explanation, floor normalization should move
+the ranking gap substantially toward the classification gap. It moves it only
+from $0.003$ to $0.015$, and ranking each channel separately moves it less. Among the ranked quantities tested here, the one that tracks
+classification agreement is the \emph{signed} dephasing response, whose gap
+reaches $0.154$ and whose six-pair correlation with classification agreement is
+$+0.880$. This implicates response-sign information as a leading contributor to
+the decoupling.
+
+Two limits on that reading. The six ansatz pairs are not independent --
+A/A$_{\rm pocket}$ and A/B$_z$ share A -- so the six-pair correlations are
+supporting evidence only, and the intermediate quantities change sign between
+the two ensemble sizes. The classifier also uses floor crossing as well as
+sign. The signed-$\Delta\chi_\phi$ result is a post-hoc diagnostic that
+implicates sign information as a leading contributor; it is not a demonstrated
+cause. Figure~\ref{fig:supp_robust}(a) shows the same comparison.
 
 \begin{table}[t]
 \centering
-\caption{Mean pairwise rank correlation under different definitions of
-the response magnitude. The ranking is high but weighting-dependent.
-The classification provides the decision-facing sign diagnostic, while
-the ranking provides complementary magnitude-ordering information.}
+\caption{Pairwise rank correlation under alternative definitions of the ranked
+quantity, and the resulting A/A$_{\rm pocket}$ against A/B$_z$ gap. The
+classification-agreement gap for that pair of pairs is $0.359$ at
+$n_{\rm real}=30$ and $0.333$ at $100$; a ranked quantity carrying the
+explanation should close much of that distance. Six-pair ordering statistics are discussed in the
+text and are not tabulated: only the released magnitude and the signed
+$\Delta\chi_\phi$ are stable between the two ensemble sizes. Post-hoc
+diagnostic.}
 \label{tab:weight}
-\begin{tabular}{lc}
+\small
+\begin{tabular}{lcccc}
 \toprule
-magnitude definition & mean Spearman $\rho$ \\
+ & \multicolumn{2}{c}{mean $\rho$} & \multicolumn{2}{c}{pair gap} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+ranked quantity & $n{=}30$ & $n{=}100$ & $n{=}30$ & $n{=}100$ \\
 \midrule
-raw norm ($w_P{=}w_\chi{=}1$)        & $0.837$ \\
-threshold-normalized                  & $0.769$ \\
-$|\Delta P_v|$ only                   & $0.751$ \\
-$|\Delta\chi_\phi|$ only              & $0.845$ \\
-$P_{\rm ref}{=}10^{-2},\chi_{\rm ref}{=}1$     & $0.754$ \\
-$P_{\rm ref}{=}10^{-4},\chi_{\rm ref}{=}10^{-3}$ & $0.769$ \\
+released $|\mathcal{R}|$ & $0.914$ & $0.913$ & $0.0090$ & $0.0029$ \\
+floor-normalized magnitude & $0.888$ & $0.896$ & $0.0197$ & $0.0146$ \\
+$|\Delta P_v|$ only & $0.856$ & $0.869$ & $0.0010$ & $0.0100$ \\
+$|\Delta\chi_\phi|$ only & $0.921$ & $0.917$ & $0.0002$ & $0.0049$ \\
+$\Delta P_v$, signed & $0.846$ & $0.826$ & $0.0312$ & $0.0390$ \\
+$\Delta\chi_\phi$, signed & $0.788$ & $0.765$ & $\mathbf{0.1299}$ & $\mathbf{0.1538}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Classification agreement is low across floors}
-The thresholded classification uses operational effect-size floors rather
-than statistical confidence bounds. Moving both floors a decade below and
-a decade above the main choice gives mean raw agreement between $36$ and
-$58\%$ (Table~\ref{tab:thresh}); the classification therefore remains far
-from model-independent throughout the sweep. The rise at the strictest
-floors should not be read as improved agreement among classified
-conditions: it is driven mainly by the two ans\"atze more often sharing
-the \emph{below-threshold} label, which accounts for $336$ of the $376$
-agreeing comparisons there. Restricted to comparisons in which both
-ans\"atze land in a two-channel quadrant, agreement is $44.8\%$ ($47/105$)
-at the main floors and $31.8\%$ ($7/22$) at the strictest floors. The
-qualitative conclusion, that the two-channel sign interpretation is poorly
-conserved across ans\"atze, is not tied to the particular floor choice. Candidate
-stability is assessed separately by the targeted $n_{\rm real}=30$ re-test
-in the main text. Figure~\ref{fig:supp_robust} shows both sweeps.
+\subsection{Shared inactivity does not carry the contrast}
+A shared \emph{below-threshold} assignment counts as agreement, so a large
+inactive population could in principle manufacture both the agreement level and
+the cross-ansatz versus cross-seed contrast. The main text reports the dilution
+directly: at $n_{\rm real}=100$, $11$ of $108$ conditions are inactive under
+every ansatz and block, and shared below-threshold assignments supply $44.6\%$
+of ansatz-pair agreement and $44.9\%$ of seed-pair agreement.
+
+As a pre-registered sensitivity analysis we recompute both estimands on the
+subset of comparisons in which at least one member carries one of the four
+two-channel quadrant labels. A comparison is excluded only when neither member
+carries such a label; a single-channel or below-threshold assignment can still
+appear as the other member of an included pair. The contrast survives and widens: cross-ansatz disagreement rises to
+$0.523$ and cross-seed to $0.326$ at $n_{\rm real}=100$, a ratio of $1.61$
+against $1.31$ unconditioned, and the union-conditioned cross-ansatz value stays
+within $0.505$--$0.550$ across all eight registered checkpoints while the
+cross-seed value falls from $0.656$ to $0.326$
+[Fig.~\ref{fig:supp_robust}(b)]. Intersection conditioning is deliberately not
+used: it would condition away the transitions the comparison measures.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/robustness_checks.pdf}
-\caption{Robustness of the two response metrics. Left: mean rank
-correlation under different channel weightings (dashed line: raw-norm
-value $0.837$); the ranking is high but weighting-dependent. Right:
-mean classification agreement under different effect-size floors; it
-remains far from model-independent throughout the sweep. The archived
-right-panel title uses the earlier shorthand ``quadrant agreement''; the
-plotted quantity is exact agreement of the full nine-category thresholded
-label.}
+\caption{(a)~The A/A$_{\rm pocket}$ against A/B$_z$ gap under alternative
+ranked quantities, at both endpoints; the dashed line is the corresponding
+classification-agreement gap at $n_{\rm real}=100$ (dotted, at $30$). The
+signed dephasing response comes closest among the tested quantities. (b)~Both estimands restricted to
+comparisons in which at least one member carries a two-channel quadrant label,
+across the eight registered checkpoints; faint lines are the unconditioned
+estimands. The restriction widens the contrast.}
 \label{fig:supp_robust}
 \end{figure}
 
-\begin{table}[t]
-\centering
-\caption{Mean classification agreement (exact agreement of the
-thresholded response label) under different effect-size floors
-$(|\Delta P_v|_{\min}, |\Delta\chi_\phi|_{\min})$, with one-channel
-cases separated.}
-\label{tab:thresh}
-\begin{tabular}{lc}
-\toprule
-floors & mean classification agreement \\
-\midrule
-none                 & $49.4\%$ \\
-$(10^{-5},10^{-4})$  & $36.3\%$ \\
-$(10^{-4},10^{-3})$ (main) & $36.0\%$ \\
-$(10^{-3},10^{-2})$  & $58.0\%$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+\subsection{Chance-corrected agreement}
+Raw agreement can be inflated by skewed marginals, and \emph{below-threshold} is
+the largest single category. Cohen's $\kappa$, computed on the same
+nine-category label set, corrects for that. Table~\ref{tab:kappa} reports both
+quantities at the two endpoints. No pair reaches strong agreement: $\kappa$ runs
+from $0.345$ to $0.794$ at $n_{\rm real}=30$ and from $0.338$ to $0.777$ at
+$100$, and the ordering is stable between them.
 
-\subsection{Chance-corrected agreement is modest across pairs}
-Raw agreement can be inflated by skewed marginal distributions, and here
-the \emph{below-threshold} category is the largest. Cohen's $\kappa$ is
-computed on the same nine-category label set and corrects for exactly
-that. It (Table~\ref{tab:kappa}) is modest
-throughout ($\kappa\approx0.14$--$0.33$): no pair reaches strong
-agreement. The two lowest $\kappa$ values are the B$_z$ vs.\ B$_x$ and
-A vs.\ B$_x$ pairs, both pairing the $\partial_x B_x$-based model with a
-$\partial_x B_z$-based one. B$_x$ is not a uniform outlier, however: the
-third such pair, A$_{\rm pocket}$ vs.\ B$_x$, has comparatively high
-$\kappa$; this is consistent with the pocket-localized A$_{\rm pocket}$
-sharing B$_x$'s concentration near the flanks. The decisive axis is thus the gradient
-component modulated by spatial localization, consistent with the
-main-text finding, rather than a blanket property of the $B_x$ ansatz.
+The two lowest values at both endpoints are A/A$_{\rm pocket}$ and
+A$_{\rm pocket}$/B$_z$; both involve A$_{\rm pocket}$. The remaining
+A$_{\rm pocket}$ pair, A$_{\rm pocket}$/B$_x$, lies in the middle group. The three pairs containing B$_x$ sit together in the middle, and A
+versus B$_z$ -- the two profiles differing only by the hot-spot weighting -- is
+highest, and still disagrees on about a fifth of conditions. Four profiles
+cannot support a factorial attribution, so these are three specified diagnostic
+contrasts and not an identification of which physical ingredient drives the
+disagreement.
 
 \begin{table}[t]
 \centering
 \caption{Pairwise classification agreement and chance-corrected Cohen's
-$\kappa$ at full validate (total-field convention), both over the
-nine-category thresholded label. Agreement is modest
-throughout; the two lowest values are the B$_z$/B$_x$ and A/B$_x$
-pairs.}
+$\kappa$ over the nine-category thresholded label, at the pre-registered
+endpoint and the registered follow-up endpoint. Rows are ordered by agreement at
+$n_{\rm real}=100$.}
 \label{tab:kappa}
-\begin{tabular}{lcc}
+\small
+\begin{tabular}{lcccc}
 \toprule
-pair & raw agreement & Cohen's $\kappa$ \\
+ & \multicolumn{2}{c}{$n_{\rm real}=30$} & \multicolumn{2}{c}{$n_{\rm real}=100$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+pair & agreement & $\kappa$ & agreement & $\kappa$ \\
 \midrule
-A vs A$_{\rm pocket}$       & $36.1\%$ & $0.211$ \\
-A vs B$_z$                  & $45.4\%$ & $0.334$ \\
-A vs B$_x$                  & $29.6\%$ & $0.145$ \\
-A$_{\rm pocket}$ vs B$_z$   & $31.5\%$ & $0.154$ \\
-A$_{\rm pocket}$ vs B$_x$   & $44.4\%$ & $0.244$ \\
-B$_z$ vs B$_x$              & $28.7\%$ & $0.135$ \\
+A vs A$_{\rm pocket}$         & $46.9\%$ & $0.345$ & $48.3\%$ & $0.338$ \\
+A$_{\rm pocket}$ vs B$_z$     & $48.1\%$ & $0.358$ & $50.4\%$ & $0.365$ \\
+A vs B$_x$                    & $61.3\%$ & $0.533$ & $60.7\%$ & $0.512$ \\
+A$_{\rm pocket}$ vs B$_x$     & $60.9\%$ & $0.475$ & $60.7\%$ & $0.452$ \\
+B$_z$ vs B$_x$                & $63.3\%$ & $0.557$ & $60.7\%$ & $0.513$ \\
+A vs B$_z$                    & $82.8\%$ & $0.794$ & $81.7\%$ & $0.777$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Absolute performance proxies}
-The main text reports baseline-relative responses, not absolute error
-rates. For context, Table~\ref{tab:abs} lists the absolute full-model
-(M2) leakage $P_v^{\mathrm{M2}}$, dephasing variance
-$\chi_\phi^{\mathrm{M2}}$, and the derived phase-error proxy
-$p_\phi=(1-e^{-\chi_\phi/2})/2$, averaged over the baseline geometry,
-both pocket cases, and $v\in\{5,10,20\}$\,m/s. The absolute error
-scales are comparable across ans\"atze (same order of magnitude),
-confirming that the strong ansatz-dependence is in the \emph{response
-interpretation}, not in a wildly different absolute performance.
+The three pairs containing B$_x$ agree on exactly $328$ of $540$ comparisons at
+$n_{\rm real}=100$. This is a coincidence of three near-equal counts, not a
+structural identity: the same three values are $0.613$, $0.609$ and $0.633$ at
+$n_{\rm real}=30$ and $0.600$, $0.607$ and $0.615$ at $5$.
+
+\subsection{Absolute performance proxies (archival)}
+The main text reports baseline-relative responses. For scale, Table~\ref{tab:abs}
+lists the absolute full-model (M2) leakage $P_v^{\mathrm{M2}}$, dephasing
+variance $\chi_\phi^{\mathrm{M2}}$, and the derived phase-error proxy
+$p_\phi=(1-e^{-\chi_\phi/2})/2$, averaged over the baseline geometry, both
+pocket cases, and $v\in\{5,10,20\}$\,m/s.
+
+These archived runs occupy the numerical scales shown, spanning a factor of
+$3.4$ in $P_v^{\mathrm{M2}}$ and a factor of $16$ in
+$\chi_\phi^{\mathrm{M2}}$. The spread between ans\"atze cannot be attributed
+to the ansatz: the values were computed under the earlier seeding scheme at
+$n_{\rm real}=5$, so each ansatz saw a different noise realization. The table
+is reported for scale only and supports no cross-ansatz conclusion.
 
 \begin{table}[t]
 \centering
-\caption{Absolute full-model performance proxies per ansatz, using the
-same setup as the atlas (baseline geometry, both pocket cases
-$x_c=0$ and $x_c=25$\,nm, $v\in\{5,10,20\}$\,m/s, $n_{\rm real}=5$, $1/f$ noise
-with $f_{\rm high}=10^7$\,Hz). These are reported for context; the
-atlas does not optimize them.}
+\caption{Absolute full-model performance proxies per ansatz (baseline geometry,
+both pocket cases $x_c=0$ and $x_c=25$\,nm, $v\in\{5,10,20\}$\,m/s,
+$n_{\rm real}=5$, $1/f$ noise with $f_{\rm high}=10^7$\,Hz). Archival values
+computed under the earlier seeding scheme; reported for scale only.}
 \label{tab:abs}
+\small
 \begin{tabular}{lccc}
 \toprule
 ansatz & $P_v^{\mathrm{M2}}$ & $\chi_\phi^{\mathrm{M2}}$ & $p_\phi^{\mathrm{M2}}$ \\
@@ -489,13 +520,15 @@ while the velocity sweep is motivated separately by conveyor-mode
 shuttling studies. V1--V3 test the dephasing response to gradients, and
 V4 tests the reduced valley dynamics. None of these checks
 validates the spin--valley coupling profile $\lambda_{sv}(x)$ itself,
-which is treated in the main text as a phenomenological diagnostic
-ansatz rather than a microscopically derived coupling; the sensitivity
-of the conclusions to that choice is precisely the subject of the main
-text.
+which the main text treats as a phenomenological diagnostic ansatz; the
+sensitivity of the conclusions to that choice is the subject of the main text.
+Section~\ref{sec:robustness} is separate from this suite: it does not validate
+the simulator, but tests the robustness of the post-hoc ranking diagnostic and
+the sensitivity of the primary label comparison to restricting attention to
+comparisons with at least one two-channel quadrant label.
 
 \clearpage
-\bibliographystyle{apsrev4-2}
+\bibliographystyle{aipnum4-2}
 \bibliography{ref}
 
 \end{document}

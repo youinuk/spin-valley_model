@@ -1,166 +1,144 @@
 # Reproducibility guide
 
-This guide documents the **r31** scientific results and how to reproduce them.
-Every command below is run from the released repository root.
+This guide documents the **r32** scientific results and how to reproduce them.
+Every command is run from the released repository root.
 
-`r32` changes the manuscript, documentation, and release packaging only. The
-scientific code, retained datasets, and manuscript-facing generated figures are
-unchanged from `r31`, so every scientific value and command in this guide
-applies unchanged and the r31 results need no recomputation. Redundant raster
-copies, in-tree compiled PDFs, and `docs/BUILD.md` are omitted; the r32 release
-notes list every changed or removed path.
+`r32` is a **scientific successor** to `r31`, not a repackaging of it. The r31
+atlas drew a separate noise realization for each coupling ansatz, so a
+cross-ansatz difference there also carried a sampling difference. The r32 study
+(T0) repeats the comparison with common random numbers shared across ansätze
+within each seed block, at nested realization counts
+`n_real = 5, 10, 20, 30, 40, 60, 80, 100`. The `n_real = 30` estimands and
+candidate-selection rule were registered before T0 production. The
+`n_real = 100` extension was registered before any `n > 30` data existed, with
+no new estimand or threshold.
+
+Consequences for anyone reproducing r31 numbers:
+
+- The r31 headline values are **historical reference**, not current results.
+  Section 6 records the one comparison the manuscript still makes against them.
+- The r32 producer sources differ from r31 (atlas
+  `9b78f64d5c78d85d` → `78daa7a9eabcac25`), so the r31 tagged atlas dataset is
+  **not shipped here**. It remains in the immutable r31 tar and Zenodo record.
+  Do not gate an r32 build on `--metadata-only` against r31 metadata; see
+  Section 6.
+- The raw T0 production pickles are **not in this tree** either. They are in the
+  Zenodo raw-data layer. Every T0-successor analysis number in the manuscript,
+  together with Fig. 4 and the supplement robustness figure, is reproducible from the analysis JSON shipped
+  in `data/t0/analysis/`. Figs. 2 and 3, the field and geometry controls, and
+  the document build do not come from that JSON; see Sections 2 and 4.
 
 ## 1. Environment
 
-Python 3.12 with the pinned `requirements.txt`; JAX on CPU is sufficient. No
-GPU is required.
+Python 3.12 with the pinned `requirements.txt`; JAX on CPU is sufficient. No GPU
+is required.
 
 ```bash
 export PYTHONPATH=.
 export JAX_ENABLE_X64=1
 export JAX_PLATFORM_NAME=cpu
 export MPLBACKEND=Agg
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 ```
 
 **float64 is mandatory.** The simulation multiplies nanometre positions by
 tesla-per-metre gradients; in float32 the analytic derivatives disagree with
 automatic differentiation. All scripts enable 64-bit mode at import.
 
+**Pin the numeric libraries to one thread.** `scipy.linalg.expm` on a 4×4 matrix
+inside a multithreaded BLAS pool is almost all synchronization, and the atlas
+calls it 500 times per simulation. Pinning does not change any value; it is
+worth roughly 4.8× on the atlas.
+
 The Python analyses also run on Windows x86-64 with CPython 3.12. Keep line
 endings as LF: a CRLF checkout changes recorded source hashes and makes
-`sha256sum -c SHA256SUMS.txt` report spurious mismatches, and the included
-`.gitattributes` enforces this. `docs/collect_figures.sh` and
-`make_overleaf.sh` need `bash` on `PATH` (Git Bash or WSL2).
+`sha256sum -c SHA256SUMS.txt` report spurious mismatches; the included
+`.gitattributes` enforces this. `docs/collect_figures.sh` and `make_overleaf.sh`
+need `bash` on `PATH` (Git Bash or WSL2).
 
 Fixed seeds make the workflow deterministic, but bit-identical output across
 operating systems and BLAS builds is not assumed; use the tolerances in
 Section 5.
 
-## 2. Reproduce the convention comparison
+## 2. Reproduce the manuscript figures
 
-The paper reports two atlas layers computed with the same response-model
-pipeline under different Zeeman-energy bookkeeping conventions. Their
-difference is itself a reported model-risk result, so both are reproducible
-here.
-
-### 2.1 Archived legacy data
-
-The archived raw files predate config recording, so merge them without
-recomputation:
+Four commands, in order, produce every figure in the paper and the supplement.
 
 ```bash
-python reproduce/phase5_atlas_merge_validate.py --mode validate --allow-legacy
+# Figs. 2 and 3 -- computed from the field and profile model at run time.
+# The options are REQUIRED: the bare invocation defaults to the archival
+# legacy-50ueV convention and does not produce the manuscript figure.
+python reproduce/phase5_paper_figures.py \
+    --ez-convention total-local --profile-norm prefactor
+
+# Fig. 4 and the supplement robustness figure -- JSON in, PDF out. No pickles, no simulation, no JAX.
+mkdir -p figures/t0
+python reproduce/t0/make_fig4.py  data/t0/analysis figures/t0/sensitivity_atlas.pdf
+python reproduce/t0/make_supp_robustness.py data/t0/analysis figures/t0/robustness_checks.pdf
+
+# Install the eight manuscript figures into docs/figures/.
+docs/collect_figures.sh "__ez-total-local__norm-prefactor"
 ```
 
-Expected: mean Spearman rank correlation `0.6768746367906103`, mean
-classification agreement `0.28858024691358025`. The archived scripts print
-this quantity as `quadrant agreement`.
+`collect_figures.sh` resolves its own location, so it runs from the repository
+root or from `docs/`. It accepts **only** the adopted dataset suffix, and it
+fails rather than substituting anything if a source is missing. It does not
+reference the r31 six-panel atlas or floor-sweep outputs; installing those
+would revert Fig. 4 and the supplement robustness figure to superseded science.
 
-### 2.2 Fresh legacy recomputation
+Expected output: `collected 8 manuscript figures into …/docs/figures/`.
 
-Fresh raw files contain a config block and merge without `--allow-legacy`:
+The generators emit PDF, which AIP accepts. AIP lists EPS as its preferred
+format; if the production stage requests it, convert the installed PDFs rather
+than regenerating, so the rendered content is unchanged.
 
-```bash
-python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_i_center --save-raw --no-plots
-python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_ii_edge  --save-raw --no-plots
-python reproduce/phase5_atlas_merge_validate.py --mode validate
-```
+Figure 1 is TikZ inside `docs/paper.tex` and needs no generator. Its panel (d)
+coordinates are generated from `data/t0/analysis/attribution_n100.json`; the
+mapping is stated in a comment beside the panel.
 
-Archived and fresh legacy raw files are not required to be byte-identical,
-because the archived data predate config recording. Keys, numerical values
-within tolerance, and the documented legacy-provenance state are the checks.
+Build the documents in `docs/` with `pdflatex ×2 → bibtex → pdflatex ×2` for
+both `paper.tex` and `supplementary.tex` (REVTeX 4.2 with the AIP `jap`
+substyle and the `aipnum4-2` bibliography style; **no `p{}` or `>{}` array
+columns** — they cause a clean-build fatal).
 
-### 2.3 Adopted result (total-local convention)
+## 3. The T0 analysis layer
 
-The adopted result uses `E_Z(x) = g mu_B [B_ext + B_z(x)]` and `prefactor`
-profile normalization. Tagged outputs leave the archived legacy dataset
-untouched.
+`data/t0/analysis/` holds the closed T0 outputs. Every T0-successor number in
+the manuscript is traceable to one of these files.
 
-```bash
-python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_i_center --save-raw --no-plots --ez-convention total-local --profile-norm prefactor
-python reproduce/phase5_sensitivity_atlas.py --mode validate --case case_ii_edge  --save-raw --no-plots --ez-convention total-local --profile-norm prefactor
-python reproduce/phase5_atlas_merge_validate.py --mode validate --ez-convention total-local --profile-norm prefactor
-```
+| file | supplies |
+| --- | --- |
+| `attribution_n30.json` | pre-registered endpoint: `D_ansatz`, `D_seed`, the six ansatz-pair and ten seed-pair values, dilution diagnostics |
+| `attribution_n100.json` | the eight registered checkpoints, per-channel continuous dispersions, union-conditioned sensitivity |
+| `posthoc_n30.json`, `posthoc_n100.json` | three-state channel decomposition and the inclusion–exclusion identity `joint = D_P + D_chi − D_both` |
+| `legacy_n30.json`, `legacy_n100.json` | pairwise rank correlation, classification agreement, Cohen's kappa |
+| `ranking_n30.json`, `ranking_n100.json` | the six ranked quantities and the counterexample gap |
+| `discovery_n30.json`, `holdout_n30.json` | the pre-registered candidate screen and the candidate table |
+| `confirmation_n100.json`, `candidate_delta.json` | extended confirmation at `n_real = 100` and the layer comparison |
+| `legacy_n5_block1.json` | the matched-seeding comparison against the archived r31 estimate |
 
-Expected merged values (`n_conditions = 432`, `n_real = 5`):
+`reproduce/t0/` holds six files. Two produce figures from the table above:
+`make_fig4.py` and `make_supp_robustness.py`. Three document the chain from raw
+production evidence to that table: `t0_step4_analysis.py` computes the analysis
+JSON from the raw pickles, and `t0_check_prefix.py` and
+`t0_check_seed_pairing.py` are the nested-prefix and seed-pairing gates.
+**Those three are not part of the default in-tree reproduction path**, because
+their input — the ten `n_real = 30` and ten `n_real = 100` raw pickles — is
+distributed separately in the Zenodo raw-data layer. They become runnable
+provenance checks once that layer is supplied.
 
-| quantity | value | paper |
-| --- | --- | --- |
-| mean Spearman rank correlation | `0.8373806370891169` | `0.84` |
-| mean classification agreement | `0.3595679012345679` | `36%` |
-
-Pairwise rho / classification agreement: A–A_pocket `0.785 / 36.1%`,
-A–B_z `0.913 / 45.4%`,
-A–B_x `0.789 / 29.6%`, A_pocket–B_z `0.881 / 31.5%`, A_pocket–B_x
-`0.855 / 44.4%`, B_z–B_x `0.801 / 28.7%`.
-
-Thresholded-label category counts: `below_threshold 129`, `P_only_improve 106`,
-`P_only_worsen 82`, `spin_trade 40`, `both_worsen 30`, `robust 30`,
-`valley_trade 15`.
-
-The reported agreement is exact equality of the full nine-category thresholded
-label (four two-channel quadrants, four single-channel categories, and
-below-threshold). Restricting each model-pair comparison to conditions for
-which both ansätze receive one of the four two-channel labels gives
-`47/105 = 44.8%` at the main floors and `7/22 = 31.8%` at the strict floors,
-recomputable from the adopted summary CSV.
-
-The shift from the legacy to the adopted convention, rho `0.68 -> 0.84`,
-agreement `29% -> 36%`, and the disappearance of the legacy B_x ranking
-divergence, is a reported result: the Zeeman-energy convention changes
-design-level conclusions.
-
-Lighter modes are available for quick checks: `--mode preview`,
-`--mode validate_lite` (edge only), and `--mode validate_mid`
-(center+edge, `v` in `{5,20}`).
-
-### Verifying script integrity
-
-Each mode stores the SHA-256 of the computing script in its metadata. The
-adopted dataset must report `OK`:
-
-```bash
-python reproduce/phase5_sensitivity_atlas.py --mode validate --metadata-only --ez-convention total-local --profile-norm prefactor
-```
-
-The same check without the convention flags targets the archived legacy dataset
-and reports `MISMATCH (expected for legacy)`. That is a provenance note, not an
-error.
-
-## 3. Post-processing, figures, and the robust retest
-
-```bash
-python reproduce/phase5_robust_candidate_retest.py
-python reproduce/phase5_supp_robustness.py --dataset-suffix __ez-total-local__norm-prefactor
-python reproduce/phase5_absolute_performance.py --ez-convention total-local --profile-norm prefactor
-python reproduce/phase5_paper_figures.py --ez-convention total-local --profile-norm prefactor
-python reproduce/phase5_atlas_figure.py --mode validate --dataset-suffix __ez-total-local__norm-prefactor
-( cd docs && ./collect_figures.sh "__ez-total-local__norm-prefactor" )
-```
-
-The two figure generators produce Figs. 2–3 and Fig. 4 of the paper; the final
-command installs the regenerated outputs under the manuscript-facing filenames
-in `docs/figures/`. That directory already ships populated with those same
-figures, so this step is only needed after regenerating them — and the suffix
-argument is required, since without it the script installs the archived legacy
-figures. Fig. 1 is drawn in TikZ inside `docs/paper.tex` and has no generator
-script.
-
-Adopted total-local references: weighting sweep `0.837 / 0.769 / 0.751 /
-0.845`; threshold sweep `49.4% / 36.3% / 36.0% / 58.0%`; Cohen kappa A–B_x
-`0.145`, B_z–B_x `0.135`. The robust-candidate retest uses `n_real = 30`; two
-candidates survive as 4/4-robust under the adopted convention.
-
-The staged falsification chain of Table II is generated by:
-
-```bash
-python reproduce/phase5_objective_analysis.py
-python reproduce/phase5_narrow_scope.py --mode preview
-python reproduce/phase5_narrow_scope.py --mode full
-python reproduce/phase5_narrow_scope.py --mode targeted
-```
+One provenance fact is directly checkable from the released tree: the
+5/10/20/30 prefix blocks of `attribution_n100.json` equal those of
+`attribution_n30.json` exactly, although the two came from separate production
+runs. That is the nested-prefix gate at the estimand level. A second
+reproduction check, recorded in the release evidence rather than in this tree,
+found the shipped `attribution_n30.json` numerically identical to an
+independently computed review copy.
 
 ## 4. Validation controls
+
+These certify the field model, its gradients, and the time-evolution engine.
 
 ```bash
 # Test gates. Do not replace these with one combined `pytest tests/ -q`.
@@ -184,6 +162,9 @@ python reproduce/v0p3_float_precision_check.py
 python reproduce/phase5_gradient_kernel_hotspot_check.py
 ```
 
+Expected: `14 passed, 1 deselected` for the first gate, `3 passed` for the
+geometry group, and the slow end-to-end test alone.
+
 | control | expected result |
 | --- | --- |
 | analytic vs `jax.grad` field agreement | rel. error ~`4e-9` |
@@ -198,11 +179,11 @@ python reproduce/phase5_gradient_kernel_hotspot_check.py
 | gradient-kernel hot-spot control | leakage ratio ~`252`, PASS marker |
 
 The hot-spot control supports the Model-section statement that the
-`E_v ≈ E_Z` enhancement is generated by the four-level dynamics without an
+`eps_v ≈ E_Z` enhancement is generated by the four-level dynamics without an
 artificial resonance window in `lambda_sv(x)`: it preserves the Gaussian-pocket
 shape while raising its minimum above the total-field `E_Z` range. Expected
-leakage is ~`4.5e-1` with the crossing (`Ev_min = 5 ueV`) and ~`1.8e-3` without
-it (`Ev_min = 70 ueV`), with lambda-zero leakage below `1e-3` in both
+leakage is ~`4.5e-1` with the crossing (`eps_v_min = 5 ueV`) and ~`1.8e-3`
+without it (`eps_v_min = 70 ueV`), with lambda-zero leakage below `1e-3` in both
 landscapes.
 
 `reproduce/oda_C2_pocket.py` tests a retained legacy heuristic and is expected
@@ -215,46 +196,60 @@ gate is `reproduce/oda_C2v2_scan.py`.
 - summary metrics: absolute difference below `5e-4`
 - values quoted to three significant figures in the paper: exact agreement at
   that displayed precision
-- category counts and row keys: exact match
-- PDF and PNG byte hashes: not expected to match
+- category counts, candidate counts, and row keys: exact match
+- PDF and PNG byte hashes: **not expected to match.** The figure generators
+  write TrueType-embedded PDFs (`pdf.fonttype = 42`) but do not pin
+  non-scientific metadata such as `CreationDate`. Compare rasterized output.
 
-## 6. Provenance and known limitation
-
-> The released scripts' `--help` text points to `REPRODUCIBILITY.md, Sec. 7`,
-> the section number in the archival r31 guide. In this condensed r32 guide,
-> the same Zeeman-convention material is in this section.
+## 6. Provenance and known limitations
 
 **Zeeman convention.** An external-field inconsistency found during development
 has been resolved. The archived legacy run used a stray-field-only Zeeman
 energy: `Defaults.B_ext_T = 0.5` was defined but did not enter the atlas Zeeman
-energy, giving a mean `E_Z` of about `3 ueV`. That state is retained for
-archive reproducibility and is not the adopted convention. The adopted result
-uses the total-local form above, with the full 432-condition atlas recomputed,
-the paper values and figures regenerated, and the legacy archive preserved
-through tagged filenames. The adopted profile normalization is `prefactor`; the
-`final-peak` and `l2` variants remain optional sensitivity checks, and `l2` is
-documented as divergent. Both conventions are exposed end to end:
-`phase5_sensitivity_atlas.py` and `phase5_atlas_merge_validate.py` take
-`--ez-convention` and `--profile-norm`, write non-legacy results to tagged
-filenames, and embed a config block recording conventions, external field,
-noise scale, seeds, script SHAs, and archive version. The merge step refuses
-mismatched raw configs.
+energy, giving a mean `E_Z` of about `3 ueV`. That state is retained for archive
+reproducibility and is not the adopted convention. The adopted result uses the
+total-local form `E_Z(x) = g mu_B [B_ext + B_z(x)]`. The adopted profile
+normalization is `prefactor`; the `final-peak` and `l2` variants remain optional
+sensitivity checks, and `l2` is documented as divergent. Both conventions are
+exposed end to end: `phase5_sensitivity_atlas.py` and
+`phase5_atlas_merge_validate.py` take `--ez-convention` and `--profile-norm`,
+write non-legacy results to tagged filenames, and embed a config block recording
+conventions, external field, noise scale, seeds, script SHAs, and archive
+version. The merge step refuses mismatched raw configs.
 
-**Table II limitation.** The archived narrow-scope metadata records SHAs of two
-earlier revisions of `phase5_narrow_scope.py` — `4d81427891c47a48` for the
-stage-3 and stage-5 runs and `529c03aac5ba0ad1` for stage 4 — while the
-included script is a later revision of the same analysis. Exact historical
-revisions are not included for every stage. Table II is therefore approved as
-archived provenance
-when its table entries, retained outputs, and executable final-stage scripts
-agree. It is not claimed as byte-exact forensic regeneration of every
-historical development step. All principal atlas, robustness,
-absolute-performance, and geometry-sensitivity gates reproduce independently of
-this limitation.
+**The r31 comparison the manuscript makes.** Repeating the archived comparison
+with the seeding corrected, at matched ensemble size `n_real = 5`, matched seed
+block and matched convention, raises the mean classification agreement from
+`35.96%` to `56.94%` and the mean rank correlation from `0.837` to `0.917`.
+`legacy_n5_block1.json` is that computation. It is the only place the r31 values
+enter, and they enter as a historical descriptor.
+
+**Why `--metadata-only` does not gate r32.** The gate compares the atlas
+source's current bytes against the SHA recorded in the metadata of the data it
+produced. It is a meaningful archive-provenance invariant only for a release
+that ships the corresponding producer-linked dataset. r32 ships a post-T0
+producer and does not ship the r31 n=5 tagged atlas dataset, so the gate has
+nothing to check and would report a mismatch that means nothing. The relation
+r32 must verify is instead
+
+```
+r32 producer bytes
+  ↕  the raw T0 production evidence      (Zenodo raw-data layer)
+  ↕  the closed analysis JSON            (data/t0/analysis/)
+  ↕  the manuscript figures and numbers
+```
+
+**Archival r31 post-processing.** `phase5_robust_candidate_retest.py` (the
+retired targeted re-test), `phase5_supp_robustness.py` (the r31 floor sweep),
+`phase5_absolute_performance.py`, `phase5_atlas_figure.py` (the six-panel atlas)
+and `phase5_narrow_scope.py` remain in the tree because r31 evidence and
+released tests refer to them. They are **not** reproduction steps for this
+manuscript and running them does not produce current figures.
 
 **Scope of the validations.** These checks certify the field model, its
 gradients, and the time-evolution engine, and they support the representative
 parameters of Table I. None of them validates the spin–valley coupling profile
-`lambda_sv(x)` itself, which the paper treats as a phenomenological diagnostic
-ansatz rather than a microscopically derived coupling. Quantifying sensitivity
-to that choice is the purpose of the atlas.
+`lambda_sv(x)`, which the paper treats as a phenomenological diagnostic ansatz.
+Quantifying sensitivity to that choice is the purpose of the study, and the
+paper's conclusion is that design conclusions drawn under one assumed profile
+remain model-conditional.

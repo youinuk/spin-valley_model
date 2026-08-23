@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "files": [
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed100041__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed200041__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed300041__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed400041__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed41__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed100041__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed200041__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed300041__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed400041__n30.pkl",
+      "/home/youinuk/projects/Spin-valley_model/repro-runs/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed41__n30.pkl"
+    ],
+    "blocks": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "schemes": [
+      "cross-ansatz"
+    ],
+    "n_real": [
+      30
+    ],
+    "conditions": 108,
+    "ansatz_conditions": 432
+  },
+  "rho_quantity": "hypot_raw",
+  "mean_rho": 0.9136468286858408,
+  "pairwise_rho": {
+    "A/A_pocket": 0.966305600807873,
+    "A/B_z": 0.9753122409900253,
+    "A/B_x": 0.8673221107586192,
+    "A_pocket/B_z": 0.9665437708994254,
+    "A_pocket/B_x": 0.8563358007754818,
+    "B_z/B_x": 0.8500614478836205
+  },
+  "rho_by_block": {
+    "1": {
+      "A/A_pocket": 0.9741347280573894,
+      "A/B_z": 0.9760686692007964,
+      "A/B_x": 0.8625568035668353,
+      "A_pocket/B_z": 0.9705717034877628,
+      "A_pocket/B_x": 0.8614135871273829,
+      "B_z/B_x": 0.8570122038354911
+    },
+    "2": {
+      "A/A_pocket": 0.9749254527613439,
+      "A/B_z": 0.9776596454123676,
+      "A/B_x": 0.8881172177922584,
+      "A_pocket/B_z": 0.9703525870035344,
+      "A_pocket/B_x": 0.8676155363114121,
+      "B_z/B_x": 0.861613650004287
+    },
+    "3": {
+      "A/A_pocket": 0.9752684176931797,
+      "A/B_z": 0.9763354197033353,
+      "A/B_x": 0.8336048472377032,
+      "A_pocket/B_z": 0.9782312536320938,
+      "A_pocket/B_x": 0.8059390094029552,
+      "B_z/B_x": 0.8170948964912781
+    },
+    "4": {
+      "A/A_pocket": 0.972524698238494,
+      "A/B_z": 0.9749921403869787,
+      "A/B_x": 0.874255718463898,
+      "A_pocket/B_z": 0.966999152114474,
+      "A_pocket/B_x": 0.8746082101993958,
+      "B_z/B_x": 0.8614326407347072
+    },
+    "5": {
+      "A/A_pocket": 0.9346747072889575,
+      "A/B_z": 0.9715053302466489,
+      "A/B_x": 0.8780759667324015,
+      "A_pocket/B_z": 0.9465641582592623,
+      "A_pocket/B_x": 0.8721026608362628,
+      "B_z/B_x": 0.8531538483523393
+    }
+  },
+  "rho_block_means": {
+    "1": 0.9169596158792763,
+    "2": 0.9233806815475338,
+    "3": 0.8977456406934241,
+    "4": 0.9208020933563246,
+    "5": 0.9093461119526455
+  },
+  "mean_classification_agreement": 0.6055555555555555,
+  "pairwise_agreement": {
+    "A/A_pocket": 0.46851851851851856,
+    "A/B_z": 0.8277777777777777,
+    "A/B_x": 0.6129629629629629,
+    "A_pocket/B_z": 0.4814814814814815,
+    "A_pocket/B_x": 0.6092592592592593,
+    "B_z/B_x": 0.6333333333333333
+  },
+  "kappa": {
+    "A/A_pocket": 0.3445243804956035,
+    "A/B_z": 0.794150800319718,
+    "A/B_x": 0.5330787593448375,
+    "A_pocket/B_z": 0.35774906338405077,
+    "A_pocket/B_x": 0.47469848412200794,
+    "B_z/B_x": 0.5568799240744503
+  },
+  "category_counts": {
+    "robust": 208,
+    "P_only_improve": 421,
+    "chi_only_improve": 10,
+    "P_only_worsen": 314,
+    "below_threshold": 705,
+    "trade_Pimp_chiwor": 124,
+    "both_worsen": 290,
+    "chi_only_worsen": 17,
+    "trade_Pwor_chiimp": 71
+  },
+  "material_change": {
+    "delta_rho": 0.0762661915858408,
+    "delta_agreement_pp": 24.598765435555553,
+    "materially_changed": true
+  }
+}

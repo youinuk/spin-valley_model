@@ -1,0 +1,205 @@
+{
+  "meta": {
+    "files": [
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed100041__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed200041__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed300041__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed400041__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed41__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed100041__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed200041__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed300041__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed400041__n100.pkl",
+      "repro-runs/t0-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed41__n100.pkl"
+    ],
+    "blocks": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "schemes": [
+      "cross-ansatz"
+    ],
+    "n_real": [
+      100
+    ],
+    "conditions": 108,
+    "ansatz_conditions": 432
+  },
+  "n": 100,
+  "status": "POST-HOC",
+  "A_channel_three_state": {
+    "dP_v": {
+      "D_ansatz": 0.2595679012345679,
+      "D_seed": 0.2775462962962963,
+      "Delta": -0.01797839506172838,
+      "ratio": 0.9352237976091188
+    },
+    "dchi_phi": {
+      "D_ansatz": 0.195679012345679,
+      "D_seed": 0.0412037037037037,
+      "Delta": 0.15447530864197528,
+      "ratio": 4.749063670411985
+    }
+  },
+  "A2_identity": {
+    "ansatz": {
+      "joint": 0.39567901234567904,
+      "D_P": 0.2595679012345679,
+      "D_chi": 0.195679012345679,
+      "D_both": 0.0595679012345679
+    },
+    "seed": {
+      "joint": 0.30162037037037037,
+      "D_P": 0.2775462962962963,
+      "D_chi": 0.0412037037037037,
+      "D_both": 0.01712962962962963
+    }
+  },
+  "B_family_split": {
+    "dP_v": {
+      "(5.0, 0.5)": {
+        "S_ansatz": 17.873793852281537,
+        "S_seed": 12.168136181368421,
+        "sq_mass_share": 0.08921489044275306
+      },
+      "(5.0, 1.0)": {
+        "S_ansatz": 53.55087207888142,
+        "S_seed": 41.06415409444566,
+        "sq_mass_share": 0.800823764904687
+      },
+      "(10.0, 0.5)": {
+        "S_ansatz": 4.5950331915626945,
+        "S_seed": 5.382744122449963,
+        "sq_mass_share": 0.005896321596340221
+      },
+      "(10.0, 1.0)": {
+        "S_ansatz": 18.787647089074277,
+        "S_seed": 22.85763537825377,
+        "sq_mass_share": 0.09857088244767326
+      },
+      "(20.0, 0.5)": {
+        "S_ansatz": 1.052998821260928,
+        "S_seed": 0.7784015950786737,
+        "sq_mass_share": 0.0003096418312102877
+      },
+      "(20.0, 1.0)": {
+        "S_ansatz": 4.308751619303363,
+        "S_seed": 5.285385085691841,
+        "sq_mass_share": 0.005184498777336124
+      }
+    },
+    "dchi_phi": {
+      "(5.0, 0.5)": {
+        "S_ansatz": 7.423690939453704,
+        "S_seed": 1.5000948362081234,
+        "sq_mass_share": 0.004722177153192743
+      },
+      "(5.0, 1.0)": {
+        "S_ansatz": 107.52105303620432,
+        "S_seed": 24.972901643378908,
+        "sq_mass_share": 0.9905799367455296
+      },
+      "(10.0, 0.5)": {
+        "S_ansatz": 1.494283514814129,
+        "S_seed": 0.29569313427137267,
+        "sq_mass_share": 0.00019132358931490566
+      },
+      "(10.0, 1.0)": {
+        "S_ansatz": 7.186337836058905,
+        "S_seed": 1.0851397722757599,
+        "sq_mass_share": 0.004425045790227883
+      },
+      "(20.0, 0.5)": {
+        "S_ansatz": 0.2176817739563726,
+        "S_seed": 0.0505769126922707,
+        "sq_mass_share": 4.0601926928678774e-06
+      },
+      "(20.0, 1.0)": {
+        "S_ansatz": 0.9507750162903432,
+        "S_seed": 0.26737738826812824,
+        "sq_mass_share": 7.745652904204203e-05
+      }
+    }
+  },
+  "B2_family_three_state": {
+    "dP_v": {
+      "(5.0, 0.5)": {
+        "D_ansatz": 0.26481481481481484,
+        "D_seed": 0.2986111111111111,
+        "flip_share": 0.1700356718192628
+      },
+      "(5.0, 1.0)": {
+        "D_ansatz": 0.3074074074074074,
+        "D_seed": 0.35694444444444445,
+        "flip_share": 0.19738406658739596
+      },
+      "(10.0, 0.5)": {
+        "D_ansatz": 0.18518518518518517,
+        "D_seed": 0.28055555555555556,
+        "flip_share": 0.11890606420927467
+      },
+      "(10.0, 1.0)": {
+        "D_ansatz": 0.22592592592592592,
+        "D_seed": 0.3236111111111111,
+        "flip_share": 0.1450653983353151
+      },
+      "(20.0, 0.5)": {
+        "D_ansatz": 0.2518518518518518,
+        "D_seed": 0.10555555555555556,
+        "flip_share": 0.16171224732461356
+      },
+      "(20.0, 1.0)": {
+        "D_ansatz": 0.32222222222222224,
+        "D_seed": 0.3,
+        "flip_share": 0.20689655172413793
+      }
+    },
+    "dchi_phi": {
+      "(5.0, 0.5)": {
+        "D_ansatz": 0.2759259259259259,
+        "D_seed": 0.10833333333333334,
+        "flip_share": 0.23501577287066247
+      },
+      "(5.0, 1.0)": {
+        "D_ansatz": 0.4,
+        "D_seed": 0.041666666666666664,
+        "flip_share": 0.34069400630914826
+      },
+      "(10.0, 0.5)": {
+        "D_ansatz": 0.1259259259259259,
+        "D_seed": 0.03888888888888889,
+        "flip_share": 0.10725552050473186
+      },
+      "(10.0, 1.0)": {
+        "D_ansatz": 0.19444444444444445,
+        "D_seed": 0.03611111111111111,
+        "flip_share": 0.16561514195583596
+      },
+      "(20.0, 0.5)": {
+        "D_ansatz": 0.03333333333333333,
+        "D_seed": 0.013888888888888888,
+        "flip_share": 0.028391167192429023
+      },
+      "(20.0, 1.0)": {
+        "D_ansatz": 0.14444444444444443,
+        "D_seed": 0.008333333333333333,
+        "flip_share": 0.12302839116719243
+      }
+    }
+  },
+  "C_median_companion": {
+    "dP_v": {
+      "median_ansatz": 2.624396923186927,
+      "median_seed": 1.9354647903742288,
+      "ratio": 1.3559517777016707
+    },
+    "dchi_phi": {
+      "median_ansatz": 0.4611979598204078,
+      "median_seed": 0.049726380993385555,
+      "ratio": 9.274713956798
+    }
+  }
+}

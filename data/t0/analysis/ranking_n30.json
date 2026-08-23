@@ -1,0 +1,114 @@
+{
+  "n": 30,
+  "meta": {
+    "files": [
+      "step3/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed100041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed200041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed300041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed400041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed41__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed100041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed200041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed300041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed400041__n30.pkl",
+      "step3/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed41__n30.pkl"
+    ],
+    "blocks": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "schemes": [
+      "cross-ansatz"
+    ],
+    "n_real": [
+      30
+    ],
+    "conditions": 108,
+    "ansatz_conditions": 432
+  },
+  "agreement": {
+    "A/A_pocket": 0.46851851851851856,
+    "A/B_z": 0.8277777777777777,
+    "A/B_x": 0.6129629629629629,
+    "A_pocket/B_z": 0.4814814814814815,
+    "A_pocket/B_x": 0.6092592592592593,
+    "B_z/B_x": 0.6333333333333333
+  },
+  "by_quantity": {
+    "hypot_raw": {
+      "spearman_vs_agreement": -0.028571428571428574,
+      "counterexample_gap": 0.009006640182152359,
+      "pairwise": {
+        "A/A_pocket": 0.966305600807873,
+        "A/B_z": 0.9753122409900253,
+        "A/B_x": 0.8673221107586192,
+        "A_pocket/B_z": 0.9665437708994254,
+        "A_pocket/B_x": 0.8563358007754818,
+        "B_z/B_x": 0.8500614478836205
+      }
+    },
+    "norm2": {
+      "spearman_vs_agreement": 0.08571428571428573,
+      "counterexample_gap": 0.01972619966275113,
+      "pairwise": {
+        "A/A_pocket": 0.9312793544637838,
+        "A/B_z": 0.951005554126535,
+        "A/B_x": 0.8465155715605857,
+        "A_pocket/B_z": 0.9432869377994988,
+        "A_pocket/B_x": 0.8145359970276372,
+        "B_z/B_x": 0.8384349366943896
+      }
+    },
+    "abs_dP_v": {
+      "spearman_vs_agreement": -0.14285714285714288,
+      "counterexample_gap": 0.00097745005573191,
+      "pairwise": {
+        "A/A_pocket": 0.8865052826126305,
+        "A/B_z": 0.8874827326683624,
+        "A/B_x": 0.8357655263082684,
+        "A_pocket/B_z": 0.9040974782550706,
+        "A_pocket/B_x": 0.7985347775967684,
+        "B_z/B_x": 0.8264425962445341
+      }
+    },
+    "abs_dchi_phi": {
+      "spearman_vs_agreement": -0.3714285714285715,
+      "counterexample_gap": 0.00018291463031250288,
+      "pairwise": {
+        "A/A_pocket": 0.9658140177389084,
+        "A/B_z": 0.9656311031085959,
+        "A/B_x": 0.884685663113169,
+        "A_pocket/B_z": 0.9616450884563719,
+        "A_pocket/B_x": 0.8782569760019815,
+        "B_z/B_x": 0.872058837539417
+      }
+    },
+    "dP_v": {
+      "spearman_vs_agreement": -0.14285714285714288,
+      "counterexample_gap": 0.031160269418007647,
+      "pairwise": {
+        "A/A_pocket": 0.7713071727304771,
+        "A/B_z": 0.8024674421484848,
+        "A/B_x": 0.756961711776082,
+        "A_pocket/B_z": 0.9412100946011603,
+        "A_pocket/B_x": 0.9101889165166195,
+        "B_z/B_x": 0.8949612735431135
+      }
+    },
+    "dchi_phi": {
+      "spearman_vs_agreement": 0.7714285714285715,
+      "counterexample_gap": 0.1298636714395952,
+      "pairwise": {
+        "A/A_pocket": 0.7502548419979613,
+        "A/B_z": 0.8801185134375565,
+        "A/B_x": 0.7558889936837291,
+        "A_pocket/B_z": 0.7307191784084522,
+        "A_pocket/B_x": 0.8187944782645975,
+        "B_z/B_x": 0.7949622262234797
+      }
+    }
+  }
+}

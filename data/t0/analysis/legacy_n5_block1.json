@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "files": [
+      "repro-runs/t0-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed41__n30.pkl",
+      "repro-runs/t0-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed41__n30.pkl"
+    ],
+    "blocks": [
+      1
+    ],
+    "schemes": [
+      "cross-ansatz"
+    ],
+    "n_real": [
+      30
+    ],
+    "conditions": 108,
+    "ansatz_conditions": 432
+  },
+  "rho_quantity": "hypot_raw",
+  "mean_rho": 0.9174994680867954,
+  "pairwise_rho": {
+    "A/A_pocket": 0.9551287547514932,
+    "A/B_z": 0.987929539760115,
+    "A/B_x": 0.8767041070050586,
+    "A_pocket/B_z": 0.9545952537464155,
+    "A_pocket/B_x": 0.8540207874855906,
+    "B_z/B_x": 0.8766183657720997
+  },
+  "rho_by_block": {
+    "1": {
+      "A/A_pocket": 0.9551287547514932,
+      "A/B_z": 0.987929539760115,
+      "A/B_x": 0.8767041070050586,
+      "A_pocket/B_z": 0.9545952537464155,
+      "A_pocket/B_x": 0.8540207874855906,
+      "B_z/B_x": 0.8766183657720997
+    }
+  },
+  "rho_block_means": {
+    "1": 0.9174994680867954
+  },
+  "mean_classification_agreement": 0.5694444444444443,
+  "pairwise_agreement": {
+    "A/A_pocket": 0.42592592592592593,
+    "A/B_z": 0.8240740740740741,
+    "A/B_x": 0.5277777777777778,
+    "A_pocket/B_z": 0.4629629629629629,
+    "A_pocket/B_x": 0.6203703703703703,
+    "B_z/B_x": 0.5555555555555556
+  },
+  "kappa": {
+    "A/A_pocket": 0.30654515327257664,
+    "A/B_z": 0.7782101167315174,
+    "A/B_x": 0.4457637351579795,
+    "A_pocket/B_z": 0.34777176176593083,
+    "A_pocket/B_x": 0.5064645563976816,
+    "B_z/B_x": 0.4756751289572165
+  },
+  "category_counts": {
+    "P_only_improve": 106,
+    "P_only_worsen": 104,
+    "trade_Pimp_chiwor": 34,
+    "chi_only_improve": 2,
+    "both_worsen": 39,
+    "below_threshold": 100,
+    "robust": 20,
+    "trade_Pwor_chiimp": 27
+  },
+  "material_change": {
+    "delta_rho": 0.0801188309867954,
+    "delta_agreement_pp": 20.98765432444443,
+    "materially_changed": true
+  }
+}

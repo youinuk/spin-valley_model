@@ -28,7 +28,7 @@ def field_and_grid():
 def _profile(ff, x, Ev, EZ, model, norm="prefactor"):
     return np.asarray(lambda_sv_profile(
         x, ff, model, 1.0, pocket_x_center=0.0, sigma_lambda=PW,
-        Ev_x=Ev, E_Z=EZ, sigma_E=10e-6 * e_C, profile_norm=norm))
+        eps_v_x=Ev, E_Z=EZ, sigma_E=10e-6 * e_C, profile_norm=norm))
 
 
 def test_final_peak_normalizes_all_models(field_and_grid):
@@ -125,7 +125,7 @@ def test_ez_convention_reaches_hamiltonian(field_and_grid):
         R = run_one_condition(v=10.0, case_label="t", pocket_x_center=0.0,
                               lambda_0=1e-6 * e_C, coupling_model="B_z",
                               n_real=1, noise=noise, ff=ff,
-                              Ev_baseline=100e-6 * e_C, Ev_min=5e-6 * e_C,
+                              eps_v_baseline=100e-6 * e_C, eps_v_min=5e-6 * e_C,
                               pocket_width=PW, Delta_v=0.5e-6 * e_C,
                               N_max=500, base_seed=41,
                               T_traj_for_noise=(8 * PW) / 10.0,
@@ -188,42 +188,67 @@ def test_absolute_wiring_exists():
 
 
 def test_collect_figures_legacy_and_suffix_succeed(tmp_path):
-    """Legacy collect must succeed; and because the released package now
-    ships the full total-local validate outputs, a suffixed collect must
-    also succeed and populate the manuscript figures."""
+    """r32 contract: a bare (legacy/untagged) collect must be REJECTED, and a
+    collect with the adopted suffix must succeed and populate the manuscript
+    figures. The untagged r31 outputs must never be installed as manuscript
+    figures, so the pre-r32 expectation that a bare collect succeeds no longer
+    holds."""
     import subprocess, os, shutil
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     wt = tmp_path / "wt"
     shutil.copytree(root, wt, ignore=shutil.ignore_patterns(
         "__pycache__", ".pytest_cache", "*.pyc"))
+
     r = subprocess.run(["bash", "collect_figures.sh"], cwd=wt / "docs",
                        capture_output=True, text=True)
-    assert r.returncode == 0, r.stderr
-    assert (wt / "docs/figures/quadrant_schematic.pdf").exists()
+    assert r.returncode != 0
+    assert "Only the adopted dataset suffix is accepted" in r.stderr
+
+    # This test covers the collector's routing and fail-closed contract, not
+    # the figure generators, so nonempty fixtures stand in for the T0 outputs.
+    t0 = wt / "figures" / "t0"
+    t0.mkdir(parents=True, exist_ok=True)
+    (t0 / "sensitivity_atlas.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
+    (t0 / "robustness_checks.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
+
     r2 = subprocess.run(["bash", "collect_figures.sh",
                          "__ez-total-local__norm-prefactor"],
                         cwd=wt / "docs", capture_output=True, text=True)
     assert r2.returncode == 0, r2.stderr
+    assert "collected 8 manuscript figures" in r2.stdout
     assert (wt / "docs/figures/sensitivity_atlas.pdf").exists()
+    assert (wt / "docs/figures/quadrant_schematic.pdf").exists()
 
 
 def test_collect_figures_suffix_fails_when_full_outputs_missing(tmp_path):
-    """A suffixed collect must fail fast with a clear message when the
-    full validate outputs for that suffix are absent (the quadrant
-    schematic is convention-independent and untagged)."""
-    import subprocess, os, shutil, glob
+    """The adopted-suffix collect must fail fast when a required r32 source
+    figure is absent, naming the missing file, and must not fall back to the
+    r31 atlas outputs."""
+    import subprocess, os, shutil
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     wt = tmp_path / "wt"
     shutil.copytree(root, wt, ignore=shutil.ignore_patterns(
         "__pycache__", ".pytest_cache", "*.pyc"))
-    # remove the total-local suffixed source figures so the collect misses
-    for p in glob.glob(str(wt / "figures/phase5/*__ez-total-local__norm-prefactor.pdf")):
-        os.remove(p)
+
+    # Keep the T0 sources present so the failure isolates the missing Fig. 2
+    # source rather than tripping on something else first.
+    t0 = wt / "figures" / "t0"
+    t0.mkdir(parents=True, exist_ok=True)
+    (t0 / "sensitivity_atlas.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
+    (t0 / "robustness_checks.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
+
+    missing = (wt / "figures" / "phase5"
+               / "phase5_coupling_profiles__ez-total-local__norm-prefactor.pdf")
+    assert missing.is_file()
+    missing.unlink()
+
     r = subprocess.run(["bash", "collect_figures.sh",
                         "__ez-total-local__norm-prefactor"],
                        cwd=wt / "docs", capture_output=True, text=True)
     assert r.returncode != 0
-    assert "MISSING" in r.stderr and "full validate" in r.stderr.lower()
+    assert "MISSING or EMPTY" in r.stderr
+    assert "phase5_coupling_profiles__ez-total-local__norm-prefactor.pdf" in r.stderr
+    assert "required source figure(s) missing" in r.stderr
 
 
 def test_robustness_clear_error_on_missing_dataset():

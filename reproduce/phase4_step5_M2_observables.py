@@ -77,6 +77,24 @@ def stable_seed(*items, base: int = 0) -> int:
     return base + h % 10_000_000
 
 
+# Constant Kronecker products, hoisted out of the propagation loop.
+#
+# These five matrices do not depend on any argument, yet the r31 code rebuilt
+# all of them on every time step: 500 steps x 5 kron calls per simulation, and
+# numpy's kron is expensive relative to a 4x4 scalar multiply. Profiling one
+# atlas condition put np.kron at 28% of total runtime.
+#
+# This is a pure hoist, not a reformulation. The arrays hold exactly the values
+# kron() returned before, so every subsequent floating-point operation is
+# unchanged and the results are bit-identical. Verified by the STEP 1a G1
+# comparison (exact equality of the full raw data dict).
+_K_SZ_I = kron(SIG_Z, SIG_I)
+_K_SX_I = kron(SIG_X, SIG_I)
+_K_I_TZ = kron(SIG_I, TAU_Z)
+_K_I_TX = kron(SIG_I, TAU_X)
+_K_SX_TX = kron(SIG_X, TAU_X)
+
+
 def hamiltonian_4lvl_with_coupling(Ez, Omx, Ev, Delta_v, lambda_sv):
     """Minimal 4-level spin × valley effective Hamiltonian (diagnostic).
 
@@ -101,13 +119,13 @@ def hamiltonian_4lvl_with_coupling(Ez, Omx, Ev, Delta_v, lambda_sv):
       Microscopically it would come from an intrinsic/synthetic SOC matrix element.
     - In the lambda_sv -> 0 limit it returns to a separable Hamiltonian (invariance check).
     """
-    H = 0.5 * Ez * kron(SIG_Z, SIG_I)
-    H = H + 0.5 * Omx * kron(SIG_X, SIG_I)
-    H = H + 0.5 * Ev * kron(SIG_I, TAU_Z)
-    H = H + Delta_v * kron(SIG_I, TAU_X)
+    H = 0.5 * Ez * _K_SZ_I
+    H = H + 0.5 * Omx * _K_SX_I
+    H = H + 0.5 * Ev * _K_I_TZ
+    H = H + Delta_v * _K_I_TX
     # phenomenological spin-flip/valley-flip coupling ansatz
     if lambda_sv != 0.0:
-        H = H + lambda_sv * kron(SIG_X, TAU_X)
+        H = H + lambda_sv * _K_SX_TX
     return H
 
 

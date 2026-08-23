@@ -58,6 +58,18 @@ def dataset_tag(ez_convention, profile_norm):
         return ""
     return f"__ez-{ez_convention}__norm-{profile_norm}"
 
+def run_tag(seed_scheme, base_seed, n_real):
+    """Extra filename tag separating T0 CRN runs from the archived r31 files.
+
+    Empty for seed_scheme="r31" so historical filenames are unchanged.
+    Derived, never typed: five blocks x two cases is ten chances for a typo
+    to silently misfile a 24-minute run.
+    """
+    if seed_scheme == "r31":
+        return ""
+    return f"__crn__seed{int(base_seed)}__n{int(n_real)}"
+
+
 # Baseline geometry
 GEOM0 = dict(period_nm=150.0, depth_nm=-50.0, half_x_nm=25.0, half_z_nm=15.0)
 GEOM_STEP = dict(period_nm=30.0, depth_nm=10.0, half_x_nm=5.0, half_z_nm=3.0)
@@ -146,7 +158,8 @@ def build_geometries(mode):
 
 
 def evaluate(model, x_c, v, lambda_uev, geom, n_real, noise, base_seed=41,
-             ez_convention="stray-mean", profile_norm="prefactor"):
+             ez_convention="stray-mean", profile_norm="prefactor",
+             seed_scheme="r31", save_realizations=False):
     ff = make_ff(geom["period_nm"], geom["depth_nm"],
                   geom["half_x_nm"], geom["half_z_nm"])
     e_C = 1.602176634e-19
@@ -157,17 +170,22 @@ def evaluate(model, x_c, v, lambda_uev, geom, n_real, noise, base_seed=41,
         v=v, case_label="atlas", pocket_x_center=x_c,
         lambda_0=lambda_uev * 1e-6 * e_C, coupling_model=model,
         n_real=n_real, noise=noise, ff=ff,
-        Ev_baseline=100e-6 * e_C, Ev_min=5e-6 * e_C, pocket_width=pocket_width,
+        eps_v_baseline=100e-6 * e_C, eps_v_min=5e-6 * e_C, pocket_width=pocket_width,
         Delta_v=0.5e-6 * e_C, N_max=500, base_seed=base_seed, T_traj_for_noise=T,
+        seed_scheme=seed_scheme, return_realizations=save_realizations,
     )
     dP = R["M2"]["P_v_dia"]["mean"] - R["M1V"]["P_v_dia"]["mean"]
     dchi = R["M2"]["phase"]["var_circular"] - R["M1"]["phase"]["var_circular"]
-    return {"dP_v": dP, "dchi_phi": dchi}
+    out = {"dP_v": dP, "dchi_phi": dchi}
+    if save_realizations:
+        out["raw"] = R["_raw"]
+    return out
 
 
 def main(mode="preview", n_real=None, no_plots=False, metadata_only=False,
          ez_convention="stray-mean", profile_norm="prefactor",
-         only_case=None, save_raw=False):
+         only_case=None, save_raw=False, base_seed=41,
+         seed_scheme="r31"):
     if metadata_only:
         # verify only the script-SHA consistency of existing metadata, no computation
         script_path = Path(__file__).resolve()
@@ -250,6 +268,8 @@ def main(mode="preview", n_real=None, no_plots=False, metadata_only=False,
                 for lam in lambda_list:
                     for geom in geoms:
                         r = evaluate(model, x_c, v, lam, geom, n_real, noise,
+                     base_seed=base_seed, seed_scheme=seed_scheme,
+                     save_realizations=(save_raw or only_case is not None),
                      ez_convention=ez_convention, profile_norm=profile_norm)
                         data[(model, case_label, v, lam, geom["label"])] = r
                         done += 1
@@ -263,7 +283,9 @@ def main(mode="preview", n_real=None, no_plots=False, metadata_only=False,
         # save per-case raw data (for merging). pickle (model,case,v,lam,geom)->r
         import pickle
         tag = only_case if only_case is not None else "all"
-        raw_path = OUT_RAW / f"phase5_atlas_raw_{mode}_{tag}{dataset_tag(ez_convention, profile_norm)}.pkl"
+        raw_path = OUT_RAW / (f"phase5_atlas_raw_{mode}_{tag}"
+                              f"{dataset_tag(ez_convention, profile_norm)}"
+                              f"{run_tag(seed_scheme, base_seed, n_real)}.pkl")
         import hashlib as _hl
         from constants import Defaults as _D
         import reproduce.phase4p6_crossterm as _ct
@@ -275,7 +297,8 @@ def main(mode="preview", n_real=None, no_plots=False, metadata_only=False,
             "B_ext_T": float(_D.B_ext_T),
             "sigma_E_ueV": 10.0,
             "mode": mode, "case": tag, "n_real": n_real,
-            "base_seed": 41,
+            "base_seed": int(base_seed),
+            "seed_scheme": seed_scheme,
             "atlas_script_sha256": _atlas_sha,
             "atlas_script_sha256_16": _atlas_sha[:16],
             "kernel_script_sha256": _kernel_sha,
@@ -586,6 +609,15 @@ if __name__ == "__main__":
                         help="split full validate: run a single case and save raw data")
     parser.add_argument("--save-raw", action="store_true",
                         help="save raw per-condition data as pickle")
+    parser.add_argument("--base-seed", dest="base_seed", type=int, default=41,
+                        help="base offset for the per-realization noise seed; "
+                             "41 reproduces the archived behaviour")
+    parser.add_argument("--seed-scheme", dest="seed_scheme",
+                        choices=["r31", "cross-ansatz"], default="r31",
+                        help="noise-seed scheme; 'r31' includes the coupling "
+                             "ansatz in the seed and reproduces the archived "
+                             "behaviour, 'cross-ansatz' shares one sample "
+                             "across ansaetze (T0 default)")
     parser.add_argument("--ez-convention", dest="ez_convention",
                         choices=["stray-mean", "total-local", "total-mean"],
                         default="stray-mean",
@@ -598,5 +630,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     main(mode=args.mode, n_real=args.n_real, no_plots=args.no_plots,
          metadata_only=args.metadata_only, only_case=args.case,
-         save_raw=args.save_raw,
+         save_raw=args.save_raw, base_seed=args.base_seed,
+         seed_scheme=args.seed_scheme,
          ez_convention=args.ez_convention, profile_norm=args.profile_norm)

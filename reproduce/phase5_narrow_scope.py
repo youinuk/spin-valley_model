@@ -100,7 +100,7 @@ def evaluate_one_geom(geom_overrides, v, n_real, noise, base_seed):
             pocket_x_center=x_c,
             lambda_0=lambda_0, coupling_model=cm,
             n_real=n_real, noise=noise, ff=ff,
-            Ev_baseline=Ev_baseline, Ev_min=Ev_min,
+            eps_v_baseline=Ev_baseline, eps_v_min=Ev_min,
             pocket_width=pocket_width, Delta_v=Delta_v,
             N_max=500, base_seed=base_seed,
             T_traj_for_noise=T_traj_for_noise,

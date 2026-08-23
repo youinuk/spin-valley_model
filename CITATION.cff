@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this code or data, please cite the accompanying paper."
-title: "spinshuttle: periodic-reference model-risk atlas for micromagnet-assisted spin shuttling"
+title: "spinshuttle: matched model-form and finite-sampling atlas for micromagnet-assisted spin-valley shuttling"
 authors:
   - family-names: "You"
     given-names: "Inuk"
@@ -9,6 +9,13 @@ license: MIT
 version: "r32"
 doi: 10.5281/zenodo.21588784
 repository-code: "https://github.com/youinuk/spin-valley_model"
+keywords:
+  - spin qubit
+  - Si/SiGe
+  - spin shuttling
+  - valley splitting
+  - micromagnet
+  - model-form uncertainty
 identifiers:
   - type: doi
     value: 10.5281/zenodo.21588784
@@ -18,9 +25,8 @@ identifiers:
     description: "Concept DOI resolving to the latest archived release"
 preferred-citation:
   type: article
-  title: "Spin-valley model uncertainty in micromagnet-assisted shuttling: a periodic-reference sensitivity atlas"
+  title: "Model-form versus finite-sampling uncertainty in micromagnet-assisted spin-valley shuttling: a periodic-reference sensitivity atlas"
   authors:
     - family-names: "You"
       given-names: "Inuk"
   year: 2026
-  journal: "(submitted)"

@@ -61,17 +61,17 @@ from reproduce.phase4_step5_M2_observables import (
 
 
 def lambda_sv_profile(x, ff, model_name, lambda_0, pocket_x_center=None,
-                       sigma_lambda=None, Ev_x=None, E_Z=None, sigma_E=None,
+                       sigma_lambda=None, eps_v_x=None, E_Z=None, sigma_E=None,
                        profile_norm="prefactor"):
     """λ_sv(x) for coupling model.
     
     model_name:
       "A":         λ_0 · |∂Bz/∂x|(x) / max|∂Bz/∂x|        (gradient-only)
       "A_pocket":  λ_0 · |∂Bz/∂x|(x) / max · exp(-(x-x_c)²/(2σ_λ²))  (pocket-weighted)
-      "B_z":       λ_0 · |∂Bz/∂x|(x)/max · exp(-(E_v(x)-E_Z)²/(2σ_E²))  (resonance, Bz)
-      "B_x":       λ_0 · |∂Bx/∂x|(x)/max · exp(-(E_v(x)-E_Z)²/(2σ_E²))  (resonance, Bx)
+      "B_z":       λ_0 · |∂Bz/∂x|(x)/max · exp(-(eps_v(x)-E_Z)²/(2σ_E²))  (resonance, Bz)
+      "B_x":       λ_0 · |∂Bx/∂x|(x)/max · exp(-(eps_v(x)-E_Z)²/(2σ_E²))  (resonance, Bx)
     
-    B model: coupling is enhanced near the spin-valley resonance (E_v ~ E_Z).
+    B model: coupling is enhanced near the spin-valley resonance (eps_v ~ E_Z).
     The narrower the resonance window sigma_E, the smaller the active region.
     """
     if model_name in ("A", "A_pocket", "B_z"):
@@ -92,8 +92,8 @@ def lambda_sv_profile(x, ff, model_name, lambda_0, pocket_x_center=None,
         gauss = np.exp(-(x - pocket_x_center)**2 / (2 * sigma_lambda**2))
         prof = base * gauss
     else:  # B_z / B_x resonance windows
-        assert Ev_x is not None and E_Z is not None and sigma_E is not None
-        resonance = np.exp(-(np.asarray(Ev_x) - E_Z)**2 / (2 * sigma_E**2))
+        assert eps_v_x is not None and E_Z is not None and sigma_E is not None
+        resonance = np.exp(-(np.asarray(eps_v_x) - E_Z)**2 / (2 * sigma_E**2))
         prof = base * resonance
 
     # Optional renormalization of the FINAL kernel, applied to ALL models
@@ -112,7 +112,7 @@ def lambda_sv_profile(x, ff, model_name, lambda_0, pocket_x_center=None,
 
 
 def simulate_one_real(v, ff, pocket_x_center,
-                       Ev_baseline, Ev_min, pocket_width,
+                       eps_v_baseline, eps_v_min, pocket_width,
                        Delta_v, lambda_0, coupling_model,
                        enable_charge_noise, enable_valley,
                        dx_t,                       # shared noise realization (CRN)
@@ -160,22 +160,22 @@ def simulate_one_real(v, ff, pocket_x_center,
     Ez_t = g_Si * mu_B * Bz_t
     Omx_t = g_Si * mu_B * Bx_t
     
-    depth = Ev_baseline - Ev_min
+    depth = eps_v_baseline - eps_v_min
     if enable_valley:
-        Ev_t = Ev_baseline - depth * np.exp(-(x_traj - pocket_x_center)**2 / (2 * pocket_width**2))
+        eps_v_t = eps_v_baseline - depth * np.exp(-(x_traj - pocket_x_center)**2 / (2 * pocket_width**2))
         Delta_v_eff = Delta_v
     else:
-        Ev_t = np.zeros_like(x_traj)
+        eps_v_t = np.zeros_like(x_traj)
         Delta_v_eff = 0.0
     
     if enable_valley and lambda_0 > 0:
         # --- Coordinate convention for the coupling kernel (audit r5 par.8) ---
         # The SPIN Hamiltonian uses the noisy coordinate (Ez_t, Omx_t above):
         # charge noise displaces the dot relative to the lab-frame magnet.
-        # The valley landscape Ev_t and the kernel lambda_sv are evaluated at
+        # The valley landscape eps_v_t and the kernel lambda_sv are evaluated at
         # the NOMINAL coordinate (they ride with the confined dot). For the
         # total-* conventions the kernel E_Z is therefore ALSO built from the
-        # nominal coordinate, so that Ev(x) and E_Z(x) inside the resonance
+        # nominal coordinate, so that eps_v(x) and E_Z(x) inside the resonance
         # window share one coordinate. The legacy convention keeps its exact
         # archived numerics: mean of the noisy-coordinate Ez_t.
         if ez_convention == "total-local":
@@ -190,7 +190,7 @@ def simulate_one_real(v, ff, pocket_x_center,
         lambda_t = lambda_sv_profile(x_traj, ff, coupling_model, lambda_0,
                                       pocket_x_center=pocket_x_center,
                                       sigma_lambda=pocket_width,
-                                      Ev_x=Ev_t, E_Z=E_Z_baseline,
+                                      eps_v_x=eps_v_t, E_Z=E_Z_baseline,
                                       sigma_E=sigma_E_default,
                                       profile_norm=profile_norm)
     else:
@@ -205,9 +205,9 @@ def simulate_one_real(v, ff, pocket_x_center,
         dt_step = t_grid[i+1] - t_grid[i]
         Ez_mid = 0.5*(Ez_t[i]+Ez_t[i+1])
         Omx_mid = 0.5*(Omx_t[i]+Omx_t[i+1])
-        Ev_mid = 0.5*(Ev_t[i]+Ev_t[i+1])
+        eps_v_mid = 0.5*(eps_v_t[i]+eps_v_t[i+1])
         lam_mid = 0.5*(lambda_t[i]+lambda_t[i+1])
-        H = hamiltonian_4lvl_with_coupling(Ez_mid, Omx_mid, Ev_mid,
+        H = hamiltonian_4lvl_with_coupling(Ez_mid, Omx_mid, eps_v_mid,
                                             Delta_v_eff, lam_mid)
         U = expm(-1j * H * dt_step / hbar)
         psi = U @ psi
@@ -218,7 +218,7 @@ def simulate_one_real(v, ff, pocket_x_center,
     rho_v = partial_trace_spin(rho)
     P_v_dia = float(rho_v[1, 1].real)
     # valley sector adiabatic excited state
-    Hv_final = 0.5 * Ev_t[-1] * TAU_Z + Delta_v_eff * TAU_X
+    Hv_final = 0.5 * eps_v_t[-1] * TAU_Z + Delta_v_eff * TAU_X
     eig_v, vecs_v = np.linalg.eigh(Hv_final)
     v_exc = vecs_v[:, 1]
     P_v_ad = float(np.real(np.vdot(v_exc, rho_v @ v_exc)))
@@ -235,17 +235,43 @@ def simulate_one_real(v, ff, pocket_x_center,
 def run_one_condition(v, case_label, pocket_x_center,
                        lambda_0, coupling_model,
                        n_real, noise, ff,
-                       Ev_baseline, Ev_min, pocket_width, Delta_v,
+                       eps_v_baseline, eps_v_min, pocket_width, Delta_v,
                        N_max, base_seed, T_traj_for_noise,
-                      ez_convention="stray-mean", profile_norm="prefactor"):
-    """CRN structure: for one (case, v, lambda, model) all *three models* use the same noise trace.
-    
-    For each realization r:
-      seed = stable_seed(case, v, λ, coupling_model, r)
-      -> generate dx_t from that seed
-      ─> M1 (charge_noise=True, valley=False), M1V (False, True), M2 (True, True)
-         all use the same dx_t
+                      ez_convention="stray-mean", profile_norm="prefactor",
+                      seed_scheme="r31", return_realizations=False):
+    """One (case, v, lambda, ansatz) condition over n_real noise realizations.
+
+    Common random numbers, two nested levels:
+
+      WITHIN a realization -- always on, both schemes.  M1, M1V and M2 share
+      one dx_t, so the *model* contrast (valley sector on/off, charge noise
+      on/off) is paired.
+
+      ACROSS ansaetze -- controlled by `seed_scheme`.
+
+        "r31"           seed = stable_seed(case, v, lambda, coupling_model, r)
+                        The ansatz label is part of the seed, so A, A_pocket,
+                        B_z and B_x each see a DIFFERENT Monte-Carlo sample.
+                        Reproduces the archived r31 behaviour exactly; kept
+                        for historical reproduction only.
+
+        "cross-ansatz"  seed = stable_seed(case, v, lambda, r)
+                        All four ansaetze share one sample.  Since M1 sets
+                        enable_valley=False (lambda_t = 0), M1 then becomes
+                        bit-identical across ansaetze -- see gate G7.  M1V
+                        retains lambda_sv and legitimately still differs --
+                        see gate G8.  Default for all T0 science.
+
+    The geometry-perturbation label is deliberately absent from the seed in
+    both schemes, so the perturbations of a condition family are paired too.
+
+    With return_realizations=True the result carries an extra "_raw" key
+    holding per-realization observables; chi_phi is a nonlinear ensemble
+    observable, so nested n-prefixes cannot be recovered from aggregates.
     """
+    if seed_scheme not in ("r31", "cross-ansatz"):
+        raise ValueError(
+            f"seed_scheme must be 'r31' or 'cross-ansatz', got {seed_scheme!r}")
     # generate noise trace -- N steps plus margin
     dt_noise = 1e-8
     # buffer ~ T_traj x 50
@@ -268,15 +294,21 @@ def run_one_condition(v, case_label, pocket_x_center,
     N_det = min(N_det, N_max)
     dx_zero_full = np.zeros(N_det)
     r1v_det = simulate_one_real(v, ff, pocket_x_center,
-                                  Ev_baseline, Ev_min, pocket_width,
+                                  eps_v_baseline, eps_v_min, pocket_width,
                                   Delta_v, lambda_0, coupling_model,
                                   False, True, dx_zero_full, N_max=N_max,
                                   ez_convention=ez_convention, profile_norm=profile_norm)
     
+    seeds_used = []
     for r in range(n_real):
-        # CRN: the realization seed has no model dependence
-        seed_r = stable_seed(case_label, v, lambda_0, coupling_model, r,
-                              base=base_seed)
+        # Ansatz enters the seed only in the archived "r31" scheme.
+        if seed_scheme == "r31":
+            seed_r = stable_seed(case_label, v, lambda_0, coupling_model, r,
+                                  base=base_seed)
+        else:  # "cross-ansatz"
+            seed_r = stable_seed(case_label, v, lambda_0, r,
+                                  base=base_seed)
+        seeds_used.append(int(seed_r))
         rng_r = np.random.default_rng(seed_r)
         # generate one long trace
         _, dx_long = noise.generate(T_long, dt_noise, rng=rng_r)
@@ -298,13 +330,13 @@ def run_one_condition(v, case_label, pocket_x_center,
         
         # M1: charge_noise=True, valley=False, same dx_t
         r1 = simulate_one_real(v, ff, pocket_x_center,
-                                Ev_baseline, Ev_min, pocket_width,
+                                eps_v_baseline, eps_v_min, pocket_width,
                                 Delta_v, lambda_0, coupling_model,
                                 True, False, dx_t_interp, N_max=N_max,
                                ez_convention=ez_convention, profile_norm=profile_norm)
         # M2: both on, same dx_t -- CRN
         r2 = simulate_one_real(v, ff, pocket_x_center,
-                                Ev_baseline, Ev_min, pocket_width,
+                                eps_v_baseline, eps_v_min, pocket_width,
                                 Delta_v, lambda_0, coupling_model,
                                 True, True, dx_t_interp, N_max=N_max,
                                ez_convention=ez_convention, profile_norm=profile_norm)
@@ -324,7 +356,9 @@ def run_one_condition(v, case_label, pocket_x_center,
         return {"mean": float(np.mean(vals)),
                  "std": float(np.std(vals))}
     
-    return {
+    OBS = ("P_v_dia", "P_v_ad", "phase", "spin_purity", "S_s")
+
+    out = {
         m: {
             "P_v_dia": aggregate(results[m], "P_v_dia"),
             "P_v_ad":  aggregate(results[m], "P_v_ad"),
@@ -333,6 +367,19 @@ def run_one_condition(v, case_label, pocket_x_center,
             "S_s": aggregate(results[m], "S_s"),
         } for m in ["M1", "M1V", "M2"]
     }
+
+    if return_realizations:
+        # M1 and M2 vary with r; M1V is deterministic and stored once.
+        out["_raw"] = {
+            "M1":  {k: [float(rr[k]) for rr in results["M1"]] for k in OBS},
+            "M2":  {k: [float(rr[k]) for rr in results["M2"]] for k in OBS},
+            "M1V": {k: float(r1v_det[k]) for k in OBS},
+            "seeds": seeds_used,
+            "seed_scheme": seed_scheme,
+            "base_seed": int(base_seed),
+            "n_real": int(n_real),
+        }
+    return out
 
 
 def main(n_real: int = 10, mode: str = "quick", skip_plots: bool = False,
@@ -367,8 +414,8 @@ def main(n_real: int = 10, mode: str = "quick", skip_plots: bool = False,
     ff = fit_from_prism_array(arr, -50e-9, N_harm=3)
     
     e_C = 1.602176634e-19
-    Ev_baseline = 100e-6 * e_C
-    Ev_min = 5e-6 * e_C
+    eps_v_baseline = 100e-6 * e_C
+    eps_v_min = 5e-6 * e_C
     pocket_width = 30e-9
     Delta_v = 0.5e-6 * e_C
     
@@ -458,7 +505,7 @@ def main(n_real: int = 10, mode: str = "quick", skip_plots: bool = False,
                         v=v, case_label=case_label, pocket_x_center=x_c,
                         lambda_0=lambda_0, coupling_model=cm,
                         n_real=n_real, noise=noise, ff=ff,
-                        Ev_baseline=Ev_baseline, Ev_min=Ev_min,
+                        eps_v_baseline=eps_v_baseline, eps_v_min=eps_v_min,
                         pocket_width=pocket_width, Delta_v=Delta_v,
                         N_max=N_max, base_seed=29,
                         T_traj_for_noise=T_traj_for_noise,
