@@ -24,10 +24,27 @@ supporting check only; they are not reported in the paper.
 Run:
     PYTHONPATH=. python reproduce/phase5_gradient_kernel_hotspot_check.py
 
-Reference values (Linux x86-64, float64; deterministic M1V; ~40 s on CPU):
+Reference values, corrected valley ordering H_v = -(eps_v/2) tau_z.
+Measured 2026-09-02 on the frozen producer closure
+(atlas 78daa7a9, crossterm a250a434, observables 880e02f9, minimum d610af7c);
+Linux x86-64, float64, deterministic M1V; 2 min 3 s on CPU, multithreaded:
     lambda = 0      : crossing P_v_dia ~ 3.30e-05 , non-crossing ~ 4.04e-05
+    lambda = 1 ueV  : crossing P_v_dia ~ 4.15e-01 , non-crossing ~ 1.70e-03
+    crossing/non-crossing ratio at lambda = 1 ueV : ~ 244
+
+Archived values under the pre-correction ordering H_v = +(eps_v/2) tau_z, kept
+for provenance. They are a different convention, not an earlier measurement of
+the same quantity, and must not be joined to the set above with an arrow:
     lambda = 1 ueV  : crossing P_v_dia ~ 4.52e-01 , non-crossing ~ 1.79e-03
     crossing/non-crossing ratio at lambda = 1 ueV : ~ 252
+
+The lambda = 0 legs are identical to the precision reported, which is
+structural rather than lucky. At zero coupling the valley sector evolves alone,
+so flipping the sign of tau_z while the readout branch swaps with it is the
+relabelling U = tau_x; starting in one branch and measuring the other returns
+the same number in either direction. Gate C1-G2 verifies that identity to
+3.5e-18. The lambda != 0 legs move by 5-8% because sigma_x (x) tau_x couples
+the sectors and the spin Zeeman term breaks the symmetry.
 
 Pass criteria (loose, cross-platform):
     both lambda=0 values < 1e-3
