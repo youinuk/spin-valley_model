@@ -218,7 +218,7 @@ def simulate_one_real(v, ff, pocket_x_center,
     rho_v = partial_trace_spin(rho)
     P_v_dia = float(rho_v[1, 1].real)
     # valley sector adiabatic excited state
-    Hv_final = 0.5 * eps_v_t[-1] * TAU_Z + Delta_v_eff * TAU_X
+    Hv_final = -0.5 * eps_v_t[-1] * TAU_Z + Delta_v_eff * TAU_X
     eig_v, vecs_v = np.linalg.eigh(Hv_final)
     v_exc = vecs_v[:, 1]
     P_v_ad = float(np.real(np.vdot(v_exc, rho_v @ v_exc)))

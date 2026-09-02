@@ -101,7 +101,7 @@ def hamiltonian_4lvl_with_coupling(Ez, Omx, Ev, Delta_v, lambda_sv):
     H = (Ez/2)  σ_z ⊗ I_v   ─ longitudinal spin Zeeman (g μ_B B_z)
       + (Ex/2)  σ_x ⊗ I_v   ─ transverse Zeeman energy from B_x(x)
                               (Omx arg = g μ_B B_x, an ENERGY, not a Rabi freq)
-      + (ε_v/2) I_s ⊗ τ_z   ─ diabatic valley detuning (two-level model)
+      - (ε_v/2) I_s ⊗ τ_z   ─ diabatic valley detuning (two-level model)
       + Δ_v     I_s ⊗ τ_x   ─ off-diagonal valley coupling
       + λ_sv    σ_x ⊗ τ_x   ─ phenomenological spin-flip/valley-flip
                               coupling ansatz (minimal real Pauli product)
@@ -121,7 +121,7 @@ def hamiltonian_4lvl_with_coupling(Ez, Omx, Ev, Delta_v, lambda_sv):
     """
     H = 0.5 * Ez * _K_SZ_I
     H = H + 0.5 * Omx * _K_SX_I
-    H = H + 0.5 * Ev * _K_I_TZ
+    H = H - 0.5 * Ev * _K_I_TZ
     H = H + Delta_v * _K_I_TX
     # phenomenological spin-flip/valley-flip coupling ansatz
     if lambda_sv != 0.0:
@@ -185,7 +185,7 @@ def simulate_separated(
         H_s = (Ez/2)σ_z + (E_perp/2)σ_x
             ─ longitudinal + transverse Zeeman energies from local
               micromagnet field (E_perp = g μ_B B_x, not an EDSR Rabi drive)
-        H_v = (ε_v/2)τ_z + Δ_v τ_x
+        H_v = -(ε_v/2)τ_z + Δ_v τ_x
             ─ generic diabatic valley-detuning avoided-crossing model
               (valley is not Zeeman; instantaneous gap sqrt(eps_v^2 + 4 Delta_v^2))
         λ_sv(x)
@@ -300,8 +300,8 @@ def simulate_separated(
         # Valley leakage (diabatic: |v=1> population in the fixed basis) -- default observable
         P_v_dia = float(rho_v[1, 1].real)
         # Valley leakage (adiabatic: instantaneous eigenbasis of the *valley sector*)
-        # rotate rho_v into the excited eigenstate of H_v(t_f) = (Ev/2)tau_z + Delta_v tau_x
-        Hv_final = 0.5 * Ev_t[-1] * TAU_Z + Delta_v_eff * TAU_X
+        # rotate rho_v into the excited eigenstate of H_v(t_f) = -(Ev/2)tau_z + Delta_v tau_x
+        Hv_final = -0.5 * Ev_t[-1] * TAU_Z + Delta_v_eff * TAU_X
         eig_v, vecs_v = np.linalg.eigh(Hv_final)
         # vecs_v[:,1] = valley excited (higher energy)
         v_exc = vecs_v[:, 1]
