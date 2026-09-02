@@ -104,7 +104,7 @@ columns** — they cause a clean-build fatal).
 
 ## 3. The T0 analysis layer
 
-`data/t0/analysis/` holds the closed T0 outputs. Every T0-successor number in
+`data/t0/analysis/` holds the closed T0 outputs (14 JSON). Every T0-successor number in
 the manuscript is traceable to one of these files.
 
 | file | supplies |
@@ -115,6 +115,7 @@ the manuscript is traceable to one of these files.
 | `legacy_n30.json`, `legacy_n100.json` | pairwise rank correlation, classification agreement, Cohen's kappa |
 | `ranking_n30.json`, `ranking_n100.json` | the six ranked quantities and the counterexample gap |
 | `discovery_n30.json`, `holdout_n30.json` | the pre-registered candidate screen and the candidate table |
+| `discovery_n100.json` | the candidate screen at the registered follow-up prefix; the reference input for the layer comparison |
 | `confirmation_n100.json`, `candidate_delta.json` | extended confirmation at `n_real = 100` and the layer comparison |
 | `legacy_n5_block1.json` | the matched-seeding comparison against the archived r31 estimate |
 
@@ -123,7 +124,20 @@ the manuscript is traceable to one of these files.
 production evidence to that table: `t0_step4_analysis.py` computes the analysis
 JSON from the raw pickles, and `t0_check_prefix.py` and
 `t0_check_seed_pairing.py` are the nested-prefix and seed-pairing gates.
-**Those three are not part of the default in-tree reproduction path**, because
+One of the three does run in-tree: with both discovery files shipped, the
+registered layer comparison is reproducible without the raw layer,
+
+```bash
+python reproduce/t0/t0_step4_analysis.py candidate-delta \
+    --ref data/t0/analysis/discovery_n30.json \
+    --new data/t0/analysis/discovery_n100.json \
+    --out candidate_delta.json
+```
+
+and its output should match the shipped `candidate_delta.json`.
+
+**The remaining chain tools are not part of the default in-tree reproduction
+path**, because
 their input — the ten `n_real = 30` and ten `n_real = 100` raw pickles — is
 distributed separately in the Zenodo raw-data layer. They become runnable
 provenance checks once that layer is supplied.

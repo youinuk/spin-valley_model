@@ -88,7 +88,7 @@ for n in ('30', '100'):
 # n_real= 100  D_ansatz=0.396  D_seed=0.302  ratio=1.31
 ```
 
-`data/t0/analysis/` holds thirteen such files; `REPRODUCIBILITY.md` Sec. 3 maps
+`data/t0/analysis/` holds fourteen such files; `REPRODUCIBILITY.md` Sec. 3 maps
 each one to the numbers it supplies.
 
 ## Regenerate the manuscript figures
@@ -113,7 +113,7 @@ the validation controls, and the tolerances are all in `REPRODUCIBILITY.md`.
 ```
 geometry/  noise/  reproduce/  tests/   field model, noise, analyses, checks
 constants.py, field_landscape.py        constants and analytic landscape
-data/t0/analysis/                       closed T0 analysis outputs (13 JSON)
+data/t0/analysis/                       closed T0 analysis outputs (14 JSON)
 reproduce/t0/                           Fig. 4 and the supplement robustness figure, and the
                                         provenance tools for the raw layer
 docs/                                   manuscript sources and figures

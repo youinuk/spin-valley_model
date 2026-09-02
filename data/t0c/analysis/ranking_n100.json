@@ -1,0 +1,114 @@
+{
+  "n": 100,
+  "meta": {
+    "files": [
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed100041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed200041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed300041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed400041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed41__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed100041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed200041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed300041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed400041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed41__n100.pkl"
+    ],
+    "blocks": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "schemes": [
+      "cross-ansatz"
+    ],
+    "n_real": [
+      100
+    ],
+    "conditions": 108,
+    "ansatz_conditions": 432
+  },
+  "agreement": {
+    "A/A_pocket": 0.4666666666666667,
+    "A/B_z": 0.8388888888888889,
+    "A/B_x": 0.6055555555555556,
+    "A_pocket/B_z": 0.49629629629629635,
+    "A_pocket/B_x": 0.5981481481481481,
+    "B_z/B_x": 0.625925925925926
+  },
+  "by_quantity": {
+    "hypot_raw": {
+      "spearman_vs_agreement": -0.08571428571428573,
+      "counterexample_gap": 0.010820543599416865,
+      "pairwise": {
+        "A/A_pocket": 0.9666961997580191,
+        "A/B_z": 0.977516743357436,
+        "A/B_x": 0.8544475882896527,
+        "A_pocket/B_z": 0.9756399630360016,
+        "A_pocket/B_x": 0.856101441405394,
+        "B_z/B_x": 0.8503129555003
+      }
+    },
+    "norm2": {
+      "spearman_vs_agreement": 0.14285714285714288,
+      "counterexample_gap": 0.023354006497280033,
+      "pairwise": {
+        "A/A_pocket": 0.9420008193051149,
+        "A/B_z": 0.965354825802395,
+        "A/B_x": 0.8452142101803425,
+        "A_pocket/B_z": 0.9585183914944697,
+        "A_pocket/B_x": 0.8181199805653204,
+        "B_z/B_x": 0.851263730505778
+      }
+    },
+    "abs_dP_v": {
+      "spearman_vs_agreement": -0.08571428571428573,
+      "counterexample_gap": 0.01116541389198511,
+      "pairwise": {
+        "A/A_pocket": 0.9007726237769965,
+        "A/B_z": 0.9119380376689816,
+        "A/B_x": 0.8362075699981899,
+        "A_pocket/B_z": 0.9243285985119133,
+        "A_pocket/B_x": 0.8055369782884144,
+        "B_z/B_x": 0.8481865729229184
+      }
+    },
+    "abs_dchi_phi": {
+      "spearman_vs_agreement": -0.08571428571428573,
+      "counterexample_gap": 0.02561566968666329,
+      "pairwise": {
+        "A/A_pocket": 0.9393714214943744,
+        "A/B_z": 0.9649870911810376,
+        "A/B_x": 0.8775824783027046,
+        "A_pocket/B_z": 0.9611020606476319,
+        "A_pocket/B_x": 0.878929568340526,
+        "B_z/B_x": 0.8713690969542809
+      }
+    },
+    "dP_v": {
+      "spearman_vs_agreement": 0.028571428571428574,
+      "counterexample_gap": 0.042493355054445625,
+      "pairwise": {
+        "A/A_pocket": 0.7225089790124516,
+        "A/B_z": 0.7650023340668972,
+        "A/B_x": 0.7315403888841254,
+        "A_pocket/B_z": 0.9465717797021922,
+        "A_pocket/B_x": 0.8958072537083082,
+        "B_z/B_x": 0.8902302628445129
+      }
+    },
+    "dchi_phi": {
+      "spearman_vs_agreement": 0.48571428571428577,
+      "counterexample_gap": 0.14654701001267068,
+      "pairwise": {
+        "A/A_pocket": 0.7939447635923671,
+        "A/B_z": 0.9404917736050378,
+        "A/B_x": 0.7660369449446016,
+        "A_pocket/B_z": 0.7929044366324656,
+        "A_pocket/B_x": 0.8751931559442492,
+        "B_z/B_x": 0.811514094906018
+      }
+    }
+  }
+}

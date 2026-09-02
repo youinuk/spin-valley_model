@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "files": [
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed100041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed200041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed300041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed400041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed41__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed100041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed200041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed300041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed400041__n100.pkl",
+      "../repro-runs/t0c-step3b/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed41__n100.pkl"
+    ],
+    "blocks": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "schemes": [
+      "cross-ansatz"
+    ],
+    "n_real": [
+      100
+    ],
+    "conditions": 108,
+    "ansatz_conditions": 432
+  },
+  "rho_quantity": "hypot_raw",
+  "mean_rho": 0.9134524818911339,
+  "pairwise_rho": {
+    "A/A_pocket": 0.9666961997580191,
+    "A/B_z": 0.977516743357436,
+    "A/B_x": 0.8544475882896527,
+    "A_pocket/B_z": 0.9756399630360016,
+    "A_pocket/B_x": 0.856101441405394,
+    "B_z/B_x": 0.8503129555003
+  },
+  "rho_by_block": {
+    "1": {
+      "A/A_pocket": 0.9635123419741441,
+      "A/B_z": 0.9632836986862537,
+      "A/B_x": 0.8435889374755874,
+      "A_pocket/B_z": 0.9839854430440041,
+      "A_pocket/B_x": 0.8635856983623424,
+      "B_z/B_x": 0.8645097983175664
+    },
+    "2": {
+      "A/A_pocket": 0.973267788924138,
+      "A/B_z": 0.9843569883868263,
+      "A/B_x": 0.8529633122790972,
+      "A_pocket/B_z": 0.9777358598416643,
+      "A_pocket/B_x": 0.847685463050292,
+      "B_z/B_x": 0.8441129116770032
+    },
+    "3": {
+      "A/A_pocket": 0.9626739832518791,
+      "A/B_z": 0.9762306248630521,
+      "A/B_x": 0.8571169986757742,
+      "A_pocket/B_z": 0.9641887450341534,
+      "A_pocket/B_x": 0.8710928196480797,
+      "B_z/B_x": 0.8368344336791562
+    },
+    "4": {
+      "A/A_pocket": 0.9700763096973334,
+      "A/B_z": 0.9831566111254013,
+      "A/B_x": 0.8626806520144426,
+      "A_pocket/B_z": 0.9754589537664218,
+      "A_pocket/B_x": 0.8451513332761724,
+      "B_z/B_x": 0.8535444473024856
+    },
+    "5": {
+      "A/A_pocket": 0.9639505749426011,
+      "A/B_z": 0.980555793725647,
+      "A/B_x": 0.855888041003363,
+      "A_pocket/B_z": 0.9768308134937647,
+      "A_pocket/B_x": 0.8529918926900835,
+      "B_z/B_x": 0.8525631865252888
+    }
+  },
+  "rho_block_means": {
+    "1": 0.9137443196433165,
+    "2": 0.9133537206931702,
+    "3": 0.9113562675253492,
+    "4": 0.9150113845303762,
+    "5": 0.9137967170634579
+  },
+  "mean_classification_agreement": 0.6052469135802468,
+  "pairwise_agreement": {
+    "A/A_pocket": 0.4666666666666667,
+    "A/B_z": 0.8388888888888889,
+    "A/B_x": 0.6055555555555556,
+    "A_pocket/B_z": 0.49629629629629635,
+    "A_pocket/B_x": 0.5981481481481481,
+    "B_z/B_x": 0.625925925925926
+  },
+  "kappa": {
+    "A/A_pocket": 0.31134343823478616,
+    "A/B_z": 0.8041830958910962,
+    "A/B_x": 0.5083396739362748,
+    "A_pocket/B_z": 0.3465785235735321,
+    "A_pocket/B_x": 0.43128652132554224,
+    "B_z/B_x": 0.5330339522160339
+  },
+  "category_counts": {
+    "robust": 254,
+    "chi_only_improve": 12,
+    "P_only_worsen": 236,
+    "below_threshold": 849,
+    "P_only_improve": 337,
+    "both_worsen": 298,
+    "trade_Pimp_chiwor": 107,
+    "trade_Pwor_chiimp": 54,
+    "chi_only_worsen": 13
+  },
+  "material_change": {
+    "delta_rho": 0.07607184479113394,
+    "delta_agreement_pp": 24.567901238024685,
+    "materially_changed": true
+  }
+}

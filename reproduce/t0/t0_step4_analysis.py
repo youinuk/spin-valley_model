@@ -1062,6 +1062,84 @@ def cmd_ranking(args):
          args.out)
 
 
+
+def cmd_candidate_delta(args):
+    """Registered comparison of two candidate layers (protocol Sec. 8 entry 20).
+
+    Reports retained / lost / newly gained (ansatz, condition) pairs and the
+    U^disc overlap between two prefixes. Counts only -- no new threshold, and no
+    rate comparison: the two discovery sets differ, so a ratio like 3/10 against
+    3/13 is not a before-and-after on one cohort.
+    """
+    a = json.loads(Path(args.ref).read_text())
+    b = json.loads(Path(args.new).read_text())
+    na, nb = a.get("n"), b.get("n")
+    banner(f"CANDIDATE LAYER COMPARISON  n = {na} (reference) vs n = {nb}")
+    print("The n = 30 layer is the pre-registered Table III. The other prefix is")
+    print("a registered sample-size-stability companion, not an independent")
+    print("holdout: its blocks 4-5 were already seen and its aggregate contains")
+    print("those realizations.")
+
+    A = {k: {tuple(c) for c in v} for k, v in a["C_disc"].items()}
+    B = {k: {tuple(c) for c in v} for k, v in b["C_disc"].items()}
+    out = {"n_ref": na, "n_new": nb, "per_ansatz": {}}
+    print(f"\n  {'ansatz':10} {'ref':>4} {'new':>4} {'retained':>9} {'lost':>5} {'gained':>7}")
+    tot = [0, 0, 0, 0, 0]
+    for k in ANSATZE:
+        r, n_ = A.get(k, set()), B.get(k, set())
+        keep, lost, gain = r & n_, r - n_, n_ - r
+        out["per_ansatz"][k] = {"ref": len(r), "new": len(n_),
+                                "retained": len(keep), "lost": len(lost),
+                                "gained": len(gain),
+                                "lost_conditions": [list(c) for c in sorted(lost, key=repr)],
+                                "gained_conditions": [list(c) for c in sorted(gain, key=repr)]}
+        print(f"  {k:10} {len(r):>4} {len(n_):>4} {len(keep):>9} {len(lost):>5} {len(gain):>7}")
+        for i, v in enumerate((len(r), len(n_), len(keep), len(lost), len(gain))):
+            tot[i] += v
+    print(f"  {'TOTAL':10} {tot[0]:>4} {tot[1]:>4} {tot[2]:>9} {tot[3]:>5} {tot[4]:>7}")
+    out["total"] = dict(zip(("ref", "new", "retained", "lost", "gained"), tot))
+
+    UA = {tuple(c) for c in a["U_disc"]}
+    UB = {tuple(c) for c in b["U_disc"]}
+    out["U_disc"] = {"ref": len(UA), "new": len(UB), "overlap": len(UA & UB),
+                     "only_ref": [list(c) for c in sorted(UA - UB, key=repr)],
+                     "only_new": [list(c) for c in sorted(UB - UA, key=repr)]}
+    print(f"\n  U^disc  ref {len(UA)}  new {len(UB)}  overlap {len(UA & UB)}  "
+          f"only-ref {len(UA - UB)}  only-new {len(UB - UA)}")
+    for c in sorted(UA - UB, key=repr):
+        print(f"    dropped: {'/'.join(map(str, c))}")
+    for c in sorted(UB - UA, key=repr):
+        print(f"    added  : {'/'.join(map(str, c))}")
+
+    # unanimous discovery sets, and 4/4 extended confirmation if given
+    for tag, S in (("ref", A), ("new", B)):
+        U = UA if tag == "ref" else UB
+        unan = sorted((c for c in U if all(c in S[k] for k in ANSATZE)), key=repr)
+        out.setdefault("unanimous_discovery", {})[tag] = [list(c) for c in unan]
+        print(f"\n  unanimous 4/4 discovery ({tag}, n={na if tag=='ref' else nb}): "
+              f"{len(unan)}")
+        for c in unan:
+            print(f"    {'/'.join(map(str, c))}")
+
+    if args.ref_holdout and args.new_holdout:
+        def conf4(path):
+            rows = json.loads(Path(path).read_text())["rows"]
+            return {tuple(r["condition"]) for r in rows
+                    if all(r["holdout"][x]["confirmed_2of2"] for x in ANSATZE)}
+        ca, cb = conf4(args.ref_holdout), conf4(args.new_holdout)
+        out["confirmed_4of4"] = {"ref": [list(c) for c in sorted(ca, key=repr)],
+                                 "new": [list(c) for c in sorted(cb, key=repr)],
+                                 "common": [list(c) for c in sorted(ca & cb, key=repr)]}
+        print(f"\n  4/4 extended confirmation: ref {len(ca)}  new {len(cb)}  "
+              f"identical in both {len(ca & cb)}")
+        for c in sorted(ca & cb, key=repr):
+            print(f"    {'/'.join(map(str, c))}")
+        print("\n  Do NOT convert these to rates. The two U^disc sets differ, so")
+        print("  3/10 against 3/13 is not a before-and-after on one cohort.")
+
+    dump(out, args.out)
+
+
 # --------------------------------------------------------------------------
 
 def main() -> int:
@@ -1096,6 +1174,14 @@ def main() -> int:
     p.add_argument("--n", type=int, default=None,
                    help="defaults to the prefix recorded in the discovery file")
     p.add_argument("--out", default="holdout.json")
+    p = sub.add_parser("candidate-delta", help=cmd_candidate_delta.__doc__)
+    p.add_argument("--ref", required=True, help="discovery JSON, n=30")
+    p.add_argument("--new", required=True, help="discovery JSON, other prefix")
+    p.add_argument("--ref-holdout", default=None)
+    p.add_argument("--new-holdout", default=None)
+    p.add_argument("--out", default="candidate_delta.json")
+    p.set_defaults(func=cmd_candidate_delta)
+
     p = add("ranking", cmd_ranking)
     p.add_argument("--n", type=int, default=PRIMARY_N)
     p.add_argument("--out", default="ranking.json")

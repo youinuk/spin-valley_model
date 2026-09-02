@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "files": [
+      "../repro-runs/t0c-step3/phase5_atlas_raw_validate_case_i_center__ez-total-local__norm-prefactor__crn__seed41__n30.pkl",
+      "../repro-runs/t0c-step3/phase5_atlas_raw_validate_case_ii_edge__ez-total-local__norm-prefactor__crn__seed41__n30.pkl"
+    ],
+    "blocks": [
+      1
+    ],
+    "schemes": [
+      "cross-ansatz"
+    ],
+    "n_real": [
+      30
+    ],
+    "conditions": 108,
+    "ansatz_conditions": 432
+  },
+  "rho_quantity": "hypot_raw",
+  "mean_rho": 0.9161720667765424,
+  "pairwise_rho": {
+    "A/A_pocket": 0.9507845322815741,
+    "A/B_z": 0.9868530109462973,
+    "A/B_x": 0.8784284584678994,
+    "A_pocket/B_z": 0.9503653529204417,
+    "A_pocket/B_x": 0.8484666609505844,
+    "B_z/B_x": 0.8821343850924576
+  },
+  "rho_by_block": {
+    "1": {
+      "A/A_pocket": 0.9507845322815741,
+      "A/B_z": 0.9868530109462973,
+      "A/B_x": 0.8784284584678994,
+      "A_pocket/B_z": 0.9503653529204417,
+      "A_pocket/B_x": 0.8484666609505844,
+      "B_z/B_x": 0.8821343850924576
+    }
+  },
+  "rho_block_means": {
+    "1": 0.9161720667765424
+  },
+  "mean_classification_agreement": 0.5802469135802468,
+  "pairwise_agreement": {
+    "A/A_pocket": 0.4537037037037037,
+    "A/B_z": 0.8148148148148149,
+    "A/B_x": 0.5277777777777778,
+    "A_pocket/B_z": 0.4629629629629629,
+    "A_pocket/B_x": 0.6203703703703703,
+    "B_z/B_x": 0.6018518518518519
+  },
+  "kappa": {
+    "A/A_pocket": 0.3382490393602658,
+    "A/B_z": 0.7705788635156664,
+    "A/B_x": 0.4450936933306467,
+    "A_pocket/B_z": 0.3496677740863788,
+    "A_pocket/B_x": 0.509090909090909,
+    "B_z/B_x": 0.5316187594553705
+  },
+  "category_counts": {
+    "P_only_improve": 104,
+    "below_threshold": 102,
+    "P_only_worsen": 98,
+    "trade_Pimp_chiwor": 35,
+    "chi_only_improve": 2,
+    "both_worsen": 40,
+    "robust": 21,
+    "trade_Pwor_chiimp": 30
+  },
+  "material_change": {
+    "delta_rho": 0.0787914296765424,
+    "delta_agreement_pp": 22.067901238024685,
+    "materially_changed": true
+  }
+}
