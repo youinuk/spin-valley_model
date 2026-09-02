@@ -59,17 +59,17 @@ fixed set of noise realizations, and the \emph{cross-seed} difference, obtained
 by changing the noise sample under a fixed coupling model. Disagreement is the fraction of conditions the two members
 of a pair assign to different nine-category labels, formed by classifying each
 of the two response channels as improve, inactive, or worsen. Cross-ansatz disagreement is
-$0.394$ at the pre-registered endpoint of $n=30$ realizations and $0.396$ at
-the registered follow-up endpoint of $n=100$, and stays within a two-point band
+$0.388$ at the pre-registered endpoint of $n=30$ realizations and $0.395$ at
+the registered follow-up endpoint of $n=100$, and stays within a three-point band
 across all eight checkpoints, while same-ansatz cross-seed disagreement falls
-monotonically from $0.540$ to $0.302$. At the registered checkpoints through $n=30$ the sampling disagreement is
+monotonically from $0.542$ to $0.298$. At the registered checkpoints through $n=30$ the sampling disagreement is
 comparable to or larger than the cross-ansatz disagreement; from $n=40$ to
 $100$ the ordering is reversed. The balance is observable dependent: resolving the
 label into its two response channels, the cross-ansatz to cross-seed ratio at
-$n=100$ is $4.75$ for spin dephasing and $0.94$ for valley excitation, a
+$n=100$ is $5.60$ for spin dephasing and $0.96$ for valley excitation, a
 post-hoc decomposition. A post-hoc ranking diagnostic shows that rank correlation
 across ans\"atze does not track the classification: two ansatz pairs with
-nearly identical rank correlations differ by 33 percentage points in
+nearly identical rank correlations differ by 37 percentage points in
 classification agreement. Operating points selected for stability across noise
 samples alone remain robust under all four coupling profiles in some cases and
 under none in others. Design conclusions obtained under one assumed
@@ -438,19 +438,19 @@ justified model family.
 
   % ---- D_seed: open squares, dashed ----
   \draw[bzblue!85, densely dashed, line width=0.9pt]
-    (0.950,4.851) -- (2.246,4.209) -- (3.541,3.753) -- (4.299,3.385)
-    -- (4.837,3.238) -- (5.595,3.060) -- (6.133,2.760) -- (6.550,2.529);
-  \foreach \x/\y in {0.950/4.851, 2.246/4.209, 3.541/3.753, 4.299/3.385,
-                     4.837/3.238, 5.595/3.060, 6.133/2.760, 6.550/2.529}
+    (0.950,4.874) -- (2.246,4.237) -- (3.541,3.751) -- (4.299,3.345)
+    -- (4.837,3.250) -- (5.595,2.965) -- (6.133,2.685) -- (6.550,2.493);
+  \foreach \x/\y in {0.950/4.874, 2.246/4.237, 3.541/3.751, 4.299/3.345,
+                     4.837/3.250, 5.595/2.965, 6.133/2.685, 6.550/2.493}
     \draw[bzblue!85, fill=white, line width=0.7pt]
       (\x-0.055,\y-0.055) rectangle (\x+0.055,\y+0.055);
 
   % ---- D_ansatz: filled circles, solid ----
   \draw[bxorange!90, line width=0.9pt]
-    (0.950,3.435) -- (2.246,3.245) -- (3.541,3.357) -- (4.299,3.435)
-    -- (4.837,3.338) -- (5.595,3.378) -- (6.133,3.411) -- (6.550,3.447);
-  \foreach \x/\y in {0.950/3.435, 2.246/3.245, 3.541/3.357, 4.299/3.435,
-                     4.837/3.338, 5.595/3.378, 6.133/3.411, 6.550/3.447}
+    (0.950,3.426) -- (2.246,3.185) -- (3.541,3.269) -- (4.299,3.369)
+    -- (4.837,3.351) -- (5.595,3.429) -- (6.133,3.354) -- (6.550,3.438);
+  \foreach \x/\y in {0.950/3.426, 2.246/3.185, 3.541/3.269, 4.299/3.369,
+                     4.837/3.351, 5.595/3.429, 6.133/3.354, 6.550/3.438}
     \fill[bxorange!90] (\x,\y) circle (1.7pt);
 
   % ---- legend, placed in the empty lower-left of the plot box ----
@@ -471,19 +471,19 @@ justified model family.
   \node[tick, anchor=north, align=center] at (7.70,0.96) {6 ansatz\\ pairs};
   \node[tick, anchor=north, align=center] at (9.10,0.96) {10 seed\\ pairs};
 
-  % ansatz pairs (three coincide exactly at 0.3926; offset for visibility)
-  \foreach \x/\y in {7.70/1.375, 7.58/3.417, 7.70/3.417, 7.82/3.417,
-                     7.70/4.429, 7.70/4.627}
+  % ansatz pairs -- all six distinct under the corrected convention
+  \foreach \x/\y in {7.70/1.158, 7.70/3.236, 7.70/3.435, 7.70/3.507,
+                     7.70/4.501, 7.70/4.790}
     \fill[bxorange!90] (\x,\y) circle (1.5pt);
   % seed pairs -- all ten given as centres, same form as above
-  \foreach \y in {1.258, 1.822, 1.935, 2.026, 2.342,
-                  2.816, 2.884, 2.997, 3.358, 3.855}
+  \foreach \y in {1.234, 1.686, 1.912, 2.025, 2.341,
+                  2.839, 2.839, 2.906, 3.268, 3.878}
     \draw[bzblue!85, fill=white, line width=0.6pt]
       (9.10-0.05,\y-0.05) rectangle (9.10+0.05,\y+0.05);
 
   % means
-  \draw[bxorange!90, line width=0.9pt] (7.40,3.447) -- (8.00,3.447);
-  \draw[bzblue!85, line width=0.9pt, densely dashed] (8.80,2.529) -- (9.40,2.529);
+  \draw[bxorange!90, line width=0.9pt] (7.40,3.438) -- (8.00,3.438);
+  \draw[bzblue!85, line width=0.9pt, densely dashed] (8.80,2.493) -- (9.40,2.493);
   \node[font=\small, text=bxorange!90!black, anchor=west] at (8.06,3.447) {mean};
   \node[font=\small, text=bzblue!85!black, anchor=west] at (9.46,2.529) {mean};
 
@@ -535,12 +535,11 @@ $n_{\rm real}=100$ is the endpoint of a follow-up extension registered after the
 $n_{\rm real}=30$ result was seen.
 (d)~Disagreement is the mean fraction of conditions assigned different labels by
 the two members of a pair. (d1)~Across the eight registered checkpoints
-$D_{\rm seed}$ falls from $0.540$ to $0.302$ while $D_{\rm ansatz}$ stays within
-$0.375$--$0.396$; the ordering reverses between $n_{\rm real}=20$ and $30$.
+$D_{\rm seed}$ falls from $0.542$ to $0.298$ while $D_{\rm ansatz}$ stays within
+$0.369$--$0.395$; the ordering reverses between $n_{\rm real}=20$ and $30$.
 (d2)~The underlying pairs at $n_{\rm real}=100$ on the same vertical scale. The
-two distributions overlap, one seed pair falling below the lowest ansatz pair,
-so uniform dominance does not hold. Three ansatz pairs coincide at $0.393$ and
-are offset horizontally for visibility.}
+two distributions overlap, the seed range $0.169$--$0.440$ lying inside the
+ansatz range $0.161$--$0.533$, so uniform dominance does not hold.}
 
 \label{fig:overview}
 \end{figure*}
@@ -620,17 +619,17 @@ apparent model disagreement, before turning to the matched comparison.
 
 The main findings are as follows. Cross-ansatz
 disagreement --- the fraction of conditions two ans\"atze label differently ---
-is $0.396$ at $n_{\rm real}=100$ and stays within a two-point band across all
+is $0.395$ at $n_{\rm real}=100$ and stays within a three-point band across all
 eight checkpoints, while cross-seed disagreement falls monotonically from
-$0.540$ to $0.302$; at
+$0.542$ to $0.298$; at
 the registered checkpoints through $n_{\rm real}=30$ the sampling disagreement
 is comparable to or larger than the cross-ansatz disagreement, and at the
 checkpoints from $40$ to $100$ the ordering is reversed. The balance is observable dependent: resolving the label
 into its two response channels, the cross-ansatz to cross-seed ratio at
-$n_{\rm real}=100$ is $4.75$ for spin dephasing and $0.94$ for valley
+$n_{\rm real}=100$ is $5.60$ for spin dephasing and $0.96$ for valley
 excitation, a post-hoc decomposition. A post-hoc ranking diagnostic shows that rank
 correlation across ans\"atze does not track the classification: two ansatz
-pairs whose rank correlations differ by $0.003$ differ by 33 percentage points
+pairs whose rank correlations differ by $0.011$ differ by 37 percentage points
 in classification agreement. Operating points selected for stability across noise samples
 alone remain robust under all four coupling profiles in some cases and under
 none in others.
@@ -727,7 +726,7 @@ $\varepsilon_{v,\rm base}$ far from pocket & $100\,\mu$eV & baseline motivated b
 $\varepsilon_{v,\min}$ at pocket centre & $5\,\mu$eV & low-detuning floor within measured $E_{\rm VS}$ scales \\
 pocket width $\sigma_p$   & $30$\,nm         & sets path span $8\sigma_p$ \\
 valley off-diagonal $\Delta_v$ & $0.5\,\mu$eV & avoided-crossing scale (toy) \\
-resonance width $\sigma_E$ & $10\,\mu$eV     & regularized hot-spot window (toy proxy) \\
+resonance width $\sigma_E$ & $10\,\mu$eV     & resonance-localization envelope width   \\
 shuttling velocity $v$    & $5$--$20$\,m/s   & conveyor-mode sweep~\cite{seidler_conveyor-mode_2022,langrock_blueprint_2023} \\
 \bottomrule
 \end{tabular}
@@ -772,7 +771,7 @@ four-level effective Hamiltonian
 \begin{align}
 H(x) = \tfrac{1}{2}g\mu_B [B_{\rm ext}+B_z(x)]\,\sigma_z\otimes I_v
       + \tfrac{1}{2}g\mu_B B_x(x)\,\sigma_x\otimes I_v \nonumber\\
-      + \tfrac{1}{2}\varepsilon_v(x)\,I_s\otimes\tau_z
+      - \tfrac{1}{2}\varepsilon_v(x)\,I_s\otimes\tau_z
       + \Delta_v\,I_s\otimes\tau_x
       + \lambda_{sv}(x)\,\sigma_x\otimes\tau_x,
 \end{align}
@@ -795,7 +794,13 @@ $E_{\rm gap}(x)=\sqrt{\varepsilon_v(x)^2+4\Delta_v^2}$. Over the
 $5$--$100\,\mu$eV input range used here this exceeds $\varepsilon_v(x)$
 by less than $2\%$, with the largest relative difference at the pocket
 minimum and less than $0.02\%$ near the $\varepsilon_v\simeq E_Z$ crossings that
-set the proxy hot spots.
+set the proxy hot spots. For the resonance kernels the consequence is smaller
+still. The exact dressed degeneracy condition is $E_{\rm gap}=E_{\rm spin}$;
+centring the window on $\varepsilon_v\simeq E_Z$ instead moves the crossing by
+$0.0014\,\mu$eV, $0.014\%$ of the $\sigma_E=10\,\mu$eV window width, because
+the two approximations displace it in the same direction and largely cancel.
+That cancellation is a consequence of $\Delta_v\ll\varepsilon_v$: at
+$\Delta_v=5\,\mu$eV the residual would reach $8\%$ of the window width.
 
 Three valley energies appear here: the diabatic input detuning
 $\varepsilon_v(x)$, the valley-block eigenlevel splitting $E_{\rm gap}(x)$, and
@@ -868,11 +873,11 @@ A, the \emph{longitudinal-gradient} profile, is the baseline, motivated by the
 spatial Zeeman-energy variation the micromagnet imprints. A$_{\rm pocket}$, the
 \emph{pocket-localized gradient}, weights that same gradient coupling by a
 Gaussian envelope centred on the low-$\varepsilon_v$ pocket. B$_z$ and B$_x$, the \emph{longitudinal-} and
-\emph{transverse-gradient hot-spot} profiles, are resonance-window ans\"atze
+\emph{transverse resonance-localized} profiles, are resonance-window ans\"atze
 motivated by the spin--valley
 hot spot~\cite{yang_spin-valley_2013,huang_spin_2014}; their
 Gaussian windows are centred on the input-detuning condition
-$\varepsilon_v(x)\simeq E_Z(x)$ and act as proxies for the dressed crossing,
+$\delta(x)\equiv\varepsilon_v(x)-E_Z(x)\simeq 0$,
 with no claim to a microscopic line shape. They use two alternative choices
 of
 magnetic-gradient component: the longitudinal gradient $\partial_x B_z$
@@ -886,10 +891,14 @@ precisely the model uncertainty probed here.
 
 None of the four profiles should be
 interpreted as a literature-standard or microscopically derived
-spin--valley coupling; the Gaussian resonance window
-$e^{-(\varepsilon_v-E_Z)^2/(2\sigma_E^2)}$ in particular is a regularized
-proxy for the hot-spot enhancement, not a standard
-expression. These kernels quantify how strongly the
+spin--valley coupling; the Gaussian window
+$e^{-\delta^2/(2\sigma_E^2)}$ in particular is a phenomenological
+localization envelope on the coupling amplitude, not a line shape for the
+enhancement itself. The envelope is bounded by unity and equals unity at
+$\delta=0$, so B$_z$ and B$_x$ are the A profile \emph{suppressed away from}
+the proxy crossing rather than amplified at it; the enhancement near
+$\delta=0$ is produced by the four-level dynamics, as the following
+paragraph sets out. These kernels quantify how strongly the
 conclusions depend on plausible, non-unique modelling choices.
 
 One might ask whether the gradient-only kernels A and
@@ -997,7 +1006,11 @@ identifies as central to Si/SiGe shuttling: valley excitation
 dephasing~\cite{losert_strategies_2024,de_smet_high-fidelity_2025,volmer_mapping_2024,oda_suppressing_2026}.
 We quantify them as the change in valley-leakage probability
 $\Delta P_v$ and the change in dephasing phase variance
-$\Delta\chi_\phi$ induced by the spin--valley coupling. The two ask different questions: $\Delta P_v$ asks how much charge
+$\Delta\chi_\phi$ induced by the spin--valley coupling. The electron enters on
+the \emph{lower} diabatic valley branch, and $P_v$ is the population of the
+upper branch at the end of the trajectory; with $\Delta_v\neq 0$ the diabatic
+branches coincide with the instantaneous valley eigenstates only at the
+endpoints, so the diabatic statement is the operative one. The two ask different questions: $\Delta P_v$ asks how much charge
 noise changes valley leakage, and $\Delta\chi_\phi$ asks how much the valley
 sector changes charge-noise dephasing. They are two cross-effects, not two
 components of one total error, and each therefore needs its own reference. We
@@ -1138,8 +1151,9 @@ decomposition of anything.
 A shared \emph{below-threshold} assignment counts as agreement, so the
 dilution is reported, not conditioned away. Three quantities carry it:
 $p_{\rm all}$, the fraction of conditions inactive under every ansatz and
-block; the below-threshold rates $B_{\rm ansatz}$ and $B_{\rm seed}$; and the
-share of agreement contributed by shared inactivity. A union-conditioned recomputation,
+block; $B_{\rm ansatz}$ and $B_{\rm seed}$, the fraction of comparisons in
+which \emph{both} members are below threshold; and the share of the agreement
+those account for, $B/(1-D)$. A union-conditioned recomputation,
 restricted to comparisons in which at least one member of the pair carries a
 two-channel quadrant label, is reported as a sensitivity analysis only. Intersection conditioning is not
 used.
@@ -1214,10 +1228,10 @@ diagnostic below were added after seeing results and are marked post-hoc where
 they appear.
 
 The ranking diagnostic is a complementary magnitude-ordering summary: the
-pairwise Spearman rank correlation of $|\mathcal{R}|$ across conditions. It
-weights the two channels differently from the classifier, since the released
-magnitude is unnormalized while the classifier judges each channel against its
-own floor. We test that difference directly by recomputing the correlation
+pairwise Spearman rank correlation of $|\mathcal{R}|$ across conditions,
+evaluated within each seed block and then averaged over blocks. It weights the
+two channels differently from the classifier, since the released magnitude is
+unnormalized while the classifier judges each channel against its own floor. We test that difference directly by recomputing the correlation
 under floor-normalized and single-channel magnitudes, and under the signed
 $\Delta\chi_\phi$.
 
@@ -1289,10 +1303,8 @@ $|\mathcal{R}|$ against classification agreement, six ansatz pairs at
 $n_{\rm real}=100$. Filled markers joined by the dashed line are the
 counterexample pair, open markers the other four. A/A$_{\rm pocket}$ and
 A/B$_z$ differ by
-$0.003$ in rank correlation and $33.3$ percentage points in classification
-agreement. The three pairs containing B$_x$ share one agreement value,
-$328/540$; the coincidence is checked in the Supplementary Material. Post-hoc
-diagnostic.}
+$0.011$ in rank correlation and $37.2$ percentage points in classification
+agreement. Post-hoc diagnostic.}
 \label{fig:atlas}
 \end{figure*}
 
@@ -1302,17 +1314,17 @@ cross-ansatz difference there carried a sampling difference as well. Repeating
 that comparison with the seeding corrected, at matched ensemble size
 $n_{\rm real}=5$, matched seed block and matched convention, raises the mean
 classification agreement from $35.96\%$ to $56.94\%$ and the mean rank
-correlation from $0.837$ to $0.917$. The correction removes $20.99$ of the
-archived $64.04$ percentage points of disagreement, about one third; $43.06$
-points survive matched seeding. It accounts for most of the \emph{revision} --
-$20.99$ of the $24.60$ points by which agreement rises from the archived value
-to the corrected $n_{\rm real}=30$ result -- and the archived numbers are
+correlation from $0.837$ to $0.917$. Both endpoints are computed in the
+archived convention, so the contrast isolates seeding alone. The correction
+removes $20.99$ of the archived $64.04$ percentage points of disagreement,
+about one third; $43.06$ points survive matched seeding. It accounts for most
+of the archived overstatement -- and the archived numbers are
 retained only as a provenance record.
 
 \paragraph{Cross-ansatz disagreement is large under matched realizations.}
 At the pre-registered endpoint $n_{\rm real}=30$, cross-ansatz disagreement is
-$D_{\rm ansatz}=0.394$ and same-ansatz cross-seed disagreement is
-$D_{\rm seed}=0.389$; the two are comparable there, and both are large. Averaged
+$D_{\rm ansatz}=0.388$ and same-ansatz cross-seed disagreement is
+$D_{\rm seed}=0.385$; the two are comparable there, and both are large. Averaged
 over conditions, ansatz pairs and seed blocks, about $39\%$ of matched
 comparisons assign different design-facing labels. Neither scale dominates at
 that endpoint,
@@ -1320,36 +1332,37 @@ which is a comparison outcome and not a null result.
 
 The aggregate hides a persistent pair structure. Across all eight registered
 checkpoints the six ansatz pairs fall into three tiers: A/B$_z$ alone at the
-bottom ($0.161$--$0.193$), the three pairs containing B$_x$ in a narrow middle
-band ($0.352$--$0.400$), and A/A$_{\rm pocket}$ together with
-A$_{\rm pocket}$/B$_z$ at the top ($0.478$--$0.532$). The third pair containing
+bottom ($0.143$--$0.180$), the three pairs containing B$_x$ in a narrow middle
+band ($0.348$--$0.407$), and A/A$_{\rm pocket}$ together with
+A$_{\rm pocket}$/B$_z$ at the top ($0.467$--$0.533$). The third pair containing
 A$_{\rm pocket}$, A$_{\rm pocket}$/B$_x$, sits in the middle band. Between $n_{\rm real}=30$ and $100$ no pair moves by
-more than $2.6$ points while the seed-pair mean falls from $0.389$ to $0.302$.
+more than $2.0$ points while the seed-pair mean falls from $0.385$ to $0.298$.
 The tiers name three specified diagnostic contrasts: among the contrasts
 examined, the specified pocket localization produces the largest classification
 change and the specified hot-spot weighting the smallest. The four ans\"atze form a set of specified
 contrasts, so this names three of them and not a general ranking of modelling
 axes. A and B$_z$ remain distinct: they are the most similar pair in the family
-and still disagree on $18.3\%$ of conditions.
+and still disagree on $16.1\%$ of conditions.
 
 Uniform dominance does not hold. The two pairwise distributions overlap at
-every checkpoint: at $n_{\rm real}=100$ one seed pair, blocks 3 and 5 at
-$0.171$, falls below the lowest ansatz pair at $0.183$. As a post-hoc descriptive summary of the same
-sixty (ansatz-pair, seed-pair) comparisons, 48 favour the ansatz side there,
-against 34 at $n_{\rm real}=30$. Shared inactivity contributes to both sides and is
-reported, not conditioned away: $11$ of $108$ conditions are below
+every checkpoint: at $n_{\rm real}=100$ the lowest seed pair, blocks 3 and 5 at
+$0.169$, sits just above the lowest ansatz pair at $0.161$, and the two ranges
+otherwise interleave. As a post-hoc descriptive summary of the same
+sixty (ansatz-pair, seed-pair) comparisons, 46 favour the ansatz side there,
+against 33 at $n_{\rm real}=30$. Shared inactivity contributes to both sides and is
+reported, not conditioned away: $13$ of $108$ conditions are below
 threshold under every ansatz and block at $n_{\rm real}=100$, and shared
-below-threshold assignments supply $45\%$ of ansatz-pair agreement. Restricting
+below-threshold assignments supply $37\%$ of ansatz-pair agreement. Restricting
 to comparisons in which at least one member carries a two-channel quadrant
 label, as a sensitivity analysis, leaves the contrast intact and larger,
-$0.523$ against $0.326$.
+$0.521$ against $0.323$.
 
 \paragraph{The two scales behave differently in ensemble size.}
-Over the eight registered checkpoints $D_{\rm seed}$ decreases from $0.540$ to
-$0.302$ with no rebound, while $D_{\rm ansatz}$ stays within a $2.1$-point band,
-$0.375$ to $0.396$, with no trend [Fig.~\ref{fig:overview}(d)]. The ordering
+Over the eight registered checkpoints $D_{\rm seed}$ decreases from $0.542$ to
+$0.298$ with no rebound, while $D_{\rm ansatz}$ stays within a $2.6$-point band,
+$0.369$ to $0.395$, with no trend [Fig.~\ref{fig:overview}(d)]. The ordering
 reverses between $n_{\rm real}=20$ and $30$, and the separation widens
-thereafter, $R_D$ running from $0.73$ to $1.31$. Cross-ansatz disagreement thus
+thereafter, $R_D$ running from $0.73$ to $1.33$. Cross-ansatz disagreement thus
 persists across the ensemble sizes and registered seed blocks examined, whereas
 cross-seed disagreement decreases over the registered trajectory.
 
@@ -1368,20 +1381,21 @@ The nine-category label is an exact bijection of the two channels' three-state
 descriptions, so Eq.~\eqref{eq:channel-identity} holds identically
 and the joint estimand is an inclusion--exclusion combination of the two
 channel disagreements and their overlap [Fig.~\ref{fig:atlas}(a)]. At $n_{\rm real}=30$ the valley channel runs toward
-sampling, $0.255$ against $0.362$, and the dephasing channel toward model form,
-$0.190$ against $0.061$. The two channel contrasts are opposed, $-0.106$ and
-$+0.129$, and the overlap term completes the identity at $-0.018$, leaving the
-joint difference at $+0.005$. The near-equality is the arithmetic outcome of
+sampling, $0.257$ against $0.355$, and the dephasing channel toward model form,
+$0.188$ against $0.064$. The two channel contrasts are opposed, $-0.099$ and
+$+0.124$, and the overlap term completes the identity at $-0.023$, leaving the
+joint difference at $+0.002$. The near-equality is the arithmetic outcome of
 three terms, not one channel prevailing. At
-$n_{\rm real}=100$ the valley channel is approximately balanced, ratio $0.94$,
-while the dephasing ratio rises to $4.75$.
+$n_{\rm real}=100$ the valley channel is approximately balanced, ratio $0.96$,
+while the dephasing ratio rises to $5.60$.
 
 The continuous responses agree, and must be stated separately. For
-$\Delta\chi_\phi$ the cross-ansatz dispersion stays between $41$ and $54$ in
-floor units over the whole trajectory and moves from $45.3$ to $44.1$ between
-the two endpoints, while the cross-seed dispersion halves, $22.3$ to $10.2$. For
-$\Delta P_v$ both fall steeply -- cross-ansatz $30.6$ to $24.4$ against
-cross-seed $38.3$ to $20.1$ -- so no ensemble-size-stable cross-ansatz
+$\Delta\chi_\phi$ the cross-ansatz dispersion stays between $40$ and $52$ in
+floor units over the whole trajectory and moves from $43.5$ to $42.4$ between
+the two endpoints, while the cross-seed dispersion more than halves, $21.8$ to
+$9.8$. For
+$\Delta P_v$ both fall steeply -- cross-ansatz $28.8$ to $23.0$ against
+cross-seed $36.2$ to $19.0$ -- so no ensemble-size-stable cross-ansatz
 continuous scale is isolated in that channel, and its ratio only reaches
 $1.22$. Neither dispersion is monotone in $n_{\rm real}$: the seed dispersion
 rebounds at $n_{\rm real}=60$ for $\Delta P_v$ and at $10$ for
@@ -1393,28 +1407,31 @@ consumes therefore changes which uncertainty is larger.
 This diagnostic and the comparisons in it were added after the registered
 results were seen; both are post-hoc.
 Rank correlation is high and narrow across the family, mean $0.913$ at
-$n_{\rm real}=100$ with all six pairs between $0.844$ and $0.978$, while
-classification agreement spans $0.483$ to $0.817$. The two do not track each
+$n_{\rm real}=100$ with all six pairs between $0.850$ and $0.978$, while
+classification agreement spans $0.467$ to $0.839$. The two do not track each
 other [Fig.~\ref{fig:atlas}(c)]: A/A$_{\rm pocket}$ and A/B$_z$ differ by
-$0.003$ in rank correlation and by $33.3$ percentage points in classification
+$0.011$ in rank correlation and by $37.2$ percentage points in classification
 agreement. Chance correction does not rescue the agreement -- Cohen's $\kappa$
-runs from $0.338$ to $0.777$, and the two lowest values belong to
+runs from $0.311$ to $0.804$, and the two lowest values belong to
 A/A$_{\rm pocket}$ and A$_{\rm pocket}$/B$_z$.
 
 The rank metric weights the two channels differently from the classifier, and
 that was the leading alternative explanation. Recomputing the correlation under
 a floor-normalized magnitude moves the A/A$_{\rm pocket}$ against A/B$_z$ gap
-only from $0.003$ to $0.015$ at $n_{\rm real}=100$, and single-channel
+only from $0.011$ to $0.023$ at $n_{\rm real}=100$, and single-channel
 magnitudes move it less; channel weighting does not account for the decoupling.
-Among the ranked quantities tested here, the one that tracks classification
-agreement is the \emph{signed} dephasing response: its A/A$_{\rm pocket}$ against A/B$_z$ gap is
-$0.154$, and its six-pair Spearman correlation with classification agreement is
-$0.880$ at $n_{\rm real}=100$ and $0.771$ at $30$, against $-0.030$ and
-$-0.029$ for the released magnitude. This implicates spin-response sign
-information as a leading contributor to the decoupling. It is a post-hoc metric
-over six non-independent pairs -- A/A$_{\rm pocket}$ and A/B$_z$ share A -- and
-the classifier uses floor crossing as well as sign, so it is not a demonstrated
-cause.
+Among the ranked quantities tested here, the \emph{signed} dephasing response
+is the only one that separates the counterexample pair: its
+A/A$_{\rm pocket}$ against A/B$_z$ gap is $0.147$, three times the next largest
+($0.042$, the signed leakage response) and an order of magnitude above the
+released magnitude ($0.011$). Its six-pair Spearman correlation with
+classification agreement is $+0.486$ at both $n_{\rm real}=30$ and $100$,
+against $-0.086$ for the released magnitude: the highest of the quantities
+tested, but not high enough to read the signed response as a substitute
+ranking. Spin-response sign information is therefore a candidate contributor to
+the decoupling and not a demonstrated one. It is a post-hoc metric over six
+non-independent pairs -- A/A$_{\rm pocket}$ and A/B$_z$ share A -- and the
+classifier uses floor crossing as well as sign.
 
 \begin{table}[!tbp]
 \centering
@@ -1434,33 +1451,33 @@ case & geometry & $v$\,(m/s) & $\lambda$\,($\mu$eV) & discovered by & confirmed 
 center & period$-$   & 5  & 1.0 & A$_{\rm p}$                 & 2/4 \\
 edge   & depth$-$    & 5  & 1.0 & A, A$_{\rm p}$, B$_z$, B$_x$& \textbf{4/4} \\
 edge   & half\_z$-$  & 5  & 1.0 & A                           & 2/4 \\
-edge   & period$+$   & 5  & 1.0 & A, A$_{\rm p}$              & 2/4 \\
-edge   & depth$+$    & 10 & 0.5 & A, B$_z$, B$_x$             & \textbf{4/4} \\
+edge   & period$+$   & 5  & 1.0 & A, A$_{\rm p}$, B$_x$       & \textbf{4/4} \\
+edge   & depth$+$    & 10 & 0.5 & A, B$_z$, B$_x$             & 3/4 \\
 edge   & depth$+$    & 10 & 1.0 & A, A$_{\rm p}$, B$_z$, B$_x$& \textbf{4/4} \\
-edge   & baseline    & 20 & 1.0 & B$_z$, B$_x$                & 0/4 \\
+edge   & baseline    & 20 & 1.0 & B$_z$, B$_x$                & 1/4 \\
 edge   & half\_z$+$  & 20 & 1.0 & A, B$_z$, B$_x$             & 3/4 \\
 edge   & half\_z$-$  & 20 & 1.0 & B$_x$                       & 1/4 \\
-edge   & period$+$   & 20 & 1.0 & A, B$_z$, B$_x$             & 1/4 \\
+edge   & period$+$   & 20 & 1.0 & A, B$_z$, B$_x$             & 0/4 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \paragraph{Seed-stable candidates transport unevenly.}
-Selecting on seed stability alone over the three discovery blocks yields 24
-(ansatz, condition) candidate pairs at $n_{\rm real}=30$, spread 7/4/6/7 over
+Selecting on seed stability alone over the three discovery blocks yields 25
+(ansatz, condition) candidate pairs at $n_{\rm real}=30$, spread 7/4/6/8 over
 A, A$_{\rm pocket}$, B$_z$ and B$_x$, and a discovery union of ten conditions
-(Table~\ref{tab:retest}). Evaluated on the two holdout blocks, 20 of the 24
+(Table~\ref{tab:retest}). Evaluated on the two holdout blocks, 21 of the 25
 replicate within their own ansatz: an operating point that is stable across
 seeds under one coupling profile generally stays stable under that profile.
 
 Transport across the family is a different matter [Fig.~\ref{fig:atlas}(b)]. Of
-the ten conditions, one is confirmed under no ansatz, two under one, three under
-two, one under three, and three under all four. The registered
+the ten conditions, one is confirmed under no ansatz, two under one, two under
+two, two under three, and three under all four. The registered
 $n_{\rm real}=100$ companion analysis gives 31 pairs, a union of 13, within-ansatz
-replication 24 of 31, and transport 2/3/3/2/3. This is an extended confirmation and not an
+replication 21 of 31, and transport 2/4/2/2/3. This is an extended confirmation and not an
 independent replication: the $n_{\rm real}=100$ aggregate contains the
 $n_{\rm real}=30$ realizations as a prefix and reuses the same holdout blocks.
-Of the 24 pairs, 22 are retained, 2 lost and 9 gained, and the two unions are
+Of the 25 pairs, 22 are retained, 3 lost and 9 gained, and the two unions are
 nested. The same three conditions receive
 four-of-four confirmation at both prefixes. They are grid-local candidates
 conditional on this diagnostic family, and three conditions do not support a

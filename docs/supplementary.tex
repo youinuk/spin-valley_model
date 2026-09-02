@@ -350,30 +350,32 @@ alternative explanation of the decoupling reported in the main text.
 
 Table~\ref{tab:weight} recomputes the pairwise rank correlations under
 alternative ranked quantities. The diagnostic quantity is the gap between the
-A/A$_{\rm pocket}$ and A/B$_z$ pairs, which differ by $33.3$ percentage points
-in classification agreement at $n_{\rm real}=100$ ($35.9$ at $30$). If raw-unit
+A/A$_{\rm pocket}$ and A/B$_z$ pairs, which differ by $37.2$ percentage points
+in classification agreement at $n_{\rm real}=100$ ($34.1$ at $30$). If raw-unit
 channel weighting were the main explanation, floor normalization should move
 the ranking gap substantially toward the classification gap. It moves it only
-from $0.003$ to $0.015$, and ranking each channel separately moves it less. Among the ranked quantities tested here, the one that tracks
-classification agreement is the \emph{signed} dephasing response, whose gap
-reaches $0.154$ and whose six-pair correlation with classification agreement is
-$+0.880$. This implicates response-sign information as a leading contributor to
-the decoupling.
+from $0.011$ to $0.023$, and ranking each channel separately moves it less. Among the ranked quantities tested here, the only one that
+separates the pair is the \emph{signed} dephasing response, whose gap reaches
+$0.147$ and whose six-pair correlation with classification agreement is
+$+0.486$ at both ensemble sizes. This makes response-sign information a
+candidate contributor to the decoupling.
 
 Two limits on that reading. The six ansatz pairs are not independent --
 A/A$_{\rm pocket}$ and A/B$_z$ share A -- so the six-pair correlations are
 supporting evidence only, and the intermediate quantities change sign between
-the two ensemble sizes. The classifier also uses floor crossing as well as
-sign. The signed-$\Delta\chi_\phi$ result is a post-hoc diagnostic that
-implicates sign information as a leading contributor; it is not a demonstrated
-cause. Figure~\ref{fig:supp_robust}(a) shows the same comparison.
+the two ensemble sizes. A six-pair correlation of $+0.486$ is the largest here
+but is not by itself evidence that the signed response tracks the classifier;
+the separation of the counterexample pair is the stronger part of the result.
+The classifier also uses floor crossing as well as sign. The
+signed-$\Delta\chi_\phi$ result is a post-hoc diagnostic that implicates sign
+information as a candidate contributor; it is not a demonstrated cause. Figure~\ref{fig:supp_robust}(a) shows the same comparison.
 
 \begin{table}[t]
 \centering
 \caption{Pairwise rank correlation under alternative definitions of the ranked
 quantity, and the resulting A/A$_{\rm pocket}$ against A/B$_z$ gap. The
-classification-agreement gap for that pair of pairs is $0.359$ at
-$n_{\rm real}=30$ and $0.333$ at $100$; a ranked quantity carrying the
+classification-agreement gap for that pair of pairs is $0.341$ at
+$n_{\rm real}=30$ and $0.372$ at $100$; a ranked quantity carrying the
 explanation should close much of that distance. Six-pair ordering statistics are discussed in the
 text and are not tabulated: only the released magnitude and the signed
 $\Delta\chi_\phi$ are stable between the two ensemble sizes. Post-hoc
@@ -386,12 +388,12 @@ diagnostic.}
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 ranked quantity & $n{=}30$ & $n{=}100$ & $n{=}30$ & $n{=}100$ \\
 \midrule
-released $|\mathcal{R}|$ & $0.914$ & $0.913$ & $0.0090$ & $0.0029$ \\
-floor-normalized magnitude & $0.888$ & $0.896$ & $0.0197$ & $0.0146$ \\
-$|\Delta P_v|$ only & $0.856$ & $0.869$ & $0.0010$ & $0.0100$ \\
-$|\Delta\chi_\phi|$ only & $0.921$ & $0.917$ & $0.0002$ & $0.0049$ \\
-$\Delta P_v$, signed & $0.846$ & $0.826$ & $0.0312$ & $0.0390$ \\
-$\Delta\chi_\phi$, signed & $0.788$ & $0.765$ & $\mathbf{0.1299}$ & $\mathbf{0.1538}$ \\
+released $|\mathcal{R}|$ & $0.912$ & $0.913$ & $0.0109$ & $0.0108$ \\
+floor-normalized magnitude & $0.886$ & $0.897$ & $0.0251$ & $0.0234$ \\
+$|\Delta P_v|$ only & $0.855$ & $0.871$ & $0.0084$ & $0.0112$ \\
+$|\Delta\chi_\phi|$ only & $0.919$ & $0.916$ & $0.0225$ & $0.0256$ \\
+$\Delta P_v$, signed & $0.847$ & $0.825$ & $0.0313$ & $0.0425$ \\
+$\Delta\chi_\phi$, signed & $0.827$ & $0.830$ & $\mathbf{0.1280}$ & $\mathbf{0.1465}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -400,19 +402,19 @@ $\Delta\chi_\phi$, signed & $0.788$ & $0.765$ & $\mathbf{0.1299}$ & $\mathbf{0.1
 A shared \emph{below-threshold} assignment counts as agreement, so a large
 inactive population could in principle manufacture both the agreement level and
 the cross-ansatz versus cross-seed contrast. The main text reports the dilution
-directly: at $n_{\rm real}=100$, $11$ of $108$ conditions are inactive under
-every ansatz and block, and shared below-threshold assignments supply $44.6\%$
-of ansatz-pair agreement and $44.9\%$ of seed-pair agreement.
+directly: at $n_{\rm real}=100$, $13$ of $108$ conditions are inactive under
+every ansatz and block, and shared below-threshold assignments supply $46.4\%$
+of ansatz-pair agreement and $47.0\%$ of seed-pair agreement.
 
 As a pre-registered sensitivity analysis we recompute both estimands on the
 subset of comparisons in which at least one member carries one of the four
 two-channel quadrant labels. A comparison is excluded only when neither member
 carries such a label; a single-channel or below-threshold assignment can still
 appear as the other member of an included pair. The contrast survives and widens: cross-ansatz disagreement rises to
-$0.523$ and cross-seed to $0.326$ at $n_{\rm real}=100$, a ratio of $1.61$
-against $1.31$ unconditioned, and the union-conditioned cross-ansatz value stays
-within $0.505$--$0.550$ across all eight registered checkpoints while the
-cross-seed value falls from $0.656$ to $0.326$
+$0.521$ and cross-seed to $0.323$ at $n_{\rm real}=100$, a ratio of $1.61$
+against $1.33$ unconditioned, and the union-conditioned cross-ansatz value stays
+within $0.487$--$0.544$ across all eight registered checkpoints while the
+cross-seed value falls from $0.658$ to $0.323$
 [Fig.~\ref{fig:supp_robust}(b)]. Intersection conditioning is deliberately not
 used: it would condition away the transitions the comparison measures.
 
@@ -434,7 +436,7 @@ Raw agreement can be inflated by skewed marginals, and \emph{below-threshold} is
 the largest single category. Cohen's $\kappa$, computed on the same
 nine-category label set, corrects for that. Table~\ref{tab:kappa} reports both
 quantities at the two endpoints. No pair reaches strong agreement: $\kappa$ runs
-from $0.345$ to $0.794$ at $n_{\rm real}=30$ and from $0.338$ to $0.777$ at
+from $0.360$ to $0.790$ at $n_{\rm real}=30$ and from $0.311$ to $0.804$ at
 $100$, and the ordering is stable between them.
 
 The two lowest values at both endpoints are A/A$_{\rm pocket}$ and
@@ -460,20 +462,23 @@ $n_{\rm real}=100$.}
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 pair & agreement & $\kappa$ & agreement & $\kappa$ \\
 \midrule
-A vs A$_{\rm pocket}$         & $46.9\%$ & $0.345$ & $48.3\%$ & $0.338$ \\
-A$_{\rm pocket}$ vs B$_z$     & $48.1\%$ & $0.358$ & $50.4\%$ & $0.365$ \\
-A vs B$_x$                    & $61.3\%$ & $0.533$ & $60.7\%$ & $0.512$ \\
-A$_{\rm pocket}$ vs B$_x$     & $60.9\%$ & $0.475$ & $60.7\%$ & $0.452$ \\
-B$_z$ vs B$_x$                & $63.3\%$ & $0.557$ & $60.7\%$ & $0.513$ \\
-A vs B$_z$                    & $82.8\%$ & $0.794$ & $81.7\%$ & $0.777$ \\
+% kappa column pending a confirming read of legacy_n*.json["kappa"];
+% the agreement column is verified against ranking_n*.json["agreement"].
+A vs A$_{\rm pocket}$         & $48.3\%$ & $0.360$ & $46.7\%$ & $0.311$ \\
+A$_{\rm pocket}$ vs B$_z$     & $49.6\%$ & $0.373$ & $49.6\%$ & $0.347$ \\
+A$_{\rm pocket}$ vs B$_x$     & $61.1\%$ & $0.475$ & $59.8\%$ & $0.431$ \\
+A vs B$_x$                    & $61.3\%$ & $0.532$ & $60.6\%$ & $0.508$ \\
+B$_z$ vs B$_x$                & $64.6\%$ & $0.571$ & $62.6\%$ & $0.533$ \\
+A vs B$_z$                    & $82.4\%$ & $0.790$ & $83.9\%$ & $0.804$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The three pairs containing B$_x$ agree on exactly $328$ of $540$ comparisons at
-$n_{\rm real}=100$. This is a coincidence of three near-equal counts, not a
-structural identity: the same three values are $0.613$, $0.609$ and $0.633$ at
-$n_{\rm real}=30$ and $0.600$, $0.607$ and $0.615$ at $5$.
+The three pairs containing B$_x$ agree on $327$, $323$ and $338$ of $540$
+comparisons at $n_{\rm real}=100$, that is $0.606$, $0.598$ and $0.626$. They
+are close but not equal, and the corresponding values at $n_{\rm real}=30$ are
+$0.613$, $0.611$ and $0.646$. The near-coincidence is a numerical accident of
+three similar counts and carries no structural meaning.
 
 \subsection{Absolute performance proxies (archival)}
 The main text reports baseline-relative responses. For scale, Table~\ref{tab:abs}
