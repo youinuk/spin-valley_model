@@ -35,25 +35,25 @@ repetitions of the simulated noise, not experimental repetitions.
 
 | | `n_real = 30` | `n_real = 100` |
 | --- | --- | --- |
-| cross-ansatz disagreement | 0.394 | 0.396 |
-| cross-seed disagreement | 0.389 | 0.302 |
+| cross-ansatz disagreement | 0.388 | 0.395 |
+| cross-seed disagreement | 0.385 | 0.298 |
 
 `n_real = 30` is the pre-registered endpoint; `n_real = 100` is the endpoint of
 a registered follow-up extension.
 
 - Cross-ansatz disagreement **persists** across the eight registered
-  checkpoints, staying within a 2.1-point band, while cross-seed disagreement
-  falls monotonically from 0.540 to 0.302. The ordering reverses between
+  checkpoints, staying within a 2.6-point band, while cross-seed disagreement
+  falls monotonically from 0.542 to 0.298. The ordering reverses between
   `n_real = 20` and `30`.
 - Magnitude **ranking** stays high across the family (mean Spearman ρ = 0.913 at
-  `n_real = 100`) while classification agreement spans 0.483 to 0.817. Two
-  ansatz pairs whose rank correlations differ by 0.003 differ by 33 percentage
+  `n_real = 100`) while classification agreement spans 0.467 to 0.839. Two
+  ansatz pairs whose rank correlations differ by 0.011 differ by 37 percentage
   points in classification agreement.
 - The balance is **observable dependent**: resolving the label into its two
-  channels, the cross-ansatz to cross-seed ratio at `n_real = 100` is 4.75 for
-  spin dephasing and 0.94 for valley excitation.
+  channels, the cross-ansatz to cross-seed ratio at `n_real = 100` is 5.60 for
+  spin dephasing and 0.96 for valley excitation.
 - Operating points selected for stability across noise samples alone replicate
-  within their own ansatz (20 of 24 at `n_real = 30`) but **transport unevenly**
+  within their own ansatz (21 of 25 at `n_real = 30`) but **transport unevenly**
   across the family: of ten conditions, three are confirmed under all four
   ansätze and one under none.
 
@@ -72,35 +72,63 @@ roughly 4.8× on the atlas — see `REPRODUCIBILITY.md`.
 
 ## Verify a headline number
 
-The closed analysis outputs are shipped, so the primary comparison is
+The canonical analysis outputs are shipped, so the primary comparison is
 checkable without any simulation:
 
 ```bash
 python -c "
 import json
-a = json.load(open('data/t0/analysis/attribution_n100.json'))['by_n']
+a = json.load(open('data/t0c/analysis/attribution_n100.json'))['by_n']
 for n in ('30', '100'):
     v = a[n]
     print(f\"n_real={n:>4}  D_ansatz={v['D_ansatz']:.3f}\"
           f\"  D_seed={v['D_seed']:.3f}  ratio={v['R_D']:.2f}\")
 "
-# n_real=  30  D_ansatz=0.394  D_seed=0.389  ratio=1.01
-# n_real= 100  D_ansatz=0.396  D_seed=0.302  ratio=1.31
+# n_real=  30  D_ansatz=0.388  D_seed=0.385  ratio=1.01
+# n_real= 100  D_ansatz=0.395  D_seed=0.298  ratio=1.33
 ```
 
-`data/t0/analysis/` holds fourteen such files; `REPRODUCIBILITY.md` Sec. 3 maps
-each one to the numbers it supplies.
+`data/t0c/analysis/` holds fourteen such files; `REPRODUCIBILITY.md` Sec. 3
+maps each one to the numbers it supplies.
+
+`data/t0c/analysis/` is the canonical analysis layer for the current
+manuscript. `data/t0/analysis/` ships alongside it as **superseded historical
+provenance** for the pre-correction calculation: it is not a source of any
+current number. The two layers may be compared with
+`reproduce/t0/compare_t0_t0c.py`, which documents the valley-ordering
+correction. That comparison is a correction audit and must not be read as a
+scientific perturbation of one estimand — the two layers use opposite
+valley-energy orderings, so the same symbol names different quantities in the
+two columns.
 
 ## Regenerate the manuscript figures
 
-Four commands, documented with expected output in `REPRODUCIBILITY.md` Sec. 2:
+Seven commands, documented with expected output in `REPRODUCIBILITY.md`
+Sec. 2. Run them into a wiped `figures/` and all eight manuscript figures come
+back; that is the acceptance test the release checker performs in Sec. 6.
 
 ```bash
-python reproduce/phase5_paper_figures.py \
-    --ez-convention total-local --profile-norm prefactor
-mkdir -p figures/t0
-python reproduce/t0/make_fig4.py  data/t0/analysis figures/t0/sensitivity_atlas.pdf
-python reproduce/t0/make_supp_robustness.py data/t0/analysis figures/t0/robustness_checks.pdf
+# 1. Lift the per-condition responses out of the raw layer. Fig. 3 needs them
+#    and they ship as data/t0c/responses_n100.csv.
+python reproduce/t0/export_responses.py ../repro-runs/t0c-step3b \
+    data/t0c/responses_n100.csv
+
+# 2. Figs. 2, 3, 4 and S5 from one producer. --ez-convention and
+#    --profile-norm have no defaults and are required whenever Fig. 2 is
+#    requested, so a bare invocation cannot build Fig. 2 in the archival
+#    convention beside three corrected figures.
+PYTHONPATH=. python reproduce/phase5_paper_figures.py --figures all \
+    --ez-convention total-local --profile-norm prefactor \
+    --responses data/t0c/responses_n100.csv --analysis data/t0c/analysis
+
+# 3. The four supplement validation figures. Each producer also prints the
+#    numbers its caption quotes.
+PYTHONPATH=. python reproduce/krzywda_B1_stationary.py
+PYTHONPATH=. python reproduce/krzywda_B3_filter.py
+PYTHONPATH=. python reproduce/oda_C1_lz_single.py
+PYTHONPATH=. python geometry/prism_field.py
+
+# 4. Install the eight manuscript figures into docs/figures/.
 docs/collect_figures.sh "__ez-total-local__norm-prefactor"
 ```
 
@@ -113,17 +141,20 @@ the validation controls, and the tolerances are all in `REPRODUCIBILITY.md`.
 ```
 geometry/  noise/  reproduce/  tests/   field model, noise, analyses, checks
 constants.py, field_landscape.py        constants and analytic landscape
-data/t0/analysis/                       closed T0 analysis outputs (14 JSON)
-reproduce/t0/                           Fig. 4 and the supplement robustness figure, and the
-                                        provenance tools for the raw layer
+data/t0c/analysis/                      canonical corrected analysis outputs (14 JSON)
+data/t0/analysis/                       superseded historical outputs (14 JSON)
+reproduce/t0/                           provenance tools for the raw layer, the response
+                                        exporter, and the T0/T0-C correction audit
 docs/                                   manuscript sources and figures
 figures/                                generated figures, CSVs, archival data
 REPRODUCIBILITY.md                      commands, expected values, tolerances
 ```
 
-The raw T0 production pickles are distributed in the Zenodo raw-data layer
-rather than here; everything the manuscript reports about T0 is reproducible
-from `data/t0/analysis/`.
+The corrected production pickles are distributed in the Zenodo raw-data layer
+rather than here; every current manuscript number is reproducible from
+`data/t0c/analysis/`. `data/t0/analysis/` is retained only as superseded
+historical provenance and is not a regeneration target: the convention that
+produced it is no longer implemented in this tree.
 
 ## Build the manuscript
 

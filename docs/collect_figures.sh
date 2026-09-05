@@ -8,7 +8,7 @@
 # --------------------------------------------------------------------------
 # T0-C NOTE (2026-09)
 #
-# Fig. 4 (sensitivity_atlas.pdf) and Fig. S1 (robustness_checks.pdf) are NO
+# Fig. 4 (sensitivity_atlas.pdf) and Fig. S5 (robustness_checks.pdf) are NO
 # LONGER produced by the r31 atlas/supplement figure scripts. The r31 outputs
 #
 #     figures/phase5/phase5_atlas_validate_figure*.pdf
@@ -41,9 +41,9 @@
 # per-condition responses, so phase5_quadrant_schematic.pdf is not installed and
 # is not referenced by paper.tex.
 #
-# phase5_paper_figures.py defaults to the archival legacy-50ueV convention and
-# its bare invocation does NOT produce the manuscript figure. Only the adopted
-# suffix is accepted below, so a legacy dataset cannot be installed by mistake.
+# phase5_paper_figures.py has no convention default: Fig. 2 must be asked for
+# with --ez-convention and --profile-norm. Only the adopted dataset suffix is
+# accepted below, so a legacy dataset cannot be installed by mistake.
 # --------------------------------------------------------------------------
 set -euo pipefail
 
@@ -99,10 +99,14 @@ echo "collected ${#MAP[@]} manuscript figures into $SCRIPT_DIR/figures/"
 
 # A stale copy left in docs/figures/ is invisible in the build and silently
 # reverts a figure. paper.tex no longer references the schematic.
-if [ -e "$SCRIPT_DIR/figures/quadrant_schematic.pdf" ]; then
-  echo "" >&2
-  echo "NOTE: docs/figures/quadrant_schematic.pdf is left over from the" >&2
-  echo "schematic Fig. 3 and is no longer referenced. Delete it." >&2
+STALE="$SCRIPT_DIR/figures/quadrant_schematic.pdf"
+if [ -e "$STALE" ]; then
+  # Removed, not reported. paper.tex no longer references it, so a stale copy
+  # is invisible until someone points a caption back at it -- which is how the
+  # wrong Fig. 4 shipped. A warning that has to be acted on by hand is a
+  # reproduction step that can be forgotten.
+  echo "removing stale manuscript figure: ${STALE#$SCRIPT_DIR/}"
+  rm -f "$STALE"
 fi
 
 # Report what was installed, with timestamps, so a figure that was regenerated

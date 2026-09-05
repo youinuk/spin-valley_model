@@ -63,21 +63,33 @@ Section 5.
 
 ## 2. Reproduce the manuscript figures
 
-Four commands, in order, produce every figure in the paper and the supplement.
+Seven commands, in order, produce every figure in the paper and the
+supplement. Run them into a wiped `figures/` and all eight come back; a figure
+that only survives because its PDF was already there is a figure with no
+producer, and this project has shipped two of those.
 
 ```bash
-# Figs. 2 and 3 -- computed from the field and profile model at run time.
-# The options are REQUIRED: the bare invocation defaults to the archival
-# legacy-50ueV convention and does not produce the manuscript figure.
-python reproduce/phase5_paper_figures.py \
-    --ez-convention total-local --profile-norm prefactor
+# 1. Lift the per-condition responses out of the raw layer. Fig. 3 needs them
+#    and they ship as data/t0c/responses_n100.csv.
+python reproduce/t0/export_responses.py ../repro-runs/t0c-step3b \
+    data/t0c/responses_n100.csv
 
-# Fig. 4 and the supplement robustness figure -- JSON in, PDF out. No pickles, no simulation, no JAX.
-mkdir -p figures/t0
-python reproduce/t0/make_fig4.py  data/t0c/analysis figures/t0/sensitivity_atlas.pdf
-python reproduce/t0/make_supp_robustness.py data/t0c/analysis figures/t0/robustness_checks.pdf
+# 2. Figs. 2, 3, 4 and S5 from one producer. --ez-convention and
+#    --profile-norm have no defaults and are required whenever Fig. 2 is
+#    requested, so a bare invocation cannot build Fig. 2 in the archival
+#    convention beside three corrected figures.
+PYTHONPATH=. python reproduce/phase5_paper_figures.py --figures all \
+    --ez-convention total-local --profile-norm prefactor \
+    --responses data/t0c/responses_n100.csv --analysis data/t0c/analysis
 
-# Install the eight manuscript figures into docs/figures/.
+# 3. The four supplement validation figures. Each producer also prints the
+#    numbers its caption quotes.
+PYTHONPATH=. python reproduce/krzywda_B1_stationary.py
+PYTHONPATH=. python reproduce/krzywda_B3_filter.py
+PYTHONPATH=. python reproduce/oda_C1_lz_single.py
+PYTHONPATH=. python geometry/prism_field.py
+
+# 4. Install the eight manuscript figures into docs/figures/.
 docs/collect_figures.sh "__ez-total-local__norm-prefactor"
 ```
 
@@ -122,12 +134,14 @@ analysis procedure.
 | `confirmation_n100.json`, `candidate_delta.json` | extended confirmation at `n_real = 100` and the layer comparison |
 | `legacy_n5_block1.json` | the matched-seeding comparison against the archived r31 estimate |
 
-`reproduce/t0/` holds six files. Two produce figures from the table above:
-`make_fig4.py` and `make_supp_robustness.py`. Three document the chain from raw
-production evidence to that table: `t0_step4_analysis.py` computes the analysis
-JSON from the raw pickles, and `t0_check_prefix.py` and
-`t0_check_seed_pairing.py` are the nested-prefix and seed-pairing gates.
-One of the three does run in-tree: with both discovery files shipped, the
+`reproduce/t0/` holds the public provenance utilities and no figure renderer.
+`t0_step4_analysis.py` computes the analysis JSON from the raw pickles;
+`t0_check_prefix.py` and `t0_check_seed_pairing.py` are the nested-prefix and
+seed-pairing gates; `export_responses.py` lifts the per-condition responses out
+of the raw layer; `compare_t0_t0c.py` is the correction audit across the two
+shipped analysis layers; and `README.md` describes them. The manuscript figure
+renderer is `reproduce/phase5_paper_figures.py`, one directory up.
+One of the gates does run in-tree: with both discovery files shipped, the
 registered layer comparison is reproducible without the raw layer,
 
 ```bash

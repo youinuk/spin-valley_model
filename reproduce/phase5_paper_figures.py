@@ -33,8 +33,10 @@ this file's predecessor carried a hardcoded "agreement identical" that the
 corrected analysis layer contradicted, and re-running alone would not have
 caught it.
 
-The bare invocation defaults to --ez-convention legacy-50ueV, which reproduces
-the archival r31 Fig. 2, NOT the current manuscript figure.
+`--ez-convention` and `--profile-norm` have no defaults. They are required only
+when Fig. 2 is requested, so `--figures 4` stays a one-liner while a bare
+invocation cannot silently build Fig. 2 in the archival r31 convention beside
+three corrected figures.
 """
 from __future__ import annotations
 
@@ -145,7 +147,7 @@ def _one_case(ff, xc, ez_convention, profile_norm, pocket_width, sigma_E):
     return x, Ev_x, np.broadcast_to(np.asarray(E_Z), x.shape), prof
 
 
-def make_fig2(ez_convention="legacy-50ueV", profile_norm="prefactor"):
+def make_fig2(ez_convention, profile_norm):
     apply_style()
     ff, _ = _build_ff()
     pocket_width = 30e-9
@@ -264,22 +266,21 @@ def load(path):
 def check_classifier(data, analysis):
     """Verify the figure's floor rule against the shipped analysis.
 
-    The figure applies its own three-line threshold rule. If that rule ever
-    drifts from the one the analysis layer used, the panels would show
-    categories the paper does not report, and nothing would say so. Recomputing
-    the six pairwise agreements over all five blocks and comparing them against
-    legacy_n100.json catches exactly that: the numbers match only if the rule
-    matches.
+    The figure imports the analyser's own `classify`, so the rule cannot drift
+    by being edited in two places. This closes the remaining gap: the two could
+    still disagree by being fed different inputs. Recomputing the six pairwise
+    agreements from the CSV over all five blocks and requiring them to equal
+    legacy_n100.json shows that the figure and the analysis describe the same
+    data, not merely that they share a function.
     """
     p = pathlib.Path(analysis) / "legacy_n100.json"
     if not p.exists():
-        print(f"  classifier check SKIPPED: {p} not found")
-        return False
+        raise SystemExit(f"BLOCKED: {p} not found. Fig. 3 is a release figure "
+                         "and must not be produced with its consistency check "
+                         "skipped.")
     ref = json.loads(p.read_text()).get("pairwise_agreement")
     if not ref:
-        print("  classifier check SKIPPED: no pairwise_agreement in "
-              "legacy_n100.json")
-        return False
+        raise SystemExit("BLOCKED: no pairwise_agreement in legacy_n100.json")
     blocks = sorted({b for (_a, b, _c) in data})
     conds = sorted({c for (_a, _b, c) in data})
     worst = 0.0
@@ -304,9 +305,11 @@ def check_classifier(data, analysis):
     # 1e-6 still catches a single flipped label while tolerating the rounding
     # in a hand-built fixture.
     if worst > 1e-6:
-        raise SystemExit(f"BLOCKED: the figure's floor rule disagrees with the "
-                         f"analysis layer by up to {worst:.2e}, which is more "
-                         f"than one flipped condition ({1/540:.2e})")
+        raise SystemExit(
+            f"BLOCKED: the figure and the analysis layer disagree by up to "
+            f"{worst:.2e}, exceeding the 1e-6 consistency tolerance. One "
+            f"flipped condition would shift an agreement by 1/540 = "
+            f"{1/540:.2e}, so this is well inside single-condition resolution.")
     print(f"  classifier check PASS, worst difference {worst:.1e}")
     return True
 
@@ -570,62 +573,34 @@ QUANTITIES = [
     ("dchi_phi",     r"$\Delta\chi_\phi$, signed"),
 ]
 
-def _rate_unused(v, depth=0):
-    """A disagreement rate inside an entry, however the entry is nested.
+def union_pair(block, n):
+    """Read the frozen T0-C union-conditioned schema.
 
-    The union-conditioned record holds the rate beside a pair count, and the
-    key names have changed once already, so take the one value in (0,1) that
-    is not an integer count rather than assuming a shape.
+        union_conditioned_sensitivity.ansatz.D_ansatz
+        union_conditioned_sensitivity.seed.D_seed
+
+    Two earlier versions were wrong here and the second was worse than the
+    first. The first searched the record for any float in (0,1), which would
+    have absorbed a schema change silently. The second replaced that with an
+    exact path of `.D`, taken from a report rather than from the file -- and
+    the fixture used to test it had been built to match the same report, so
+    the test confirmed nothing. The canonical artifact defines the schema and
+    the plotter reads it; never the other way round.
     """
-    if isinstance(v, float) and 0.0 < v < 1.0:
-        return v
-    if isinstance(v, dict) and depth < 2:
-        for vv in v.values():
-            r = rate(vv, depth + 1)
-            if r is not None:
-                return r
-    return None
-
-
-# Accepted names for the rate inside a union-conditioned entry. A closed list,
-# not a search: an earlier version took the first float in (0,1) anywhere in the
-# record, which meant a schema change would be absorbed instead of reported.
-_RATE_KEYS = ("D", "D_ansatz", "D_seed", "rate", "value", "disagreement")
-
-# Which name was actually found, so the accepted list can be trimmed to the one
-# the schema really uses instead of staying a guess.
-_RATE_KEY_USED = {}
-
-
-def _rate(entry, side):
-    if isinstance(entry, float):
-        _RATE_KEY_USED[side] = "(bare float)"
-        return entry
-    if isinstance(entry, dict):
-        for k in _RATE_KEYS:
-            if isinstance(entry.get(k), float):
-                _RATE_KEY_USED[side] = k
-                return entry[k]
-    raise SystemExit(
-        f"BLOCKED: cannot read the union-conditioned {side} rate. The entry is "
-        f"{type(entry).__name__}"
-        + (f" with keys {sorted(entry)}" if isinstance(entry, dict) else "")
-        + f"; accepted rate keys are {list(_RATE_KEYS)}. Add the real key to "
-        f"_RATE_KEYS rather than making the lookup search.")
-
-
-def union_pair(block):
-    """The union-conditioned pair, read from the schema as it is."""
     ucs = block.get("union_conditioned_sensitivity")
     if not isinstance(ucs, dict):
-        raise SystemExit("BLOCKED: no union_conditioned_sensitivity record in "
-                         "attribution_n100.json")
+        raise SystemExit(f"BLOCKED: no union_conditioned_sensitivity record "
+                         f"at n={n}")
     try:
-        a_entry, s_entry = ucs["ansatz"], ucs["seed"]
-    except KeyError:
-        raise SystemExit(f"BLOCKED: union_conditioned_sensitivity has keys "
-                         f"{sorted(ucs)}, expected 'ansatz' and 'seed'")
-    return _rate(a_entry, "ansatz"), _rate(s_entry, "seed")
+        a = ucs["ansatz"]["D_ansatz"]
+        s = ucs["seed"]["D_seed"]
+    except (KeyError, TypeError) as exc:
+        raise SystemExit(
+            "BLOCKED: expected union_conditioned_sensitivity.ansatz.D_ansatz "
+            f"and union_conditioned_sensitivity.seed.D_seed at n={n}") from exc
+    if not (isinstance(a, (int, float)) and isinstance(s, (int, float))):
+        raise SystemExit(f"BLOCKED: non-numeric union-conditioned rate at n={n}")
+    return float(a), float(s)
 
 
 def make_figS5(src, out):
@@ -651,7 +626,7 @@ def make_figS5(src, out):
     kept = [int(n) for n in got]
     u_a, u_s, d_a, d_s = [], [], [], []
     for n in got:
-        a, s = union_pair(att[n])
+        a, s = union_pair(att[n], n)
         u_a.append(a)
         u_s.append(s)
         d_a.append(att[n]["D_ansatz"])
@@ -662,9 +637,9 @@ def make_figS5(src, out):
                         wspace=0.44)
 
     # ---------------- (a) ranked quantity against classification -----------
-    # Horizontal bars. Every gap is well under a tenth of the classification
-    # gap it would have to reproduce, so a vertical axis spends most of its
-    # height empty and the six two-line category labels crowd the base. Laid
+    # Horizontal bars. Every ranking gap is substantially smaller than the
+    # classification gap it would have to reproduce, so a vertical axis spends
+    # most of its height empty and the six two-line labels crowd the base. Laid
     # out this way the labels are ordinary text and the reference lines are
     # vertical, which is also how the eye reads "how far short".
     ax = axes[0]
@@ -730,7 +705,6 @@ def make_figS5(src, out):
     print(f"  union-conditioned ansatz range: "
           f"{min(u_a):.4f}-{max(u_a):.4f} over {len(kept)} checkpoints")
     print(f"  union-conditioned seed  : {u_s[0]:.4f} -> {u_s[-1]:.4f}")
-    print(f"  union-conditioned rate key: {_RATE_KEY_USED}")
     print("  Check these against the supplement text before committing.")
     return 0
 
@@ -740,18 +714,26 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--figures", default="all",
                     choices=["all", "2", "3", "4", "S5"])
+    # No default. A bare invocation used to build Fig. 2 in the archival r31
+    # convention while Figs. 3, 4 and S5 came from the corrected layer -- one
+    # command, two generations, no warning. Requiring the convention only when
+    # Fig. 2 is asked for keeps `--figures 4` a one-liner and makes the mixed
+    # run impossible.
     ap.add_argument("--ez-convention", dest="ez_convention",
                     choices=["legacy-50ueV", "stray-mean", "total-mean",
-                             "total-local"], default="legacy-50ueV")
+                             "total-local"], default=None)
     ap.add_argument("--profile-norm", dest="profile_norm",
-                    choices=["prefactor", "final-peak", "l2"],
-                    default="prefactor")
+                    choices=["prefactor", "final-peak", "l2"], default=None)
     ap.add_argument("--responses", default="data/t0c/responses_n100.csv")
     ap.add_argument("--analysis", default="data/t0c/analysis")
     a = ap.parse_args(argv)
 
     want = {"all": {"2", "3", "4", "S5"}}.get(a.figures, {a.figures})
     if "2" in want:
+        if a.ez_convention is None or a.profile_norm is None:
+            ap.error("Fig. 2 requires explicit --ez-convention and "
+                     "--profile-norm; the r32 manuscript uses "
+                     "total-local / prefactor")
         make_fig2(ez_convention=a.ez_convention, profile_norm=a.profile_norm)
     if "3" in want:
         make_fig3(a.responses, a.analysis, FIG_T0 / "quadrant_data.pdf")
