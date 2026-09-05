@@ -120,15 +120,18 @@ This underpins any differentiable geometry exploration.
 \subsection{Spatial periodicity of the finite array (V7)}
 An eleven-prism finite array (central $\pm5$ periods) satisfies
 $B(x+a)=B(x)$ to within $0.04\%$ in the central region (maximum
-deviation $0.0423\%$ at $z=-50$\,nm, $a=400$\,nm), justifying the use of
-a periodic descriptor.
+deviation $0.0423\%$ at $z=-50$\,nm, $a=400$\,nm). This is an auxiliary
+check on a larger-period array, not a direct validation of the
+$a=150$\,nm controlled reference geometry used in the atlas; it supports
+the use of a periodic descriptor for a finite array of this kind rather
+than certifying the baseline period.
 
 \subsection{Fourier-harmonic content (V8)}
 The stray field is dominated by its first harmonic, but the even/odd
 harmonic pattern depends on the magnet duty cycle. For a large magnet
 ($200^3$\,nm, $a=400$\,nm, $50\%$ duty) only odd harmonics survive, with
 $B_z^{(3)}/B_z^{(1)}=8.8\%$ and $B_x^{(3)}/B_x^{(1)}=10.0\%$; for the
-small-magnet baseline ($50^3$\,nm, $a=150$\,nm, $33\%$ duty) even
+small-magnet baseline ($50\times50\times30$\,nm, $a=150$\,nm, $33\%$ duty) even
 harmonics also appear, with $B_z^{(2)}/B_z^{(1)}=9.2\%$. We therefore
 retain three harmonics ($N_{\rm harm}=3$) in the field descriptor so
 that both regimes are represented. Table~\ref{tab:numerics} summarizes
@@ -435,15 +438,16 @@ estimands. The restriction widens the contrast.}
 Raw agreement can be inflated by skewed marginals, and \emph{below-threshold} is
 the largest single category. Cohen's $\kappa$, computed on the same
 nine-category label set, corrects for that. Table~\ref{tab:kappa} reports both
-quantities at the two endpoints. No pair reaches strong agreement: $\kappa$ runs
-from $0.360$ to $0.790$ at $n_{\rm real}=30$ and from $0.311$ to $0.804$ at
-$100$, and the ordering is stable between them.
+quantities at the two endpoints. $\kappa$ spans $0.360$ to $0.790$ at
+$n_{\rm real}=30$ and $0.311$ to $0.804$ at $100$, and the ordering is stable
+between them.
 
 The two lowest values at both endpoints are A/A$_{\rm pocket}$ and
 A$_{\rm pocket}$/B$_z$; both involve A$_{\rm pocket}$. The remaining
 A$_{\rm pocket}$ pair, A$_{\rm pocket}$/B$_x$, lies in the middle group. The three pairs containing B$_x$ sit together in the middle, and A
-versus B$_z$ -- the two profiles differing only by the hot-spot weighting -- is
-highest, and still disagrees on about a fifth of conditions. Four profiles
+versus B$_z$ -- the two profiles differing only by the resonance-localization
+envelope -- is
+highest, and still disagrees on about a sixth of conditions. Four profiles
 cannot support a factorial attribution, so these are three specified diagnostic
 contrasts and not an identification of which physical ingredient drives the
 disagreement.
@@ -462,8 +466,6 @@ $n_{\rm real}=100$.}
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 pair & agreement & $\kappa$ & agreement & $\kappa$ \\
 \midrule
-% kappa column pending a confirming read of legacy_n*.json["kappa"];
-% the agreement column is verified against ranking_n*.json["agreement"].
 A vs A$_{\rm pocket}$         & $48.3\%$ & $0.360$ & $46.7\%$ & $0.311$ \\
 A$_{\rm pocket}$ vs B$_z$     & $49.6\%$ & $0.373$ & $49.6\%$ & $0.347$ \\
 A$_{\rm pocket}$ vs B$_x$     & $61.1\%$ & $0.475$ & $59.8\%$ & $0.431$ \\
@@ -479,40 +481,6 @@ comparisons at $n_{\rm real}=100$, that is $0.606$, $0.598$ and $0.626$. They
 are close but not equal, and the corresponding values at $n_{\rm real}=30$ are
 $0.613$, $0.611$ and $0.646$. The near-coincidence is a numerical accident of
 three similar counts and carries no structural meaning.
-
-\subsection{Absolute performance proxies (archival)}
-The main text reports baseline-relative responses. For scale, Table~\ref{tab:abs}
-lists the absolute full-model (M2) leakage $P_v^{\mathrm{M2}}$, dephasing
-variance $\chi_\phi^{\mathrm{M2}}$, and the derived phase-error proxy
-$p_\phi=(1-e^{-\chi_\phi/2})/2$, averaged over the baseline geometry, both
-pocket cases, and $v\in\{5,10,20\}$\,m/s.
-
-These archived runs occupy the numerical scales shown, spanning a factor of
-$3.4$ in $P_v^{\mathrm{M2}}$ and a factor of $16$ in
-$\chi_\phi^{\mathrm{M2}}$. The spread between ans\"atze cannot be attributed
-to the ansatz: the values were computed under the earlier seeding scheme at
-$n_{\rm real}=5$, so each ansatz saw a different noise realization. The table
-is reported for scale only and supports no cross-ansatz conclusion.
-
-\begin{table}[t]
-\centering
-\caption{Absolute full-model performance proxies per ansatz (baseline geometry,
-both pocket cases $x_c=0$ and $x_c=25$\,nm, $v\in\{5,10,20\}$\,m/s,
-$n_{\rm real}=5$, $1/f$ noise with $f_{\rm high}=10^7$\,Hz). Archival values
-computed under the earlier seeding scheme; reported for scale only.}
-\label{tab:abs}
-\small
-\begin{tabular}{lccc}
-\toprule
-ansatz & $P_v^{\mathrm{M2}}$ & $\chi_\phi^{\mathrm{M2}}$ & $p_\phi^{\mathrm{M2}}$ \\
-\midrule
-A                  & $0.259$ & $0.0195$ & $0.0049$ \\
-A$_{\rm pocket}$   & $0.0786$ & $0.0106$ & $0.0026$ \\
-B$_z$              & $0.266$ & $0.172$ & $0.0413$ \\
-B$_x$              & $0.107$ & $0.0169$ & $0.0042$ \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \section{Relation to the main text}
 The numerical-consistency checks (V0--V8) certify the field model, its

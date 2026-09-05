@@ -189,16 +189,25 @@ def run_C1_check() -> dict:
     gammas_arr = np.array([r["gamma"] for r in results])
     P_num = np.array([r["P_excited_numerical"] for r in results])
     P_ana = np.array([r["P_diabatic_analytic"] for r in results])
-    fig, ax = plt.subplots(figsize=(7, 4.5))
-    ax.semilogx(gammas_arr, P_num, "o", label="numerical (expm step)", ms=7)
+    # Style is applied inside the plotting path. This module sits in the import
+    # graph of phase4_step4_M2_minimum.py, one of the four frozen producers, so
+    # it must not touch global rcParams as a side effect of being imported.
+    from reproduce.figstyle import (apply as apply_style, SERIES, NEUTRAL,
+                                    light_grid)
+    apply_style()
+    fig, ax = plt.subplots(figsize=(4.5, 2.8))
     gammas_dense = np.logspace(-1, 1, 200)
     alphas_dense = gammas_dense * 2 * np.pi * Delta**2 / hbar
     P_ana_dense = np.array([lz_probability_analytic(Delta, a) for a in alphas_dense])
-    ax.semilogx(gammas_dense, P_ana_dense, "-", label="analytic LZ formula", alpha=0.8)
-    ax.set_xlabel(r"$\gamma = \hbar \alpha / (2\pi \Delta^2)$  (sweep rate parameter)")
-    ax.set_ylabel(r"$P_\mathrm{diabatic}$ (= excited population after sweep)")
-    ax.set_title("C1: LZ crossing, numerical vs analytic")
-    ax.legend(); ax.grid(alpha=0.3, which="both")
+    ax.semilogx(gammas_dense, P_ana_dense, "-", color=NEUTRAL["eps"], lw=1.2,
+                label="analytic Landau--Zener")
+    ax.semilogx(gammas_arr, P_num, "o", mfc="white", mec=SERIES[0], mew=1.2,
+                ms=4.5, label="numerical (expm step)")
+    ax.set_xlabel(r"$\gamma = \hbar\alpha/(2\pi\Delta^2)$")
+    ax.set_ylabel(r"$P_\mathrm{diabatic}$")
+    ax.set_title("Landau--Zener benchmark")
+    ax.legend(loc="upper left")
+    light_grid(ax, "y")
     ax.set_ylim(-0.05, 1.05)
     fig.tight_layout()
     out = str(FIG_DIR / "step3_C1_lz.png")

@@ -145,6 +145,12 @@ def test_save_raw_e2e_tagged(tmp_path, monkeypatch):
         "__pycache__", ".pytest_cache", "*.pyc", ".git"))
     env = dict(os.environ, PYTHONPATH=str(wt), MPLBACKEND="Agg",
                JAX_PLATFORM_NAME="cpu", JAX_ENABLE_X64="1")
+
+    # untagged legacy artifact, in the shape an r31 preview run leaves behind
+    legacy = wt / "figures" / "phase5" / "phase5_atlas_metadata_preview.json"
+    legacy.parent.mkdir(parents=True, exist_ok=True)
+    legacy_bytes = b'{"mode": "preview", "n_real": 3}\n'
+    legacy.write_bytes(legacy_bytes)
     r = subprocess.run(
         [sys.executable, "reproduce/phase5_sensitivity_atlas.py",
          "--mode", "preview", "--case", "case_i_center",
@@ -159,9 +165,16 @@ def test_save_raw_e2e_tagged(tmp_path, monkeypatch):
     assert cfg["ez_convention"] == "total-local"
     assert cfg["profile_norm"] == "final-peak"
     assert len(cfg["atlas_script_sha256"]) == 64
-    # legacy preview outputs must remain untouched by the tagged run
+    # The tagged run must not disturb an untagged legacy output. The fixture is
+    # written here rather than assumed: this test used to read a
+    # phase5_atlas_metadata_preview.json left in the working tree by some
+    # earlier run, so it passed only while that artifact happened to exist and
+    # failed the moment figures/ was cleaned. A test must create what it
+    # depends on.
+    assert legacy.read_bytes() == legacy_bytes, (
+        "the tagged run overwrote the untagged legacy preview metadata")
     import json
-    leg = json.load(open(wt / "figures/phase5/phase5_atlas_metadata_preview.json"))
+    leg = json.loads(legacy.read_text())
     assert "ez_convention" not in leg
 
 
@@ -170,10 +183,54 @@ def test_paper_figure_total_local_runs(tmp_path, monkeypatch):
     import matplotlib
     matplotlib.use("Agg")
     import reproduce.phase5_paper_figures as pf
-    monkeypatch.setattr(pf, "FIG", tmp_path, raising=False)
-    pf.make_coupling_profiles(ez_convention="total-local",
-                              profile_norm="final-peak")
+    monkeypatch.setattr(pf, "FIG_PHASE5", tmp_path, raising=False)
+    pf.make_fig2(ez_convention="total-local", profile_norm="final-peak")
     assert list(tmp_path.glob("*__ez-total-local__norm-final-peak*"))
+
+
+def test_json_only_figures_need_no_simulator():
+    """Figs. 3, 4 and S5 must regenerate on a machine that cannot import the
+    simulator.
+
+    "Reproducible from the shipped analysis outputs" is a claim about the
+    dependency graph, not only about the data. Fig. 2 draws the real coupling
+    profiles and needs geometry, the kernel module and constants, which pull in
+    jax; the other three read JSON and CSV. This pins the simulator imports
+    inside the Fig. 2 path.
+    """
+    import ast
+    import inspect
+    import reproduce.phase5_paper_figures as pf
+
+    heavy = ("geometry", "constants", "reproduce.phase4p6_crossterm",
+             "jax", "noise")
+    for node in ast.parse(inspect.getsource(pf)).body:   # module scope only
+        if isinstance(node, ast.Import):
+            names = [a.name for a in node.names]
+        elif isinstance(node, ast.ImportFrom):
+            names = [node.module or ""]
+        else:
+            continue
+        for name in names:
+            assert not any(name == h or name.startswith(h + ".")
+                           for h in heavy), (
+                f"{name} is imported at module scope; it belongs inside the "
+                "Fig. 2 path so --figures 4 runs without jax")
+
+
+def test_classifier_is_imported_not_redefined():
+    """The figure module must not carry its own floors or label rule. A second
+    definition of the paper's central estimand living in plotting code is free
+    to drift from the analysis, and nothing would report it."""
+    import inspect
+    import reproduce.phase5_paper_figures as pf
+    import reproduce.t0.t0_step4_analysis as an
+
+    assert pf.FLOOR_P is an.FLOOR_P
+    assert pf.FLOOR_CHI is an.FLOOR_CHI
+    assert pf.classify is an.classify
+    src = inspect.getsource(pf)
+    assert "FLOOR_P = " not in src and "FLOOR_CHI = " not in src
 
 
 def test_absolute_wiring_exists():
@@ -208,8 +265,8 @@ def test_collect_figures_legacy_and_suffix_succeed(tmp_path):
     # the figure generators, so nonempty fixtures stand in for the T0 outputs.
     t0 = wt / "figures" / "t0"
     t0.mkdir(parents=True, exist_ok=True)
-    (t0 / "sensitivity_atlas.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
-    (t0 / "robustness_checks.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
+    for _stem in ("sensitivity_atlas", "robustness_checks", "quadrant_data"):
+        (t0 / f"{_stem}.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
 
     r2 = subprocess.run(["bash", "collect_figures.sh",
                          "__ez-total-local__norm-prefactor"],
@@ -217,7 +274,10 @@ def test_collect_figures_legacy_and_suffix_succeed(tmp_path):
     assert r2.returncode == 0, r2.stderr
     assert "collected 8 manuscript figures" in r2.stdout
     assert (wt / "docs/figures/sensitivity_atlas.pdf").exists()
-    assert (wt / "docs/figures/quadrant_schematic.pdf").exists()
+    # Fig. 3 is now drawn from the shipped per-condition responses; the
+    # schematic it replaced is no longer referenced by paper.tex.
+    assert (wt / "docs/figures/quadrant_data.pdf").exists()
+    assert not (wt / "docs/figures/quadrant_schematic.pdf").exists()
 
 
 def test_collect_figures_suffix_fails_when_full_outputs_missing(tmp_path):
@@ -234,8 +294,8 @@ def test_collect_figures_suffix_fails_when_full_outputs_missing(tmp_path):
     # source rather than tripping on something else first.
     t0 = wt / "figures" / "t0"
     t0.mkdir(parents=True, exist_ok=True)
-    (t0 / "sensitivity_atlas.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
-    (t0 / "robustness_checks.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
+    for _stem in ("sensitivity_atlas", "robustness_checks", "quadrant_data"):
+        (t0 / f"{_stem}.pdf").write_bytes(b"%PDF-1.4\n% test fixture\n")
 
     missing = (wt / "figures" / "phase5"
                / "phase5_coupling_profiles__ez-total-local__norm-prefactor.pdf")

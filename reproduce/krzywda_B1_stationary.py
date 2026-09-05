@@ -177,16 +177,24 @@ def run_B1_check(seed: int = 7, n_real: int = 600) -> dict:
     print(f"  PASS (simple 2x scaling, ±10%):       {passed_simple}")
     print(f"  PASS (Krzywda window 1.93 ± 20%):     {passed_krzywda}")
 
-    # Plot
-    fig, ax = plt.subplots(figsize=(7, 4.5))
-    for label, d in results.items():
-        ax.plot(d["T_grid"] * 1e9, d["C"], lw=1.5,
-                label=f"{label}: T2* = {d['T2']*1e9:.0f} ns")
-    ax.axhline(1/np.e, color="k", ls=":", alpha=0.5, label="1/e")
-    ax.set_xlabel("T [ns]")
-    ax.set_ylabel("|C(T)|")
-    ax.set_title("B1: Stationary dot, 1/f noise, gradient before/after")
-    ax.legend(); ax.grid(alpha=0.3)
+    # Plot. Style is applied here rather than at module scope: this file is
+    # imported by other code and must not change global rcParams on import.
+    from reproduce.figstyle import (apply as apply_style, SERIES,
+                                    SERIES_STYLES, NEUTRAL, light_grid)
+    apply_style()
+    fig, ax = plt.subplots(figsize=(4.5, 2.8))
+    for i, (label, d) in enumerate(results.items()):
+        ax.plot(d["T_grid"] * 1e9, d["C"], color=SERIES[i], ls=SERIES_STYLES[i],
+                label=f"{label.strip()}, $T_2^*$ = {d['T2']*1e9:.0f} ns")
+    ax.axhline(1/np.e, color=NEUTRAL["grey"], ls=":", lw=0.8)
+    ax.annotate("$1/e$", (1.0, 1/np.e), xycoords=("axes fraction", "data"),
+                xytext=(-3, 3), textcoords="offset points", ha="right",
+                fontsize=7, color=NEUTRAL["grey"])
+    ax.set_xlabel("$T$ (ns)")
+    ax.set_ylabel("$|C(T)|$")
+    ax.set_title("Stationary dephasing under gradient reduction")
+    ax.legend(loc="upper right")
+    light_grid(ax, "y")
     fig.tight_layout()
     out = str(FIG_DIR / "step2_B1_ratio.png")
     fig.savefig(out, dpi=130)

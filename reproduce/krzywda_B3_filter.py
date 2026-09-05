@@ -171,27 +171,40 @@ def run_B3_check() -> dict:
     print(f"  B3b PASS (PSD-weighted overlap reduction ≥ 10x): {passed_B3b}")
     print(f"  DD strengthens the suppression:                   {dd_helps}")
 
-    # Plot
-    fig, axes = plt.subplots(1, 2, figsize=(13, 5))
+    # Plot. Style applied here, not at module scope.
+    from reproduce.figstyle import (apply as apply_style, SERIES,
+                                    SERIES_STYLES, NEUTRAL, light_grid)
+    apply_style()
+    fig, axes = plt.subplots(1, 2, figsize=(6.9, 2.9))
+    curves = [("stationary", F_stat), (f"shuttling, $v = {v:.0f}$ m/s", F_sh),
+              ("shuttling + DD, 8 pulses", F_sh_dd)]
     ax = axes[0]
-    ax.loglog(f_grid, F_stat, label="stationary (single gradient)", lw=1.5)
-    ax.loglog(f_grid, F_sh, label=f"shuttling v={v} m/s", lw=1.5)
-    ax.loglog(f_grid, F_sh_dd, label="shuttling + DD (8 pulses)", lw=1.5)
-    ax.axvline(v / field.period, color="gray", ls=":", alpha=0.7,
-               label=f"f_drive = v/a = {v/field.period/1e6:.0f} MHz")
-    ax.axvspan(1e3, 1e6, alpha=0.08, color="red", label="low-f region")
-    ax.set_xlabel("f [Hz]"); ax.set_ylabel("F(f, T)  [arb]")
-    ax.set_title(f"B3: Filter function (T={T*1e6:.0f} μs)")
-    ax.legend(fontsize=8); ax.grid(alpha=0.3, which="both")
+    ax.axvspan(1e3, 1e6, color=NEUTRAL["rule"], lw=0, zorder=0)
+    # at the top of the band, not the bottom: the legend sits lower left
+    ax.annotate("$f < 1$ MHz", (1e3, 0.97), xycoords=("data", "axes fraction"),
+                xytext=(3, 0), textcoords="offset points", va="top",
+                fontsize=7, color=NEUTRAL["grey"])
+    for i, (lab, F) in enumerate(curves):
+        ax.loglog(f_grid, F, color=SERIES[i], ls=SERIES_STYLES[i], label=lab)
+    ax.axvline(v / field.period, color=NEUTRAL["grey"], ls=":", lw=0.8)
+    ax.annotate(f"$f_{{\\rm drive}} = {v/field.period/1e6:.0f}$ MHz",
+                (v / field.period, 0.97), xycoords=("data", "axes fraction"),
+                xytext=(3, 0), textcoords="offset points", va="top",
+                fontsize=7, color=NEUTRAL["grey"])
+    ax.set_xlabel("$f$ (Hz)")
+    ax.set_ylabel("$F(f, T)$ (arb.)")
+    ax.set_title(f"(a) filter function, $T = {T*1e6:.0f}$ $\\mu$s")
+    ax.legend(loc="lower left", fontsize=7)
+    light_grid(ax, "both")
     # B3b: compare the integrand S_dx * F
     ax = axes[1]
-    ax.loglog(f_grid, S_dx * F_stat, label="stationary", lw=1.5)
-    ax.loglog(f_grid, S_dx * F_sh,   label="shuttling",  lw=1.5)
-    ax.loglog(f_grid, S_dx * F_sh_dd, label="shuttling+DD", lw=1.5)
-    ax.axvline(v / field.period, color="gray", ls=":", alpha=0.7)
-    ax.set_xlabel("f [Hz]"); ax.set_ylabel(r"$S_{\delta x}(f) \cdot F(f,T)$")
-    ax.set_title(f"B3b: PSD-weighted integrand (overlap)")
-    ax.legend(fontsize=9); ax.grid(alpha=0.3, which="both")
+    for i, (lab, F) in enumerate(curves):
+        ax.loglog(f_grid, S_dx * F, color=SERIES[i], ls=SERIES_STYLES[i])
+    ax.axvline(v / field.period, color=NEUTRAL["grey"], ls=":", lw=0.8)
+    ax.set_xlabel("$f$ (Hz)")
+    ax.set_ylabel(r"$S_{\delta x}(f)\,F(f,T)$")
+    ax.set_title("(b) PSD-weighted integrand")
+    light_grid(ax, "both")
     fig.tight_layout()
     out = str(FIG_DIR / "step2_B3_filter.png")
     fig.savefig(out, dpi=130)

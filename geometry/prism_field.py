@@ -148,6 +148,12 @@ def _sanity_checks():
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+    # Style is applied here, not at module scope. This module is imported by
+    # numerical code, and a figure module must not change global rcParams as a
+    # side effect of being imported.
+    from reproduce.figstyle import (apply as apply_style, FIELD_COLORS,
+                                    light_grid)
+    apply_style()
 
     print("="*60)
     print("Single-prism stray field -- sanity check")
@@ -187,11 +193,13 @@ def _sanity_checks():
     x_line = jnp.linspace(-400e-9, 400e-9, 400)
     y_line = 0.0
     
-    fig, axes = plt.subplots(2, 2, figsize=(11, 8))
+    fig, axes = plt.subplots(2, 2, figsize=(6.9, 4.4))
     # accumulate results per depth
     results_by_depth = {}
-    for ax_row, z_2deg, label in [(axes[0], -50e-9, "z = -50 nm (2DEG)"),
-                                   (axes[1], -100e-9, "z = -100 nm (2DEG)")]:
+    # two labels per depth: plain text for the console, math for the panel
+    for row, (ax_row, z_2deg, label, label_tex) in enumerate(
+            [(axes[0], -50e-9, "z = -50 nm (2DEG)", "$z = -50$ nm"),
+             (axes[1], -100e-9, "z = -100 nm (2DEG)", "$z = -100$ nm")]):
         Bx_line, By_line, Bz_line = prism.B(x_line, y_line, z_2deg)
         # gradient: d/dx
         import jax
@@ -225,25 +233,45 @@ def _sanity_checks():
             "dBx_dx_peak_mT_per_nm": dBx_peak * 1e-6,
         }
         
-        ax_row[0].plot(np.asarray(x_line)*1e9, np.asarray(Bz_line)*1e3, label="$B_z$")
-        ax_row[0].plot(np.asarray(x_line)*1e9, np.asarray(Bx_line)*1e3, label="$B_x$")
-        ax_row[0].set_xlabel("x [nm]"); ax_row[0].set_ylabel("B [mT]")
-        ax_row[0].set_title(label + " — field")
-        ax_row[0].legend(); ax_row[0].grid(alpha=0.3)
-        ax_row[1].plot(np.asarray(x_line)*1e9, np.asarray(dBz_dx)*1e-6, label="$\\partial_x B_z$")
-        ax_row[1].plot(np.asarray(x_line)*1e9, np.asarray(dBx_dx)*1e-6, label="$\\partial_x B_x$")
-        ax_row[1].set_xlabel("x [nm]"); ax_row[1].set_ylabel("$\\partial_x B$ [T/μm]")
-        ax_row[1].set_title(label + " — gradient (jax.grad)")
-        ax_row[1].legend(); ax_row[1].grid(alpha=0.3)
+        tag = "ab" if row == 0 else "cd"
+        xnm = np.asarray(x_line) * 1e9
+        ax_row[0].plot(xnm, np.asarray(Bz_line)*1e3,
+                       color=FIELD_COLORS["B_z"], label="$B_z$")
+        ax_row[0].plot(xnm, np.asarray(Bx_line)*1e3, ls="--",
+                       color=FIELD_COLORS["B_x"], label="$B_x$")
+        ax_row[0].set_ylabel("$B$ (mT)")
+        ax_row[0].set_title(f"({tag[0]}) field, {label_tex}")
+        ax_row[0].legend(loc="upper right")
+        light_grid(ax_row[0], "y")
+        ax_row[1].plot(xnm, np.asarray(dBz_dx)*1e-6,
+                       color=FIELD_COLORS["B_z"], label=r"$\partial_x B_z$")
+        ax_row[1].plot(xnm, np.asarray(dBx_dx)*1e-6, ls="--",
+                       color=FIELD_COLORS["B_x"], label=r"$\partial_x B_x$")
+        ax_row[1].set_ylabel(r"$\partial_x B$ (T/$\mu$m)")
+        ax_row[1].set_title(f"({tag[1]}) gradient, {label_tex}")
+        ax_row[1].legend(loc="upper right")
+        light_grid(ax_row[1], "y")
+        if row == 1:
+            ax_row[0].set_xlabel("$x$ (nm)")
+            ax_row[1].set_xlabel("$x$ (nm)")
     
     # show the magnet footprint
     for ax in axes.flat:
-        ax.axvspan(-Lx/2*1e9, Lx/2*1e9, alpha=0.15, color="gray", label="_magnet")
-    
+        ax.axvspan(-Lx/2*1e9, Lx/2*1e9, alpha=0.12, color="0.5", lw=0,
+                   label="_magnet", zorder=0)
+
     fig.tight_layout()
-    out = str(FIG_DIR / "phase3_prism_fields.png")
-    fig.savefig(out, dpi=130)
-    print(f"\n  saved: {out}")
+    # The manuscript consumes the PDF. Until now only the PNG was written, so
+    # docs/figures/prism_fields.pdf had no producer in the tree -- the same
+    # shape of gap as the missing Fig. S5 script. Both formats are written
+    # here; the PDF is canonical and the PNG is for inspection.
+    out_png = FIG_DIR / "phase3_prism_fields.png"
+    out_pdf = out_png.with_suffix(".pdf")
+    out_png.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_png, dpi=200)
+    fig.savefig(out_pdf)
+    print(f"\n  saved: {out_png}")
+    print(f"  saved: {out_pdf}")
     
     # 3. JAX gradient vs finite difference
     print("\n  JAX autodiff vs finite difference (B_z at z = -50 nm, x scan):")
