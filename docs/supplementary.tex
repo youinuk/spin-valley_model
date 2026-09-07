@@ -38,9 +38,10 @@ response-metric robustness analyses}
 
 This supplement has two parts. The first documents the validation suite
 underpinning the valley-aware spin-shuttling simulator used in the main text.
-Its goal is to certify that (i) the numerical engine reproduces analytic limits
-to machine precision, and (ii) the representative parameter values quoted in
-the main text are consistent with independent literature results. These checks
+Its goal is to establish two points: (i) the numerical engine reproduces
+analytic limits to machine precision, and (ii) the representative parameter
+values quoted in the main text are consistent with independent literature
+results. These checks
 are grouped into \emph{numerical-consistency} validations
 (Sec.~\ref{sec:numerics}) and \emph{literature and physical benchmark}
 validations (Sec.~\ref{sec:literature}).
@@ -51,7 +52,7 @@ reported in the main text, the contribution of shared inactivity to the
 measured agreement, and the sensitivity of the primary label comparison to
 restricting attention to comparisons with at least one two-channel quadrant
 label.
-Every check is reproducible from the released code with a fixed seed;
+Every check can be reproduced from the accompanying code with a fixed seed;
 the relevant script is named in each case. Throughout, ``relative
 error'' means $|x_{\rm num}-x_{\rm ref}|/|x_{\rm ref}|$.
 
@@ -74,8 +75,8 @@ The deterministic field model reproduces the analytic periodic
 landscape of the device model to machine precision: the analytic
 derivative $\partial_x B_{\rm long}$ and the JAX automatic-differentiation
 value agree to a relative error of $4\times10^{-9}$
-(\texttt{field\_landscape.py}). This certifies the field gradients that
-feed every downstream observable.
+(\texttt{field\_landscape.py}). This validates the field-gradient
+calculation used by the downstream observables.
 
 \subsection{Bounded deterministic modulation phase (V0.1)}
 For uniform-velocity shuttling through a periodic landscape, the
@@ -98,9 +99,10 @@ predicted $26.8$\,ns.
 
 \subsection{Double precision is required (V0.3)}
 The mixed nanometre and tesla-per-metre scales make single precision
-insufficient for the derivative and cancellation steps used here. In float32 the analytic and
-automatic-differentiation derivatives disagree at the $\sim\!10^{0}$\,T/m
-level; in float64 they agree at $\sim\!10^{-9}$\,T/m
+insufficient for the derivative and cancellation steps used here. In float32,
+the analytic and automatic-differentiation derivatives disagree at the
+$\sim\!10^{0}$\,T/m level; in float64 they agree at
+$\sim\!10^{-9}$\,T/m
 (\texttt{reproduce/v0p3\_float\_precision\_check.py}). All production runs
 therefore use 64-bit precision (\texttt{jax\_enable\_x64}). This also
 guarantees the accuracy of the geometry-derivative checks below.
@@ -115,7 +117,7 @@ $\sim\!10^{-10}$, and the four geometry derivatives are
 $1.3\times10^{-6}$ ($\mathrm{half}_x$), $2.0\times10^{-6}$
 ($\mathrm{half}_z$), $1.0\times10^{-6}$ (period), and
 $4.0\times10^{-6}$ (depth) (\texttt{tests/test\_geometry\_autodiff.py}).
-This underpins any differentiable geometry exploration.
+This validates the geometry derivatives used in the numerical checks.
 
 \subsection{Spatial periodicity of the finite array (V7)}
 An eleven-prism finite array (central $\pm5$ periods) satisfies
@@ -173,12 +175,11 @@ $T_2^\ast$, consistent with the ratio reported by Krzywda
 \emph{et~al.}~\cite{krzywda_coherence_2026}, who observe
 $T_2^\ast=4.4\to8.5\,\mu$s on reducing the longitudinal gradient, a ratio
 of $1.93$. At $g_{\rm grad}=0.1\to0.05$\,mT/nm we find
-$T_2^\ast=302\to664$\,ns, a ratio of $2.20$. Our acceptance interval is
-$\pm20\%$ of the reported ratio, that is $[1.55,2.32]$; the interval is
-our own tolerance, not a range reported in the reference. \emph{Caveat:} the absolute values are
-about $10\times$ shorter than the reference because our noise amplitude
-$\sigma_{\delta x}=0.3$\,nm is a representative, not device-calibrated,
-value; only the ratio is claimed. Figure~\ref{fig:v1} shows the two
+$T_2^\ast=302\to664$\,ns, a ratio of $2.20$. Our acceptance interval is $\pm20\%$ of the reported ratio, namely
+$[1.55,2.32]$. This interval is our tolerance, not a range reported in the
+reference. \emph{Caveat:} the absolute values are about $10\times$ shorter
+than the reference because our noise amplitude $\sigma_{\delta x}=0.3$\,nm
+is representative rather than device calibrated; only the ratio is claimed. Figure~\ref{fig:v1} shows the two
 decay curves.
 
 \begin{figure}[t]
@@ -215,11 +216,11 @@ $a=100$\,nm sinusoidal benchmark of the validation model, not the
 $150$\,nm controlled-reference geometry of the sensitivity atlas, so the
 drive frequency quoted below is $v/a$ at that period. The check is a
 mechanism validation and not a geometry variation of the atlas.
-The periodic-shuttling filter function $F(f,T)$ suppresses
-low-frequency ($f<1$\,MHz) sensitivity by about $2\times10^5$ relative
-to a static dot. More directly, the actual dephasing functional, the
-PSD-weighted overlap $\chi(T)=\int S_{\delta x}(f)F(f,T)\,df$, is
-suppressed by about $5.8\times10^3$ ($T=1\,\mu$s, $v=10$\,m/s).
+The periodic-shuttling filter function $F(f,T)$ suppresses low-frequency
+($f<1$\,MHz) sensitivity by about $2\times10^5$ relative to a static dot.
+The physically realized dephasing is set by the PSD-weighted overlap
+$\chi(T)=\int S_{\delta x}(f)F(f,T)\,df$; this quantity is suppressed by
+about $5.8\times10^3$ ($T=1\,\mu$s, $v=10$\,m/s).
 \emph{Caveat:} the filter-function shape and the realized dephasing
 differ; a $10^5$-fold suppression of $F$ corresponds to only a
 $10^3$-fold suppression of $\chi$, because dynamical decoupling lowers
@@ -259,11 +260,10 @@ diabatic limit ($v\ge30$\,m/s) the numerical and analytic predictions
 agree to order of magnitude. \emph{Caveat:} this validates the
 \emph{reduced} valley Landau--Zener physics of
 Oda~\emph{et~al.}~\cite{oda_suppressing_2026}, not their full
-optimized-protocol sequence; at
-intermediate velocity ($1\le v\le10$\,m/s) St\"uckelberg interference
+optimized-protocol sequence; at intermediate velocity ($1\le v\le10$\,m/s), St\"uckelberg interference
 produces the expected order-of-magnitude departure from the single-event
-formula, evidence that phase-coherent evolution between two crossings
-is captured.
+formula. This behavior checks that the reduced evolution retains coherent phase
+accumulation between the two crossings.
 
 \begin{figure}[t]
 \centering
@@ -298,12 +298,12 @@ validated against finite differences to $\le4\times10^{-6}$ (V6).}
 \subsection{Field- and gradient-scale consistency (V9)}
 For a $50\times50\times30$\,nm magnet ($a=150$\,nm, depth $-50$\,nm) the
 descriptor yields $\delta B_z=26.9$\,mT, peak gradient $1.19$\,mT/nm,
-and mean gradient $0.72$\,mT/nm. These are comparable to the micromagnet
-parameter scales $\delta B_z\sim5$--$30$\,mT and gradient
-$\sim0.1$--$1$\,mT/nm used in the main text and reported for comparable
-devices~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,langrock_blueprint_2023}:
-$\delta B_z$ and the mean gradient fall inside those scales, and the peak
-gradient sits just above the upper end. This check bears on the field and
+and mean gradient $0.72$\,mT/nm. These values can be compared with the micromagnet scales used in the main
+text and reported for comparable devices: $\delta B_z\sim5$--$30$\,mT and
+gradients of $\sim0.1$--$1$\,mT/nm
+~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,langrock_blueprint_2023}.
+The calculated $\delta B_z$ and mean gradient lie within those ranges, while
+the peak gradient sits just above the upper end. This check bears on the field and
 gradient scales the chosen geometry produces, not on the magnet
 dimensions themselves; the velocity range is motivated separately by
 conveyor-mode shuttling studies.
@@ -337,14 +337,15 @@ V9 & field/gradient scale              & device parameter scales      & comparab
 \section{Robustness of the response metrics}
 \label{sec:robustness}
 The main text's primary comparison is between cross-ansatz and cross-seed
-disagreement in the nine-category thresholded label. This section examines three
+disagreement in the nine-category thresholded label. This section examines four
 robustness questions around it: whether the post-hoc ranking--classification
 decoupling survives alternative ranked quantities, how much shared inactivity
-contributes to the measured agreement, and how the label comparison behaves
-when attention is restricted to comparisons with at least one two-channel
-quadrant label.
-Two candidate explanations are examined -- that the ranking and the classifier
-simply weight the response channels differently, and that the comparison is
+contributes to the measured agreement, how the label comparison behaves when
+attention is restricted to comparisons with at least one two-channel quadrant
+label, and how strongly the conclusions depend on the numerical values of the
+operational floors.
+We examine two alternative explanations: that the ranking and classifier
+weight the response channels differently, and that the observed contrast is
 carried by conditions inactive in both members of a pair. Neither accounts for
 the result.
 
@@ -361,17 +362,17 @@ alternative ranked quantities. The diagnostic quantity is the gap between the
 A/A$_{\rm pocket}$ and A/B$_z$ pairs, which differ by $37.2$ percentage points
 in classification agreement at $n_{\rm real}=100$ ($34.1$ at $30$). If raw-unit
 channel weighting were the main explanation, floor normalization should move
-the ranking gap substantially toward the classification gap. It moves it only
-from $0.011$ to $0.023$, and ranking each channel separately moves it less. Among the ranked quantities tested here, the only one that
-separates the pair is the \emph{signed} dephasing response, whose gap reaches
-$0.147$ and whose six-pair correlation with classification agreement is
-$+0.486$ at both ensemble sizes. This makes response-sign information a
+the ranking gap substantially toward the classification gap. It moves only from $0.011$ to $0.023$, and ranking each channel separately
+changes the gap less. Among the ranked quantities tested here, the signed
+dephasing response gives the largest separation: its gap reaches $0.147$, and
+its six-pair correlation with classification agreement is $+0.486$ at both
+ensemble sizes. This makes response-sign information a
 candidate contributor to the decoupling.
 
-Two limits on that reading. The six ansatz pairs are not independent --
-A/A$_{\rm pocket}$ and A/B$_z$ share A -- so the six-pair correlations are
-supporting evidence only, and the intermediate quantities change sign between
-the two ensemble sizes. A six-pair correlation of $+0.486$ is the largest here
+That interpretation has two limitations. First, the six ansatz pairs are not
+independent---for example, A/A$_{\rm pocket}$ and A/B$_z$ share A---so the
+six-pair correlations are supporting evidence only. Second, the intermediate
+quantities change sign between the two ensemble sizes. A six-pair correlation of $+0.486$ is the largest here
 but is not by itself evidence that the signed response tracks the classifier;
 the separation of the counterexample pair is the stronger part of the result.
 The classifier also uses floor crossing as well as sign. The
@@ -439,6 +440,63 @@ estimands. The restriction widens the contrast.}
 \label{fig:supp_robust}
 \end{figure}
 
+\subsection{Operational-floor sensitivity}
+\label{sec:floor_sensitivity}
+The registered classifier uses the fixed operational floors
+$|\Delta P_v|\ge10^{-4}$ and $|\Delta\chi_\phi|\ge10^{-3}$; those values and
+the corresponding registered results remain the primary analysis. As a
+post-hoc robustness check, we independently multiply each floor by
+$0.5$, $0.75$, $1$, $1.5$, and $2$, giving $25$ floor combinations, and
+relabel the stored responses without rerunning the simulator. The complete
+registered eight-checkpoint trajectory is reconstructed from the stored
+realization arrays before relabelling.
+
+At $n_{\rm real}=30$, $D_{\rm ansatz}$ spans $0.361$--$0.412$ and
+$D_{\rm seed}$ spans $0.362$--$0.403$, so $R_D$ ranges from $0.961$ to
+$1.042$ and $D_{\rm ansatz}>D_{\rm seed}$ in $15$ of the $25$ floor
+combinations. At $n_{\rm real}=100$, the corresponding ranges are
+$0.339$--$0.426$, $0.258$--$0.333$, and $R_D=1.223$--$1.379$;
+$D_{\rm ansatz}>D_{\rm seed}$ in all $25$ combinations. Across the full
+eight-checkpoint trajectory, $D_{\rm seed}$ decreases monotonically for all
+$25$ combinations. The first checkpoint with $R_D>1$ is $n_{\rm real}=30$
+for $15$ combinations, $40$ for $8$, and $60$ for $2$. Thus the exact
+crossover location is floor dependent, whereas the $n_{\rm real}=100$
+ordering is stable over this post-hoc grid.
+
+The pairwise structure is more stable than the exact aggregate crossover. At
+both $n_{\rm real}=30$ and $100$, every floor combination preserves the same
+three-tier partition: A/A$_{\rm pocket}$ and A$_{\rm pocket}$/B$_z$ form the
+high-disagreement tier, A/B$_x$, A$_{\rm pocket}$/B$_x$, and B$_z$/B$_x$ the
+middle tier, and A/B$_z$ the low-disagreement tier. Candidate counts are more
+floor sensitive. The discovery union $U^{\rm disc}$ ranges from $7$ to $12$
+conditions at $n_{\rm real}=30$ and from $10$ to $16$ at $100$; among those
+conditions, the number confirmed robust under all four ans\"atze in both
+holdout blocks ranges from $2$ to $4$ and from $3$ to $4$, respectively. The
+existence of cross-ansatz transport therefore persists over the tested floor
+grid, but its exact count remains conditional on the operational thresholds.
+
+\begin{table}[t]
+\centering
+\caption{Post-hoc sensitivity to independent multiplicative changes of the two
+operational floors. Each floor is multiplied by $0.5$, $0.75$, $1$, $1.5$, or
+$2$, giving $25$ combinations. Ranges are minima and maxima over those
+combinations; the registered-floor values remain the primary analysis.}
+\label{tab:floor_sensitivity}
+\small
+\begin{tabular}{lcc}
+\toprule
+ & $n_{\rm real}=30$ & $n_{\rm real}=100$ \\
+\midrule
+$D_{\rm ansatz}$ & $0.361$--$0.412$ & $0.339$--$0.426$ \\
+$D_{\rm seed}$ & $0.362$--$0.403$ & $0.258$--$0.333$ \\
+$R_D$ & $0.961$--$1.042$ & $1.223$--$1.379$ \\
+$D_{\rm ansatz}>D_{\rm seed}$ & $15/25$ & $25/25$ \\
+$|U^{\rm disc}|$ & $7$--$12$ & $10$--$16$ \\
+4-of-4 holdout transport & $2$--$4$ & $3$--$4$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Chance-corrected agreement}
 Raw agreement can be inflated by skewed marginals, and \emph{below-threshold} is
 the largest single category. Cohen's $\kappa$, computed on the same
@@ -449,13 +507,13 @@ between them.
 
 The two lowest values at both endpoints are A/A$_{\rm pocket}$ and
 A$_{\rm pocket}$/B$_z$; both involve A$_{\rm pocket}$. The remaining
-A$_{\rm pocket}$ pair, A$_{\rm pocket}$/B$_x$, lies in the middle group. The three pairs containing B$_x$ sit together in the middle, and A
-versus B$_z$ -- the two profiles differing only by the resonance-localization
-envelope -- is
-highest, and still disagrees on about a sixth of conditions. Four profiles
-cannot support a factorial attribution, so these are three specified diagnostic
-contrasts and not an identification of which physical ingredient drives the
-disagreement.
+A$_{\rm pocket}$ pair, A$_{\rm pocket}$/B$_x$, lies in the middle group. The
+three pairs containing B$_x$ also occupy the middle group. A versus B$_z$---the
+two profiles that differ by the resonance-localization envelope within the
+$\partial_x B_z$-based construction---has the highest agreement, but still
+disagrees on about a sixth of conditions. Four profiles cannot support a
+factorial attribution, so these are specified pairwise contrasts rather than an
+identification of which physical ingredient drives the disagreement.
 
 \begin{table}[t]
 \centering
@@ -488,9 +546,8 @@ $0.613$, $0.611$ and $0.646$. The near-coincidence is a numerical accident of
 three similar counts and carries no structural meaning.
 
 \section{Relation to the main text}
-The numerical-consistency checks (V0--V8) certify the field model, its
-gradients, and the time-evolution engine that produce every quantity in
-the main-text atlas. The literature and physical benchmark checks
+The numerical-consistency checks (V0--V8) validate the field model, its
+gradients, and the time-evolution engine used to generate the main-text atlas. The literature and physical benchmark checks
 (V1--V9) support the representative parameter values (Table~I of the main
 text). V9 verifies that the controlled-reference geometry produces field
 and gradient scales comparable to those of relevant micromagnet devices,
@@ -502,8 +559,8 @@ which the main text treats as a phenomenological diagnostic ansatz; the
 sensitivity of the conclusions to that choice is the subject of the main text.
 Section~\ref{sec:robustness} is separate from this suite: it does not validate
 the simulator, but tests the robustness of the post-hoc ranking diagnostic and
-the sensitivity of the primary label comparison to restricting attention to
-comparisons with at least one two-channel quadrant label.
+the sensitivity of the primary label comparison to shared inactivity,
+two-channel restriction, and post-hoc variation of the operational floors.
 
 \clearpage
 \bibliographystyle{aipnum4-2}

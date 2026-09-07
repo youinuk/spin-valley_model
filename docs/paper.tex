@@ -1,4 +1,4 @@
-% Spin-valley model uncertainty in micromagnet-assisted shuttling: a periodic-reference sensitivity atlas
+% Model-form versus finite-sampling uncertainty in micromagnet-assisted spin--valley shuttling: a periodic-reference sensitivity atlas
 % Target journal: Journal of Applied Physics (AIP; REVTeX 4-2, jap substyle).
 %
 % Build:
@@ -105,8 +105,10 @@ model family.
   axisline/.style={black!65, line width=0.5pt},
   tick/.style={font=\small, text=black!65},
   pnode/.style={draw=black!35, fill=white, rounded corners=2.5pt, line width=0.5pt,
-                align=center, font=\small, inner sep=3pt, minimum width=3.95cm},
-  parrow/.style={-{Stealth[length=1.8mm]}, line width=0.7pt, black!50},
+                align=center, font=\small, inner sep=2pt, minimum width=3.95cm,
+                minimum height=0.55cm},
+  pnode2/.style={pnode, minimum height=0.94cm},
+  parrow/.style={-{Stealth[length=1.4mm]}, line width=0.7pt, black!50},
 ]
 \colorlet{gategold}{yellow!35!orange!55!black!85}
 \colorlet{gategoldlt}{gategold!70}
@@ -155,10 +157,12 @@ model family.
   }
 
   % ----- period scale bar between magnet centres -----
+  % Bar, ticks and label move down together; the magnet top faces reach 5.27,
+  % so 5.30 is the lowest the tick feet can go.
   \draw[black!55, line width=0.5pt, {Stealth[length=1.1mm]}-{Stealth[length=1.1mm]}]
-    (2.08,5.42) -- (4.90,5.42);
-  \draw[black!45, line width=0.4pt] (2.08,5.34) -- (2.08,5.50) (4.90,5.34) -- (4.90,5.50);
-  \node[tick, anchor=south] at (3.49,5.50) {period $150$\,nm};
+    (2.08,5.36) -- (4.90,5.36);
+  \draw[black!45, line width=0.4pt] (2.08,5.30) -- (2.08,5.42) (4.90,5.30) -- (4.90,5.42);
+  \node[tick, anchor=south] at (3.49,5.39) {period $150$\,nm};
 
   % ----- labels above -----
   \node[taglabel, anchor=south] at (6.1,5.62) {$M\parallel z$};
@@ -214,13 +218,13 @@ model family.
   \draw[black!45, dashed, line width=0.5pt] (0.88,2.10) -- (8.97,2.10);
   \node[tick, anchor=west, align=left] at (9.03,2.10)
         {$E_Z(x)$};
-  \node[font=\small, text=black!65, anchor=south west] at (0.88,2.46) {$\varepsilon_v(x)$};
+  \node[font=\small, text=black!65, anchor=south east] at (8.95,2.46) {$\varepsilon_v(x)$};
   \node[taglabel, fill=white, inner sep=1.2pt] at (4.9,1.40) {pocket};
   \draw[black!60, fill=white, line width=0.5pt] (4.15,2.10) circle (1.5pt);
   \draw[black!60, fill=white, line width=0.5pt] (5.65,2.10) circle (1.5pt);
   \node[taglabel, anchor=east, fill=white, inner sep=1.2pt]
-        at (5.42,2.33) {proxy crossings};
-  \draw[leader] (5.46,2.28) -- (5.61,2.16);
+        at (5.42,2.62) {proxy crossings};
+  \draw[leader] (5.48,2.56) -- (5.63,2.16);
   % guides from hot spots to the gradient lobes
   \draw[black!22, dashed, line width=0.4pt] (4.15,2.04) -- (4.15,0.44);
   \draw[black!22, dashed, line width=0.4pt] (5.65,2.04) -- (5.65,0.44);
@@ -249,10 +253,15 @@ model family.
     .. controls (5.10,0.78) and (5.25,1.08) .. (5.47,1.08)
     .. controls (5.82,1.08) and (6.08,0.43) .. (6.31,0.43)
     .. controls (6.50,0.43) and (6.70,0.98) .. (6.90,0.86);
-  \node[tolBz, font=\small, anchor=south] at (4.15,1.14) {$|\partial_x B_z|$};
-  % no white fill: it would mask the |dBz/dx| curve drawn behind it
-  \node[tolBx, font=\small, anchor=south, inner sep=0.8pt]
-        at (4.90,0.94) {$|\partial_x B_x|$};
+  % The two component labels sit on the empty flanks of the band rather than
+  % on top of each other at the centre: |dBz/dx| is drawn over 2.90--6.90 and
+  % |dBx/dx| over 3.20--6.60, so x<2.9 and x>6.9 are free at this height.
+  % Leaders carry the association; no white fill, which would mask the curves.
+  \node[tolBz, font=\small, anchor=west] at (0.95,1.08) {$|\partial_x B_z|$};
+  \draw[tolBz!55, line width=0.4pt] (1.92,1.08) -- (2.86,0.90);
+  \node[tolBx, font=\small, anchor=east, inner sep=0.8pt]
+        at (8.95,1.08) {$|\partial_x B_x|$};
+  \draw[tolBx!55, line width=0.4pt] (8.08,1.08) -- (6.42,0.90);
 
 \end{scope}
 
@@ -264,7 +273,7 @@ model family.
   \node[ptitle] at (pb.north west) {(b) Diagnostic couplings $\lambda_{sv}(x)$};
 
   % shared pocket band + hot-spot guides across all four rows
-  \fill[deadgray!45] (2.95,0.95) rectangle (3.65,5.42);
+  \fill[deadgray] (2.95,0.95) rectangle (3.65,5.42);
   \draw[black!30, dashed, line width=0.4pt] (2.72,0.95) -- (2.72,5.42);
   \draw[black!30, dashed, line width=0.4pt] (3.88,0.95) -- (3.88,5.42);
   \node[taglabel, anchor=east] at (2.50,5.58) {pocket};
@@ -358,23 +367,30 @@ model family.
   \node[panel, minimum width=6.2cm, minimum height=7.30cm, anchor=south west] (pc) at (0,0) {};
   \node[ptitle] at (pc.north west) {(c) Experiment};
 
-  % Vertical layout: uniform 0.26 cm edge-to-edge gaps. Node centres are
-  % computed from the scriptsize line height (0.300 cm) plus 2 x 3 pt inner sep,
-  % so 1-, 2- and 3-line boxes all leave the same visual gap.
-  \node[pnode, minimum width=5.3cm] (n1) at (3.1,6.605) {4-level response model $H(x)$};
-  \node[pnode, minimum width=5.3cm] (n2) at (3.1,5.835) {4 diagnostic ans\"atze $\lambda_{sv}(x)$, see (b)};
-  \node[pnode, minimum width=5.3cm] (n3) at (3.1,4.915)
-    {108 conditions $\times$ 4 ans\"atze};
-  \node[pnode, minimum width=5.3cm] (n4) at (3.1,3.845)
-    {5 seed blocks, CRN across ans\"atze\\ $n_{\mathrm{real}}=5\ldots100$};
-  \node[pnode, minimum width=5.3cm] (n5) at (3.1,2.775)
-    {$(\figDelta P_v,\figDelta\chi_\phi)\to$ 9-category label};
-  \node[pnode, minimum width=5.3cm, draw=bxorange!70, fill=bxorange!7] (n6) at (3.1,1.705)
-    {$D_{\mathrm{ansatz}}$ (6 pairs) vs $D_{\mathrm{seed}}$ (10 pairs)};
-  \node[pnode, fill=robustteal!12, draw=robustteal!70, minimum width=2.45cm]
-    (c1) at (1.55,0.575) {$n=30$\\ pre-registered};
-  \node[pnode, fill=robustteal!12, draw=robustteal!70, minimum width=2.45cm]
-    (c2) at (4.65,0.575) {$n=100$\\ follow-up};
+  % Vertical layout: uniform 0.195 cm edge-to-edge gaps. Box heights are pinned
+  % by minimum height (0.55 cm for one line, 0.94 cm for two) rather than left
+  % to the glyph extents, so the gap is the same everywhere by construction.
+  % Stack: top edge 6.80, bottom edge 0.22, six gaps of 0.195.
+  % Every line is measured to fit 5.7 cm minus 2 x 2 pt: the widest is
+  % "5 seed blocks, common random numbers" at 151.2 pt against 157.8 pt.
+  \node[pnode, minimum width=5.7cm] (n1) at (3.1,6.525)
+    {4-level spin--valley response model $H(x)$};
+  \node[pnode, minimum width=5.7cm] (n2) at (3.1,5.78)
+    {4 diagnostic ans\"atze $\lambda_{sv}(x)$, see (b)};
+  \node[pnode2, minimum width=5.7cm] (n3) at (3.1,4.84)
+    {108 conditions: 2 pockets, 9 geometries,\\ 3 velocities, 2 couplings; 432 cells};
+  \node[pnode2, minimum width=5.7cm] (n4) at (3.1,3.705)
+    {5 seed blocks, common random numbers\\
+     across ans\"atze; 8 sizes $n_{\mathrm{real}}=5\ldots100$};
+  \node[pnode, minimum width=5.7cm] (n5) at (3.1,2.765)
+    {$(\figDelta P_v,\figDelta\chi_\phi)\to$ one of nine categories};
+  \node[pnode2, minimum width=5.7cm, draw=bxorange!70, fill=bxorange!7] (n6) at (3.1,1.825)
+    {Mean pairwise label disagreement:\\
+     $D_{\mathrm{ansatz}}$ (6 pairs) vs $D_{\mathrm{seed}}$ (10 pairs)};
+  \node[pnode2, fill=robustteal!12, draw=robustteal!70, minimum width=2.75cm]
+    (c1) at (1.625,0.69) {$n_{\mathrm{real}}=30$\\ pre-registered};
+  \node[pnode2, fill=robustteal!12, draw=robustteal!70, minimum width=2.75cm]
+    (c2) at (4.575,0.69) {$n_{\mathrm{real}}=100$\\ registered follow-up};
 
   \draw[parrow] (n1) -- (n2);
   \draw[parrow] (n2) -- (n3);
@@ -541,10 +557,10 @@ Coherent transport of electron spin qubits between distant sites
 (``shuttling'') lets qubit registers sit apart from readout and control
 hardware, and is a key enabler for scalable Si/SiGe
 architectures~\cite{kunne_spinbus_2024,langrock_blueprint_2023,gonzalez-zalba_scaling_2021,veldhorst_silicon_2017,li_crossbar_2018,vandersypen_interfacing_2017}.
-The platform is mature: high-fidelity gates, multi-qubit processors, error
-correction, established single-spin readout and an industrial fabrication path
-are all in
-place~\cite{xue_quantum_2022,tanttu_assessment_2024,huang_high-fidelity_2024,philips_universal_2022,fernandez_de_fuentes_running_2026,thorvaldson_grovers_2025,takeda_quantum_2022,meunier_silicon_2025,koch_industrial_2025,elsayed_low_2024,hanson_spins_2007,burkard_semiconductor_2023,morello_single-shot_2010,hu_single-electron_2025}.
+The broader Si/SiGe platform now supports high-fidelity gates, multi-qubit
+processors, error-correction demonstrations, established single-spin readout
+and increasingly mature fabrication workflows
+~\cite{xue_quantum_2022,tanttu_assessment_2024,huang_high-fidelity_2024,philips_universal_2022,fernandez_de_fuentes_running_2026,thorvaldson_grovers_2025,takeda_quantum_2022,meunier_silicon_2025,koch_industrial_2025,elsayed_low_2024,hanson_spins_2007,burkard_semiconductor_2023,morello_single-shot_2010,hu_single-electron_2025}.
 Conveyor-mode and bucket-brigade shuttling have been demonstrated at high
 fidelity~\cite{de_smet_high-fidelity_2025,seidler_conveyor-mode_2022,mills_shuttling_2019},
 as have shuttling-based two-qubit links between separated
@@ -570,7 +586,7 @@ valley transitions become correlated with spin
 dephasing, so that geometry and trajectory choices affect spin
 coherence and valley leakage simultaneously.
 
-A natural program is \emph{valley-aware co-design}: jointly optimizing
+These considerations motivate \emph{valley-aware co-design}: joint tuning of
 micromagnet geometry and shuttling trajectory to suppress both valley leakage
 and dephasing. Any such optimization assumes a model of how the two sectors
 couple---an effective spin--valley Hamiltonian $H_{sv}$. The literature
@@ -578,55 +594,47 @@ motivates several ingredients, among them gradient-induced synthetic
 spin--orbit coupling, valley-pocket localization, and spin--valley hot spots,
 but leaves the local profile $\lambda_{sv}(x)$ for a shuttled dot open.
 
-We ask a prior question: \emph{how much do co-design conclusions depend on that
-choice, and how does that dependence compare with the variation a finite
-Monte-Carlo ensemble produces on its own?} The comparison is the point. Showing
-that four coupling profiles give four answers means little if the same
-simulation gives different answers to itself.
+We therefore compare the sensitivity of the design-facing classification to
+the coupling ansatz with its finite-sampling sensitivity. Across the ansatz
+comparison we hold the geometry model, operator structure, noise model and full
+108-condition geometry--trajectory grid fixed, and change only the scalar
+coupling profile. Within each seed block, all four ans\"atze use common random
+numbers; independent seed blocks provide the same-ansatz sampling benchmark.
+Both comparisons use the same nine-category classification, which records
+whether each coupling-induced response improves, worsens, or remains below its
+operational floor. We follow the comparison from $n_{\rm real}=5$ to $100$,
+where $n_{\rm real}$ is the number of independent charge-noise realizations
+averaged per condition. Figure~\ref{fig:overview} summarizes the reference
+geometry, the four ans\"atze and the matched comparison.
 
-Across the ansatz comparison we therefore hold the geometry model, the operator
-structure, the noise model and the full 108-condition geometry and trajectory
-grid identical, changing only the scalar coupling profile, and drive all four
-ans\"atze with common random numbers, so that every cross-ansatz comparison is
-made on one realization set. Against it we
-place the disagreement measured between independent seed blocks under a fixed
-ansatz. Both are counted on the same design-facing classification: whether each
-of the two coupling-induced responses is negative, positive, or below its
-operational floor, against floors fixed in advance. We repeat the
-comparison at Monte-Carlo ensemble sizes from $n_{\rm real}=5$ to $100$, where
-$n_{\rm real}$ is the number of independent charge-noise realizations averaged
-per condition. Figure~\ref{fig:overview} summarizes the setup, the four
-ans\"atze, the experiment, and the matched comparison.
+The estimands, candidate-selection rule and checkpoints
+$n_{\rm real}=5,10,20,30$, with primary endpoint $n_{\rm real}=30$, were fixed
+in writing before these data were generated. Because cross-seed disagreement
+was still decreasing at that endpoint, we registered a follow-up extension to
+$n_{\rm real}=100$ before generating the extension data, including its
+checkpoints, hard stop and reporting language. Diagnostics introduced after
+inspection of the results are identified as post-hoc.
 
-The estimands, the candidate-selection rule and the checkpoints
-$n_{\rm real}=5,10,20,30$ with endpoint $n_{\rm real}=30$ were fixed in writing
-before any of these data existed. After the $n_{\rm real}=30$ result showed
-cross-seed disagreement still falling, we registered a follow-up extension to
-$n_{\rm real}=100$, with checkpoints, hard stop and reporting language fixed
-before the extension data were generated. Diagnostics added after seeing results are marked post-hoc
-where they appear.
+An archived version of the atlas used separate noise realizations for different
+ans\"atze, so its apparent cross-ansatz differences also contained a sampling
+difference. We first quantify that seeding effect, then turn to the matched
+comparison.
 
-An earlier archived calculation of this atlas drew a separate noise realization
-for each ansatz, so a cross-ansatz difference there also carried a sampling
-difference. We therefore begin by quantifying how much that confounded the
-apparent model disagreement, before turning to the matched comparison.
+Cross-ansatz disagreement---the fraction of conditions assigned different
+labels by two ans\"atze---is $0.395$ at $n_{\rm real}=100$ and remains within a
+three-point band over all eight registered checkpoints. Cross-seed disagreement
+instead falls monotonically from $0.542$ to $0.298$. The two scales are
+comparable through the registered $n_{\rm real}=30$ endpoint; from
+$n_{\rm real}=40$ to $100$, cross-ansatz disagreement is larger.
 
-The main findings are as follows. Cross-ansatz
-disagreement --- the fraction of conditions two ans\"atze label differently ---
-is $0.395$ at $n_{\rm real}=100$ and stays within a three-point band across all
-eight checkpoints, while cross-seed disagreement falls monotonically from
-$0.542$ to $0.298$; at
-the registered checkpoints through $n_{\rm real}=30$ the sampling disagreement
-is comparable to or larger than the cross-ansatz disagreement, and at the
-checkpoints from $40$ to $100$ the ordering is reversed. The balance is observable dependent: resolving the label
-into its two response channels, the cross-ansatz to cross-seed ratio at
-$n_{\rm real}=100$ is $5.60$ for spin dephasing and $0.96$ for valley
-excitation, a post-hoc decomposition. A post-hoc ranking diagnostic shows that rank
-correlation across ans\"atze does not track the classification: two ansatz
-pairs whose rank correlations differ by $0.011$ differ by 37 percentage points
-in classification agreement. Operating points selected for stability across noise samples
-alone remain robust under all four coupling profiles in some cases and under
-none in others.
+The aggregate comparison hides substantial internal structure. At
+$n_{\rm real}=100$, the cross-ansatz to cross-seed ratio is $5.60$ for spin
+dephasing and $0.96$ for valley excitation in a post-hoc channel decomposition.
+A separate post-hoc ranking diagnostic shows that similar response-magnitude
+rankings need not imply similar classifications: two ansatz pairs whose rank
+correlations differ by $0.011$ differ by $37.2$ percentage points in
+classification agreement. Operating points selected for stability across noise
+samples likewise transport unevenly across the four profiles.
 
 \section{Related work and positioning}
 
@@ -635,7 +643,9 @@ splitting statistics~\cite{paquelet_wuetz_atomic_2022,losert_practical_2023},
 the role of interface disorder and valley--orbit
 coupling~\cite{friesen_theory_2010,hosseinkhani_theory_2022}, and
 shuttling-induced valley
-excitation~\cite{langrock_blueprint_2023,losert_strategies_2024,volmer_mapping_2024,oda_suppressing_2026}. Work on micromagnet-based
+excitation~\cite{langrock_blueprint_2023,losert_strategies_2024,volmer_mapping_2024,oda_suppressing_2026}.
+
+Work on micromagnet-based
 spin manipulation~\cite{unseld_baseband_2025,yoneda_quantum-dot_2018} has
 established synthetic
 spin--orbit coupling as a control resource, and the role of
@@ -648,50 +658,52 @@ filter-function and disorder-aware
 approaches~\cite{langrock_blueprint_2023,struck_low-frequency_2020,krzywda_coherence_2026,burkard_semiconductor_2023,yoneda_noise-correlation_2023},
 and hopping/baseband control with site-dependent quantization axes has
 emerged as an alternative to resonant
-driving~\cite{wang_operating_2024,unseld_baseband_2025}. Disorder and
+driving~\cite{wang_operating_2024,unseld_baseband_2025}.
+
+Disorder and
 strain effects on spin--orbit coupling have been quantified in related
 Ge hole-spin device models~\cite{sarkar_effect_2025,mauro_strain_2025}.
 Trajectory and device parameters for shuttling \emph{have} been
 optimized in specific studies, including velocity and design trade-offs
 in blueprint analyses and disorder-aware shuttling
 strategies~\cite{langrock_blueprint_2023,losert_strategies_2024}.
-Generic optimal-control machinery is also
+More broadly, generic optimal-control machinery is also
 available~\cite{khaneja_optimal_2005,niu_universal_2019}.
 
-In such studies the effective coupling model is held fixed, which is the
-right choice where the model is validated for the regime in question. The
-setting we address is the local spin--valley coupling of a dot shuttled
-through a micromagnet field. No generally validated local
-$\lambda_{sv}(x)$ that can be adopted without additional modeling
-assumptions is yet available for this setting (Sec.~\ref{sec:model}), so there the
-model choice itself becomes a source of design risk. Quantifying that risk is the purpose of this work. Recent conveyor-mode
-measurements increasingly constrain the relevant microscopic
-ingredients. They provide spatial maps of the valley splitting $E_{\rm VS}$ along
-shuttling trajectories and, together with valley-resolved $g$-factor
-maps, constrain the complex intervalley
-coupling~\cite{volmer_impact_2026,volmer_gfactor_2026}. These
-measurements do not by themselves determine the effective local
-moving-dot spin--valley kernel parameterized here. They sharpen the
-experimental target that a future microscopic $\lambda_{sv}(x)$ must
-fit. Valley-aware
-co-design in the sense used here means jointly tuning geometry and
-trajectory against both valley leakage and dephasing. We accordingly treat it as a prospective program.
+In most design studies the effective coupling model is held fixed. That
+treatment is appropriate when the model is validated for the regime of
+interest. Here the uncertain object is the local spin--valley coupling of a dot
+shuttled through a micromagnet field. No generally validated local $\lambda_{sv}(x)$ is yet
+available for this setting without additional modeling assumptions
+(Sec.~\ref{sec:model}), so the model choice itself becomes part of the design
+risk. Recent conveyor-mode measurements increasingly constrain the microscopic
+ingredients by mapping the valley splitting $E_{\rm VS}$ along shuttling
+trajectories and, together with valley-resolved $g$-factor maps, constraining
+the complex intervalley coupling~\cite{volmer_impact_2026,volmer_gfactor_2026}.
+These measurements do not by themselves determine the effective local
+moving-dot spin--valley kernel used here, but they provide increasingly direct
+targets for a future microscopic $\lambda_{sv}(x)$. We use
+\emph{valley-aware co-design} to mean joint tuning of geometry and trajectory
+against both valley leakage and dephasing, and treat it here as a prospective
+program. Accordingly, we do not propose a new microscopic spin--valley coupling
+model; we test how design conclusions change across four controlled profile
+assumptions within the same phenomenological response model.
 
-Our contribution is methodological. We fix the four-level response model, the reference
-geometry and the condition grid, and vary two things against each other: the
-coupling ansatz, under common random numbers, and the seed block, at fixed
-ansatz. Both are tracked across ensemble size. Each ansatz is a kernel
-multiplying one fixed minimal spin--valley operator. Micromagnets and electron shuttling are individually
-established experimentally~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,de_smet_high-fidelity_2025,seidler_conveyor-mode_2022},
-but periodically patterned micromagnet shuttling architectures remain
+To isolate coupling-profile dependence, we fix the four-level response model,
+the reference geometry and the condition grid. We then compare variation across
+the coupling ansatz, using common random numbers, with variation across seed
+blocks at fixed ansatz, and track both over ensemble size. Each ansatz is a
+scalar kernel multiplying the same minimal spin--valley operator. Micromagnets
+and electron shuttling are individually established
+experimentally~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,de_smet_high-fidelity_2025,seidler_conveyor-mode_2022},
+whereas periodically patterned micromagnet shuttling architectures remain
 largely proposed or emerging
-designs~\cite{kunne_spinbus_2024,langrock_blueprint_2023,unseld_baseband_2025}; we
-accordingly treat the periodic array as a controlled reference geometry
-for the diagnostic comparison. The design conclusions drawn on that geometry remain
-conditional on the assumed coupling profile. They can be strengthened by
-independently constraining that profile, or by demonstrating robustness
+designs~\cite{kunne_spinbus_2024,langrock_blueprint_2023,unseld_baseband_2025}.
+We therefore use the periodic array as a controlled reference geometry rather
+than a validated device architecture. Conclusions drawn on that geometry
+remain conditional on the assumed coupling profile and can be strengthened
+either by constraining the profile independently or by demonstrating robustness
 across a justified model family.
-
 \begin{table*}[!tp]
 \centering
 \caption{Representative simulation parameters and their physical
@@ -719,7 +731,7 @@ external field $B_{\rm ext}$ & $0.5$\,T         & chosen operating-field baselin
 $\varepsilon_{v,\rm base}$ far from pocket & $100\,\mu$eV & baseline motivated by measured $E_{\rm VS}$ scales \\
 $\varepsilon_{v,\min}$ at pocket centre & $5\,\mu$eV & low-detuning floor within measured $E_{\rm VS}$ scales \\
 pocket width $\sigma_p$   & $30$\,nm         & sets path span $8\sigma_p$ \\
-valley off-diagonal $\Delta_v$ & $0.5\,\mu$eV & avoided-crossing scale (toy) \\
+valley off-diagonal $\Delta_v$ & $0.5\,\mu$eV & avoided-crossing scale (phenomenological) \\
 resonance width $\sigma_E$ & $10\,\mu$eV     & resonance-localization envelope width   \\
 shuttling velocity $v$    & $5$--$20$\,m/s   & conveyor-mode sweep~\cite{seidler_conveyor-mode_2022,langrock_blueprint_2023} \\
 \bottomrule
@@ -732,9 +744,9 @@ shuttling velocity $v$    & $5$--$20$\,m/s   & conveyor-mode sweep~\cite{seidler
 One part of the simulator varies in this study: the spatial form of the
 spin--valley coupling, $\lambda_{sv}(x)$. The geometry model and its
 perturbation grid, the noise model, the operator structure and every other
-model ingredient are identical across the four ans\"atze. The
-sections below set up that fixed backdrop and then give the four alternative
-forms of $\lambda_{sv}(x)$.
+model ingredient are identical across the four ans\"atze. We first define
+this common response model and then specify the four alternative forms of
+$\lambda_{sv}(x)$.
 
 We consider an electron shuttled at constant velocity $v$ along $x$
 through a periodic micromagnet array, with a position-dependent
@@ -746,10 +758,10 @@ diabatic valley detuning
 \label{eq:evx}
 \end{equation}
 %
-a baseline with a Gaussian pocket (minimum) near the shuttling path, using
-$\varepsilon_{v,\rm base}=100\,\mu$eV, $\varepsilon_{v,\min}=5\,\mu$eV and
-$\sigma_p=30$\,nm; for A$_{\rm pocket}$ we set
-$\sigma_\lambda=\sigma_p$. The constant-velocity trajectory spans
+This gives a baseline detuning with a Gaussian pocket (minimum) near the
+shuttling path. We use $\varepsilon_{v,\rm base}=100\,\mu$eV,
+$\varepsilon_{v,\min}=5\,\mu$eV and $\sigma_p=30$\,nm; for
+A$_{\rm pocket}$ we set $\sigma_\lambda=\sigma_p$. The constant-velocity trajectory spans
 $x\in[x_c-4\sigma_p,\,x_c+4\sigma_p]$, a total path length of
 $240$\,nm. This detuning landscape is a phenomenological surrogate for
 the measured spatial variation of the physical valley splitting
@@ -782,59 +794,59 @@ position-dependent transverse Zeeman \emph{energy}, not an AC EDSR
 drive. Because $B_{\rm ext}$ is spatially uniform it drops out of every
 spatial derivative, so the gradient-based ans\"atze below use the
 micromagnet stray-field gradients $\partial_x B_z(x)$ and
-$\partial_x B_x(x)$. The valley block is a generic two-level avoided-crossing model
-with diabatic detuning $\varepsilon_v(x)$ and off-diagonal coupling
-$\Delta_v$, so its isolated eigenlevel splitting is
-$E_{\rm gap}(x)=\sqrt{\varepsilon_v(x)^2+4\Delta_v^2}$. Over the
-$5$--$100\,\mu$eV input range used here this exceeds $\varepsilon_v(x)$
-by less than $2\%$, with the largest relative difference at the pocket
-minimum and less than $0.02\%$ near the $\varepsilon_v\simeq E_Z$ crossings that
-set the proxy hot spots. For the resonance kernels the consequence is smaller
-still. The crossing condition of the separately dressed spin and valley blocks,
-before the spin--valley coupling is included, is $E_{\rm gap}=E_{\rm spin}$;
-centring the window on $\varepsilon_v\simeq E_Z$ instead moves the crossing by
-$0.0014\,\mu$eV, $0.014\%$ of the $\sigma_E=10\,\mu$eV window width, because
-the two approximations displace it in the same direction and largely cancel.
-That cancellation is a consequence of $\Delta_v\ll\varepsilon_v$: at
+$\partial_x B_x(x)$. The valley block is a generic two-level avoided-crossing model with
+diabatic detuning $\varepsilon_v(x)$ and off-diagonal coupling $\Delta_v$, so
+its isolated eigenlevel splitting is
+$E_{\rm gap}(x)=\sqrt{\varepsilon_v(x)^2+4\Delta_v^2}$.
+
+Three valley-energy scales therefore appear in the discussion. The input
+quantity $\varepsilon_v(x)$ is the diabatic detuning used by the response
+model, $E_{\rm gap}(x)$ is the corresponding valley-block eigenlevel splitting,
+and $E_{\rm VS}$ is the physical valley splitting reported by experiment. Of
+the two model quantities, $E_{\rm gap}$ is the closer analogue of a measured
+$E_{\rm VS}$, while the measured $E_{\rm VS}$ range motivates the scale chosen
+for $\varepsilon_v$. The parameter $\Delta_v$ is a phenomenological mixing
+scale; microscopically, intervalley coupling arises from interface and
+valley--orbit physics~\cite{friesen_theory_2010}.
+
+For the parameters used here, the simpler input detuning closely tracks the
+isolated valley splitting on the scales relevant to the resonance window. For
+the baseline $\Delta_v=0.5\,\mu$eV, $E_{\rm gap}$ exceeds $\varepsilon_v$ by
+less than $2\%$ over the $5$--$100\,\mu$eV input range, with the largest
+relative difference at the pocket minimum and less than $0.02\%$ near the
+$\varepsilon_v\simeq E_Z$ crossings that set the proxy hot spots. The crossing condition of the separately dressed spin and
+valley blocks, before the spin--valley coupling is included, is
+$E_{\rm gap}=E_{\rm spin}$. Centring the resonance window on the simpler proxy
+$\varepsilon_v\simeq E_Z$ instead moves the crossing by $0.0014\,\mu$eV,
+$0.014\%$ of the $\sigma_E=10\,\mu$eV window width, because the two
+approximations displace it in the same direction and largely cancel. That
+cancellation follows from $\Delta_v\ll\varepsilon_v$; at
 $\Delta_v=5\,\mu$eV the residual would reach $8\%$ of the window width.
 
-Three valley energies appear here: the diabatic input detuning
-$\varepsilon_v(x)$, the valley-block eigenlevel splitting $E_{\rm gap}(x)$, and
-the physical valley splitting $E_{\rm VS}$ reported by experiment. Of the two
-model quantities, $E_{\rm gap}$ is the analogue of a measured $E_{\rm VS}$. The
-measured $E_{\rm VS}$ range motivates the scale chosen for $\varepsilon_v$; for
-$\Delta_v=0.5\,\mu$eV, $E_{\rm gap}$ and $\varepsilon_v$ agree to within $2\%$
-over that range. $\Delta_v$ is a
-phenomenological mixing parameter; microscopically such intervalley coupling
-arises from interface and valley--orbit physics~\cite{friesen_theory_2010}.
+We use this Hamiltonian as a phenomenological response model rather than a
+microscopically derived Si/SiGe $H_{sv}$. The
+$\lambda_{sv}\sigma_x\otimes\tau_x$ term is a minimal real
+spin-flip/valley-flip Pauli product; other operator structures, such as
+$\sigma_x\tau_y$ or $\sigma_y\tau_x$, are possible. Microscopically,
+spin--valley mixing follows from matrix elements of intrinsic and synthetic
+spin--orbit terms between valley-dependent envelope
+states~\cite{hosseinkhani_theory_2022,huang_spin_2014}. The four ans\"atze used
+here share this operator structure and differ only in the scalar profile
+$\lambda_{sv}(x)$. They are therefore four diagnostic spatial kernels, not four
+microscopic Hamiltonians.
 
-This Hamiltonian is a diagnostic effective model, not a microscopically derived
-Si/SiGe $H_{sv}$. The term $\lambda_{sv}\sigma_x\otimes\tau_x$ is a minimal
-real spin-flip/valley-flip Pauli product, one of several possible structures
-(e.g.\ $\sigma_x\tau_y$ or $\sigma_y\tau_x$). Microscopically, spin--valley
-mixing follows from matrix elements of intrinsic and synthetic spin--orbit
-terms between valley-dependent envelope
-states~\cite{hosseinkhani_theory_2022,huang_spin_2014}. All four ans\"atze
-share this one operator structure and differ only in the scalar profile
-$\lambda_{sv}(x)$: four spatial kernels on one fixed operator, not four
-microscopic Hamiltonians. That scope holds for every statement about the
-ans\"atze below.
-
-The coupling strength is set by a profile $\lambda_{sv}(x)$ whose form is
-itself uncertain, so we compare four toy-level ans\"atze. Each is motivated by
-a known ingredient without being derived from it: spatial Zeeman-energy
-variation from the micromagnet
+We compare four such kernels. Each is motivated by a known ingredient without
+being derived from it: spatial Zeeman-energy variation from micromagnet
 gradients~\cite{langrock_blueprint_2023,struck_low-frequency_2020};
 transverse-gradient synthetic spin--orbit
 coupling~\cite{borjans_single-spin_2019,zhang_controlling_2021,hosseinkhani_theory_2022};
 valley-pocket
 localization~\cite{paquelet_wuetz_atomic_2022,losert_strategies_2024,volmer_mapping_2024};
-and the spin--valley hot spot at near-degeneracy of the dressed spin and valley
-sectors~\cite{yang_spin-valley_2013,huang_spin_2014}, which the released
-kernels represent by the input-detuning proxy
-$\varepsilon_v(x)\simeq E_Z(x)$. We use
-the physically transparent total-field convention throughout, in which
-the Zeeman energy is evaluated with the full local field,
+and spin--valley enhancement near dressed spin--valley resonance
+~\cite{yang_spin-valley_2013,huang_spin_2014}. For B$_z$ and B$_x$,
+resonance localization is defined with the input-detuning proxy
+$\varepsilon_v(x)\simeq E_Z(x)$. We use the total-field convention throughout,
+evaluating the Zeeman energy from the full local field,
 %
 \begin{equation}
 E_Z(x) = g\mu_B\,[\,B_{\rm ext} + B_z(x)\,],
@@ -861,101 +873,83 @@ the diagnostic condition $\varepsilon_v(x)\simeq E_Z(x)$ produces two flank prox
 crossings
 around the pocket.
 
-A, the \emph{longitudinal-gradient} profile, is the baseline, motivated by the
-spatial Zeeman-energy variation the micromagnet imprints. A$_{\rm pocket}$, the
-\emph{pocket-localized gradient}, weights that same gradient coupling by a
-Gaussian envelope centred on the low-$\varepsilon_v$ pocket. B$_z$ and B$_x$, the \emph{longitudinal-} and
-\emph{transverse resonance-localized} profiles, are resonance-window ans\"atze
-motivated by the spin--valley
-hot spot~\cite{yang_spin-valley_2013,huang_spin_2014}; their
-Gaussian windows are centred on the input-detuning condition
-$\delta(x)\equiv\varepsilon_v(x)-E_Z(x)\simeq 0$,
-with no claim to a microscopic line shape. They use two alternative choices
-of
-magnetic-gradient component: the longitudinal gradient $\partial_x B_z$
-sets the local Zeeman-splitting variation (the dephasing
-gradient~\cite{langrock_blueprint_2023,struck_low-frequency_2020}), whereas the
-transverse gradient $\partial_x B_x$ is the component that drives spin
-flips in slanting-field
-EDSR~\cite{tokura_coherent_2006,pioro-ladriere_electrically_2008,zhang_controlling_2021}. Neither
-choice is prescribed for a shuttled dot by the literature, which is
-precisely the model uncertainty probed here.
+A is the \emph{longitudinal-gradient} profile and uses the spatial
+Zeeman-energy variation produced by the micromagnet. A$_{\rm pocket}$ adds a
+Gaussian envelope centred on the low-$\varepsilon_v$ pocket. B$_z$ and B$_x$
+are \emph{resonance-localized} profiles whose Gaussian envelopes are centred on
+$\delta(x)\equiv\varepsilon_v(x)-E_Z(x)\simeq0$; B$_z$ uses
+$\partial_x B_z$, whereas B$_x$ uses $\partial_x B_x$. The longitudinal
+gradient controls local Zeeman-splitting variation
+~\cite{langrock_blueprint_2023,struck_low-frequency_2020}, while the transverse
+gradient drives spin flips in slanting-field
+EDSR~\cite{tokura_coherent_2006,pioro-ladriere_electrically_2008,zhang_controlling_2021}.
+The literature does not prescribe either gradient component as the unique
+effective coupling for a shuttled dot, which is the model ambiguity tested
+here. The resonance-localized envelopes are motivated by the spin--valley hot
+spot~\cite{yang_spin-valley_2013,huang_spin_2014}.
 
-None of the four profiles should be
-interpreted as a literature-standard or microscopically derived
-spin--valley coupling; the Gaussian window
-$e^{-\delta^2/(2\sigma_E^2)}$ in particular is a phenomenological
-localization envelope on the coupling amplitude, not a line shape for the
-enhancement itself. The envelope is bounded by unity and equals unity at
-$\delta=0$, so B$_z$ and B$_x$ are the A profile \emph{suppressed away from}
-the proxy crossing rather than amplified at it; the enhancement near
-$\delta=0$ is produced by the four-level dynamics, as the following
-paragraph sets out. These kernels quantify how strongly the
-conclusions depend on plausible, non-unique modelling choices.
+The four profiles are phenomenological and should not be read as
+literature-standard spin--valley couplings. In particular, the Gaussian
+$e^{-\delta^2/(2\sigma_E^2)}$ in B$_z$ and B$_x$ localizes the assumed
+off-diagonal coupling amplitude near the proxy crossing; it is not a
+microscopic resonance line shape. Because the envelope is bounded by unity,
+these profiles suppress the corresponding gradient kernel away from resonance
+rather than amplify it at $\delta=0$.
 
 An explicit resonance-localization envelope is not required to produce a
-spin--valley hot spot, so the gradient-only kernels A and A$_{\rm pocket}$ are
-not excluded by the known enhancement near $\varepsilon_v\approx E_Z$. In the
-diabatic basis of the Hamiltonian above, the operator
-$\lambda_{sv}(x)\,\sigma_x\otimes\tau_x$ couples a pair of states whose
-uncoupled energy difference is $\varepsilon_v(x)-E_Z(x)$, taken in the diagonal
-part of the diabatic Hamiltonian before $\Delta_v$, $B_x$ and $\lambda_{sv}$
-are diagonalized. The dressed condition is $E_{\rm gap}\simeq E_{\rm spin}$, with
-$E_{\rm spin}(x)=g\mu_B\sqrt{[B_{\rm ext}+B_z(x)]^2+B_x(x)^2}$; we use the
-diabatic one as a proxy for it, hence ``proxy crossings'' throughout. A nonzero
-off-diagonal coupling at a flank crossing therefore produces an
-avoided crossing and resonantly enhanced spin--valley mixing through
-the four-level dynamics, even when $\lambda_{sv}(x)$ contains no
-explicit resonance window~\cite{yang_spin-valley_2013,huang_spin_2014}.
-
-For the profiles considered here, A and A$_{\rm pocket}$ remain
-nonzero at the relevant flank crossings. The window in B$_z$/B$_x$
-tests the distinct, stronger phenomenological assumption that the
-effective off-diagonal coupling amplitude is itself localized near
-resonance, thereby adding profile localization to the dynamical
-level-crossing enhancement. Microscopic spin--valley matrix elements
-depend on spin--orbit and field-gradient matrix elements between
-valley-dependent envelope states and need not take the particular
-Gaussian form in $\varepsilon_v-E_Z$ used
-here~\cite{hosseinkhani_theory_2022,huang_spin_2014}. The A-type
-kernels should therefore be read as diagnostic detuning-independent
-profiles, not as uniquely derived microscopic matrix elements. Neither
-family is a null control; together they represent complementary
-assumptions about the spatial structure of the same off-diagonal
-coupling.
+spin--valley hot spot. In the diabatic basis,
+$\lambda_{sv}(x)\sigma_x\otimes\tau_x$ couples states whose uncoupled energy
+difference is $\varepsilon_v(x)-E_Z(x)$ before $\Delta_v$, $B_x$ and
+$\lambda_{sv}$ are diagonalized. The corresponding dressed crossing condition
+is $E_{\rm gap}\simeq E_{\rm spin}$, with
+$E_{\rm spin}(x)=g\mu_B\sqrt{[B_{\rm ext}+B_z(x)]^2+B_x(x)^2}$; throughout we
+refer to the simpler diabatic condition as the proxy crossing. A nonzero
+off-diagonal coupling there opens an avoided crossing and enhances
+spin--valley mixing through the four-level dynamics even when
+$\lambda_{sv}(x)$ has no explicit resonance envelope
+~\cite{yang_spin-valley_2013,huang_spin_2014}. For the profiles considered
+here, A and A$_{\rm pocket}$ remain nonzero at the relevant flank crossings.
+B$_z$ and B$_x$ therefore add the
+stronger phenomenological assumption that the coupling amplitude itself is
+localized near resonance. Microscopic spin--valley matrix elements depend on
+valley-dependent envelope states and need not follow either spatial form
+~\cite{hosseinkhani_theory_2022,huang_spin_2014}. The two profile families
+represent complementary assumptions about the spatial structure of the same
+off-diagonal coupling.
 
 Figure~\ref{fig:profiles} shows the four profiles for a representative
-pocket: the gradient-only model A is delocalized over the whole
-period, A$_{\rm pocket}$ concentrates the gradient coupling near the
-pocket, and the resonance models B$_z$/B$_x$ are sharply peaked where
-$\varepsilon_v(x)$ crosses $E_Z(x)$. An important subtlety arises because
-all three of A$_{\rm pocket}$, B$_z$, and B$_x$ \emph{multiply the
-field gradient} $|\partial_x B_z|$ (or $|\partial_x B_x|$). The two gradient components are set by the array
-alone, not by the pocket. By symmetry $B_z$ is extremal and $B_x$
-vanishes at the array-symmetry point $x=0$, so $|\partial_x B_z|$ has a
-node there; for the fitted baseline field $|\partial_x B_x|$ also attains
-its maximum at that point. The centred-pocket configuration places
-$x_c=0$ there as well, so the node--pocket alignment follows from that
-placement; it is not a generic property of a centred valley pocket.
-Consequently A$_{\rm pocket}=|\partial_x B_z|\times$Gaussian is \emph{zero at
-the pocket centre} and forms two symmetric peaks on the flanks. A$_{\rm pocket}$ is thus
-``pocket-localized'' in its Gaussian envelope but inherits the
-gradient's flank structure; only when the pocket sits off-centre (where
-the gradient no longer vanishes at the well bottom) does its weight
-become strongly asymmetric and single-flank dominated. The resonance
-windows (B$_z$, B$_x$)
-activate symmetrically on both flanks for the centred pocket as well;
-the profiles therefore differ not in which side of the pocket they
-occupy but in their \emph{shape, width, phase relative to the driving
-gradient, and amplitude}. B$_x$ is built from $\partial_x B_x$ in place of
-$\partial_x B_z$, and the two gradient components are approximately phase
-shifted. Its weight therefore peaks slightly outside the crossing, where the
-$\partial_x B_z$-based kernels peak slightly inside it. This offset is
-consistent with the distinct thresholded-classification behaviour B$_x$ shows
-in the atlas. A left/right asymmetry appears only for an off-centred pocket,
-where the two flank crossings are inequivalent. The centred-pocket profiles
-used here are two-sided and symmetric, so any single-sided ``opposite side''
-reading is an argmax tie-break artifact of exactly degenerate twin peaks.
+pocket. The gradient-only ansatz A is delocalized over the whole period,
+A$_{\rm pocket}$ concentrates the gradient coupling near the pocket, and the
+resonance-localized ans\"atze B$_z$/B$_x$ are sharply peaked where
+$\varepsilon_v(x)$ crosses $E_Z(x)$.
+
+For the centred pocket, the field-gradient factors are essential to the profile
+shapes. A$_{\rm pocket}$, B$_z$, and B$_x$ all multiply either
+$|\partial_x B_z|$ or $|\partial_x B_x|$, and these gradients are set by the
+array rather than by the valley pocket. At the array-symmetry point $x=0$,
+$B_z$ is extremal and $B_x$ vanishes, so $|\partial_x B_z|$ has a node there;
+for the fitted baseline field, $|\partial_x B_x|$ is maximal at the same
+point. The centred configuration places $x_c=0$ at that symmetry point.
+Consequently, A$_{\rm pocket}=|\partial_x B_z|\times$Gaussian vanishes at the
+pocket centre and forms two symmetric flank peaks. Its Gaussian envelope is
+pocket-centred, but its detailed shape still inherits the gradient kernel. The
+resonance windows B$_z$ and B$_x$ are likewise two-sided. Because all three
+localized profiles occupy both flanks in the centred case, they differ
+primarily in shape, width, phase relative to the driving gradient, and
+amplitude---not in which side of the pocket they occupy. The centred-pocket
+profiles are exactly symmetric, so any single-sided ``opposite side'' reading
+is an argmax tie-break artifact of degenerate twin peaks.
+
+For the off-centred pocket, the two flank crossings become inequivalent and the
+localized profiles become asymmetric. A$_{\rm pocket}$ can then become
+single-flank dominated because the $|\partial_x B_z|$ node no longer coincides
+with the well bottom. B$_x$ also samples a different spatial phase from the
+$\partial_x B_z$-based kernels because it is built from $\partial_x B_x$; its
+weight peaks slightly outside a proxy crossing where the
+$\partial_x B_z$-based kernels peak slightly inside. This spatial offset is one
+geometric distinction between B$_x$ and the $\partial_x B_z$-based ans\"atze.
+The atlas compares the resulting classifications but does not isolate that
+offset as their cause.
 
 \begin{figure*}[!tp]
 \centering
@@ -982,128 +976,109 @@ off-centred placement, not of the profiles.}
 \label{fig:profiles}
 \end{figure*}
 
-$\Delta_v$ and $\sigma_E$ are toy parameters of the model, not measured
+$\Delta_v$ and $\sigma_E$ are phenomenological parameters rather than measured
 constants. The geometric and velocity baselines are representative of reported
 Si/SiGe shuttling devices.
 
-The observables target the two loss channels that the literature
-identifies as central to Si/SiGe shuttling: valley excitation
-(leakage) and valley-induced spin
-dephasing~\cite{losert_strategies_2024,de_smet_high-fidelity_2025,volmer_mapping_2024,oda_suppressing_2026}.
-We quantify them as the change in valley-leakage probability
-$\Delta P_v$ and the change in dephasing phase variance
-$\Delta\chi_\phi$ induced by the spin--valley coupling. The electron enters on
-the \emph{lower} diabatic valley branch, and $P_v$ is the population of the
-upper branch at the end of the trajectory. The spin is initialized in the
-transverse superposition $\lvert+\rangle_s$, so the initial four-level state is
-$\lvert+\rangle_s\otimes\lvert 0\rangle_v$. The observable is defined in the
-fixed diabatic basis. At the trajectory endpoints $|\varepsilon_v|\gg\Delta_v$,
-so that basis is nearly aligned with the instantaneous valley eigenbasis,
-though with $\Delta_v\neq 0$ the two never coincide exactly. The two ask different questions: $\Delta P_v$ asks how much charge
-noise changes valley leakage, and $\Delta\chi_\phi$ asks how much the valley
-sector changes charge-noise dephasing. They are two cross-effects, not two
-components of one total error, and each therefore needs its own reference. We
-use three nested models: a spin-only reference with charge noise but no valley
-sector ($\mathrm{M1}$), a valley-aware reference without charge noise
-($\mathrm{M1V}$), and the full model with both charge noise and valley coupling
-($\mathrm{M2}$). The two responses use \emph{different} references by
-design, each separating one cross-effect:
-$\Delta P_v = P_v^{\mathrm{M2}}-P_v^{\mathrm{M1V}}$ is the effect of charge
-noise on valley leakage, and
-$\Delta\chi_\phi = \chi^{\mathrm{M2}}-\chi^{\mathrm{M1}}$ the effect of the
-valley sector on charge-noise dephasing. The dephasing is computed within a
+We track valley excitation and valley-induced spin
+dephasing~\cite{losert_strategies_2024,de_smet_high-fidelity_2025,volmer_mapping_2024,oda_suppressing_2026}
+through two baseline-relative responses: the change in valley-leakage
+probability $\Delta P_v$ and the change in dephasing phase variance
+$\Delta\chi_\phi$ induced by the spin--valley coupling. The electron starts on
+the \emph{lower} diabatic valley branch, and $P_v$ is the upper-branch
+population at the end of the trajectory. The spin is initialized in
+$\lvert+\rangle_s$, giving the four-level initial state
+$\lvert+\rangle_s\otimes\lvert0\rangle_v$. We evaluate $P_v$ in the fixed
+diabatic basis. At the trajectory endpoints $|\varepsilon_v|\gg\Delta_v$, so
+this basis is nearly aligned with the instantaneous valley eigenbasis, although
+the two do not coincide exactly for nonzero $\Delta_v$.
+
+The two responses isolate different cross-effects and therefore use different
+references. We compare a spin-only model with charge noise but no valley sector
+($\mathrm{M1}$), a valley-aware reference without charge noise
+($\mathrm{M1V}$), and the full model with charge noise and valley coupling
+($\mathrm{M2}$):
+$\Delta P_v=P_v^{\mathrm{M2}}-P_v^{\mathrm{M1V}}$ measures the effect of charge
+noise on valley leakage, whereas
+$\Delta\chi_\phi=\chi^{\mathrm{M2}}-\chi^{\mathrm{M1}}$ measures the effect of
+the valley sector on charge-noise dephasing. The latter is computed within a
 filter-function description of $1/f$ charge
 noise~\cite{burkard_semiconductor_2023,struck_low-frequency_2020,viola_dynamical_1999}.
-Thus $\mathcal{R} = (\Delta P_v, \Delta\chi_\phi)$ is not a
-decomposition of a single infidelity but a pair of cross-effect
-measures. $\Delta P_v$ and $\Delta\chi_\phi$ are
-\emph{baseline-relative response diagnostics}, not absolute error
-rates. Absolute performance would be read from the full-model values
-$P_v^{\mathrm{M2}}$ and $\chi_\phi^{\mathrm{M2}}$ (or a derived
-phase-error proxy $p_\phi=(1-e^{-\chi_\phi/2})/2$), which we do not
-optimize here.
+Thus $\mathcal{R}=(\Delta P_v,\Delta\chi_\phi)$ is a pair of cross-effect
+diagnostics, not a decomposition of a single infidelity. Absolute performance
+would instead be read from $P_v^{\mathrm{M2}}$ and
+$\chi_\phi^{\mathrm{M2}}$ (or a derived phase-error proxy
+$p_\phi=(1-e^{-\chi_\phi/2})/2$), which we do not optimize here.
 
-Under the standard assumption that each component is
-monotonic in the infidelity of its channel (larger leakage and larger
-dephasing both reduce fidelity), we classify each condition by the
-sign of each \emph{above-threshold} response. The effect-size floors are
-$|\Delta P_v|\ge 10^{-4}$ and $|\Delta\chi_\phi|\ge 10^{-3}$. A condition
-clearing both is \emph{robust} if both improve
-($\Delta P_v<0$ and $\Delta\chi_\phi<0$), \emph{valley-trade} or
-\emph{spin-trade} if the signs oppose, and \emph{both-worsen} if both worsen.
-The realization count $n_{\rm real}$ introduced above counts Monte Carlo
-repetitions of the simulated noise, not experimental repetitions, and is
-the column name used in the released data tables and scripts. These floors are operational criteria that set a
-below-threshold zone on channel-appropriate response scales. They come from
-neither an external fidelity standard nor a statistical-significance
-calculation, and the decade offset between $10^{-4}$ and $10^{-3}$ follows the
-decade separating the natural scales of the two channels. Sensitivity to shared below-threshold assignments is examined in the
-Supplementary Material, and the stability of individual classifications is
-tested by the seed-stable candidate screen of Sec.~\ref{sec:results}. When only one channel is above threshold, the
-condition takes a separate single-channel category, which keeps one-channel
-cases out of the \emph{both-worsen} class. The classification does not compare the two channels'
-magnitudes against each other: each channel is judged against its own floor,
-and the category then uses the sign of any above-threshold response. The rank
-correlation instead uses the response magnitude
-$|\mathcal{R}|=\sqrt{\Delta P_v^2+\Delta\chi_\phi^2}$, whose ordering
-is preserved under uniform rescaling but does depend on the relative
-weighting of the two channels (we report this dependence as a
-robustness check).
+Assuming that larger leakage and larger dephasing both reduce fidelity, we
+classify each condition by the sign of each response that clears its
+effect-size floor. The floors are $|\Delta P_v|\ge10^{-4}$ and
+$|\Delta\chi_\phi|\ge10^{-3}$. A condition clearing both is \emph{robust} if
+both responses improve, \emph{valley-trade} or \emph{spin-trade} if their signs
+oppose, and \emph{both-worsen} if both worsen. If only one channel clears its
+floor, the condition receives a separate single-channel category; if neither
+does, it is below threshold. The floors are operational response-scale
+criteria, not significance cutoffs, confidence bounds or external fidelity
+standards. Their decade offset follows the decade separating the natural scales
+of the two responses. Sensitivity to shared below-threshold assignments is
+reported in the Supplementary Material, and classification stability is tested
+by the seed-stable candidate screen of Sec.~\ref{sec:results}.
 
-A co-design decision reads off the
-direction of the channel responses (whether each channel improves or
-worsens), not only their magnitude. We therefore treat the four
-two-channel quadrants as the decision-facing sign diagnostic and the ranking as
-a complementary magnitude-ordering summary. Both remain informative; they
-answer different questions and carry different degrees of model dependence.
+The realization count $n_{\rm real}$ denotes Monte-Carlo repetitions of the
+simulated noise, not experimental repetitions, and matches the released data
+tables and scripts. For a co-design decision, the direction of each channel
+response---whether valley excitation and dephasing improve or worsen relative
+to their channel-matched references---is itself relevant, not only the response
+magnitude. We therefore use the thresholded sign pattern as the decision-facing
+classification. The classification never compares the numerical magnitudes of
+the two channels; each is judged against its own floor. The complementary
+ranking diagnostic instead uses
+$|\mathcal{R}|=\sqrt{\Delta P_v^2+\Delta\chi_\phi^2}$. Its ordering is
+invariant to uniform rescaling but depends on the relative weighting of the two
+channels, which we test explicitly below. The thresholded classification and
+the magnitude ranking therefore answer different design questions.
 
 \section{Methods}
 \label{sec:methods}
 \subsection{Condition grid and reference geometry}
 
-We use two pocket placements: $x_c=0$ for the centred case, aligned with the
-array-symmetry point, and $x_c=25$\,nm for the off-centred edge case. On top of
-each we scan nine geometries -- the baseline plus one additive $+$ and $-$ step
-in each of four parameters, \texttt{period} ($\pm30$\,nm), \texttt{depth}
-($\pm10$\,nm), \texttt{half\_x} ($\pm5$\,nm) and \texttt{half\_z} ($\pm3$\,nm),
-i.e.\ $1+4\times2=9$ -- together with three velocities and two coupling
-strengths $\lambda$. Here \texttt{depth} is the signed vertical coordinate of
-the quantum well relative to the magnet plane, $-50$\,nm at baseline; a $+$
-step moves the well toward the magnet array, reducing the magnet--well
-separation and strengthening the stray field. The grid holds
-$2\times9\times3\times2=108$ conditions, each evaluated under all four
-ans\"atze, giving 432 ansatz-condition cells. The two coupling strengths are
-$\lambda=0.5$ and $1.0\,\mu$eV, so the grid contains six
-$(v,\lambda)$ families.
+We use two pocket placements: a centred case, $x_c=0$, aligned with the
+array-symmetry point, and an off-centred edge case, $x_c=25$\,nm. For each
+placement we scan nine geometries: the baseline plus one additive $+$ and $-$
+step in each of four parameters, \texttt{period} ($\pm30$\,nm),
+\texttt{depth} ($\pm10$\,nm), \texttt{half\_x} ($\pm5$\,nm) and
+\texttt{half\_z} ($\pm3$\,nm). Here \texttt{depth} is the signed vertical
+coordinate of the quantum well relative to the magnet plane, $-50$\,nm at
+baseline; a $+$ step moves the well toward the magnet array and strengthens the
+stray field. Combining the two placements, nine geometries, three velocities
+and two coupling strengths ($\lambda=0.5$ and $1.0\,\mu$eV) gives 108
+conditions and 432 ansatz--condition cells.
 
-Each condition yields the response pair
-$\mathcal{R}=(\Delta P_v,\Delta\chi_\phi)$ of Sec.~\ref{sec:model} and, from
-it, a thresholded label drawn from nine categories: the four two-channel
-quadrants (\emph{robust}, \emph{valley-trade}, \emph{spin-trade},
-\emph{both-worsen}), four single-channel categories, and
-\emph{below-threshold}. We reserve ``quadrant'' for the four two-channel
-labels and call exact agreement of the nine-category label
-\emph{classification agreement}. The label is an exact bijection of the two
-channels' three-state descriptions (improve, inactive, worsen), a property the
-channel-resolved diagnostics below rely on. The effect-size floors
-$|\Delta P_v|\ge10^{-4}$ and $|\Delta\chi_\phi|\ge10^{-3}$ are operational
-criteria, not significance cutoffs or Monte-Carlo confidence bounds.
+Each condition yields $\mathcal{R}=(\Delta P_v,\Delta\chi_\phi)$ of
+Sec.~\ref{sec:model} and a nine-category label: four two-channel quadrants (\emph{robust},
+\emph{valley-trade}, \emph{spin-trade}, \emph{both-worsen}), four
+single-channel categories and \emph{below-threshold}. We reserve
+``quadrant'' for the four two-channel labels and use
+\emph{classification agreement} for exact agreement of the nine-category
+label. Because the label is a bijection of the two channels' three-state
+descriptions (improve, inactive, worsen), it also supports the channel-resolved
+diagnostics below. The effect-size floors are operational criteria rather than
+significance cutoffs or Monte-Carlo confidence bounds.
 
 \subsection{Matched cross-ansatz and cross-seed comparison}
 
-The primary experiment measures how far the design-facing label depends on the
-assumed coupling profile, against how far it moves under a change of random
-sample alone. We evaluate the full grid in five seed blocks. Within a block,
-all four ans\"atze are driven by common random numbers, so every cross-ansatz
-comparison is made on one realization set; across blocks the realization seeds
-are disjoint. Each block is evaluated at nested realization counts
-$n_{\rm real}=5,10,20,30,40,60,80,100$, so the smaller counts are prefixes of
-the larger and the checkpoints lie on one trajectory, not on independent runs.
+The primary comparison asks how much the design-facing label changes with the
+coupling profile relative to a change of random sample alone. We evaluate the
+full grid in five seed blocks. Within each block all four ans\"atze use common
+random numbers, so cross-ansatz comparisons share one realization set; the
+blocks themselves use disjoint seeds. Each block is evaluated at nested
+$n_{\rm real}=5,10,20,30,40,60,80,100$, with smaller counts forming prefixes of
+the larger counts.
 
-Two estimands are defined on the nine-category label $L_{acb}$ of condition
-$c\in\mathcal{C}$ under ansatz $a\in\mathcal{A}$ in block $b\in\mathcal{B}$,
-with $|\mathcal{C}|=108$, $|\mathcal{A}|=4$ and $|\mathcal{B}|=5$. For each
-ansatz pair and each block pair,
+Let $L_{acb}$ denote the nine-category label of condition
+$c\in\mathcal{C}$ under ansatz $a\in\mathcal{A}$ in block
+$b\in\mathcal{B}$, with $|\mathcal{C}|=108$, $|\mathcal{A}|=4$ and
+$|\mathcal{B}|=5$. For each ansatz pair and block pair,
 %
 \begin{align}
 d_{aa'} &= \big\langle \mathbf{1}[L_{acb}\neq L_{a'cb}] \big\rangle_{c,b},
@@ -1112,8 +1087,8 @@ d_{bb'} &= \big\langle \mathbf{1}[L_{acb}\neq L_{acb'}] \big\rangle_{c,a},
 \label{eq:pairwise-d}
 \end{align}
 %
-each a plain mean over the cells in which both members of the pair exist. The
-two estimands are the uniform averages over pairs,
+where each average runs over the cells in which both pair members exist. We
+then average uniformly over the six ansatz pairs and ten block pairs,
 %
 \begin{equation}
 D_{\rm ansatz} = \frac{1}{6}\!\!\sum_{a<a'}\! d_{aa'},
@@ -1122,30 +1097,26 @@ D_{\rm seed} = \frac{1}{10}\!\!\sum_{b<b'}\! d_{bb'} .
 \label{eq:D}
 \end{equation}
 %
-Both are released with all sixteen underlying pairwise values, together with the
-difference
-$\Delta_D=D_{\rm ansatz}-D_{\rm seed}$ and the ratio
+We also report all sixteen pairwise values,
+$\Delta_D=D_{\rm ansatz}-D_{\rm seed}$ and
 $R_D=D_{\rm ansatz}/D_{\rm seed}$. Complete separation of the two pairwise
-distributions would be sufficient for uniform dominance; it is reported as an
-observation, not used as a gate, and no numerical interpretation threshold is
-applied.
+distributions would imply uniform dominance, but no numerical separation
+threshold is imposed.
 
-$D_{\rm ansatz}$ is itself computed from finite samples and retains an
-ansatz$\times$realization interaction, so it is not a pure model-form
-component. $D_{\rm seed}$ is a finite-sampling label-instability benchmark, not
-an estimator variance: the classifier is a threshold nonlinearity, and the two
-quantities are compared, not decomposed. $D_{\rm ansatz}+D_{\rm seed}$ is not a
-decomposition of anything.
+These estimands are comparative summaries, not additive uncertainty
+components. $D_{\rm ansatz}$ is evaluated from finite samples and therefore
+retains an ansatz$\times$realization interaction. $D_{\rm seed}$ measures
+finite-sampling instability of the thresholded label rather than estimator
+variance. In particular, $D_{\rm ansatz}+D_{\rm seed}$ has no decomposition
+interpretation.
 
-A shared \emph{below-threshold} assignment counts as agreement, so the
-dilution is reported, not conditioned away. Three quantities carry it:
-$p_{\rm all}$, the fraction of conditions inactive under every ansatz and
-block; $B_{\rm ansatz}$ and $B_{\rm seed}$, the fraction of comparisons in
-which \emph{both} members are below threshold; and the share of the agreement
-those account for, $B/(1-D)$. A union-conditioned recomputation,
-restricted to comparisons in which at least one member of the pair carries a
-two-channel quadrant label, is reported as a sensitivity analysis only. Intersection conditioning is not
-used.
+A shared \emph{below-threshold} assignment counts as agreement. We therefore
+report $p_{\rm all}$, the fraction of conditions inactive under every ansatz and
+block; $B_{\rm ansatz}$ and $B_{\rm seed}$, the fractions of pairwise
+comparisons in which both members are below threshold; and their share of total
+agreement, $B/(1-D)$. As a sensitivity analysis, we also recompute
+disagreement on the union of comparisons in which at least one pair member has
+a two-channel quadrant label. We do not use intersection conditioning.
 
 \subsection{Channel-resolved diagnostics}
 
@@ -1162,8 +1133,8 @@ comparisons that differ in both channels. Equation~\eqref{eq:channel-identity} i
 inclusion--exclusion relation: the joint estimand combines the two channel
 disagreements and their overlap. A near-equality of $D_{\rm ansatz}$ and
 $D_{\rm seed}$ can therefore arise from opposing channel-level contrasts
-together with the overlap term, and all three contributions have to be read off
-before the joint value is interpreted.
+together with the overlap term. The three contributions must therefore be
+interpreted jointly.
 
 For the continuous responses we use a per-channel pairwise dispersion
 $S^{(q)}$, structurally parallel to the label estimand. Writing $R^{(q)}_{acb}$
@@ -1176,71 +1147,61 @@ S^{(q)}_{\rm ansatz} =
 \label{eq:S}
 \end{equation}
 %
-and $S^{(q)}_{\rm seed}$ likewise over block pairs at fixed ansatz. The
-pairwise form is used because
-$\sum_{i<j}(x_i-x_j)^2 = m\sum_i(x_i-\bar{x})^2$ holds for any finite set of
-$m$ values, so the mean pairwise squared difference is exactly twice the
-sample variance with the $(m-1)$ divisor and the $4$-versus-$5$ group-size
-asymmetry cancels. $S^{(q)}$ is therefore exactly $\sqrt{2}$ times a sample
-standard deviation -- an algebraic identity, not a distributional
-assumption. $S^{(q)}$ is a dispersion of pairwise differences and carries no
+and $S^{(q)}_{\rm seed}$ likewise over block pairs at fixed ansatz. For any finite set of $m$ values,
+$\sum_{i<j}(x_i-x_j)^2 = m\sum_i(x_i-\bar{x})^2$. The mean pairwise squared
+difference is therefore exactly twice the sample variance with the $(m-1)$
+divisor. The $4$-versus-$5$ group-size asymmetry consequently cancels.
+$S^{(q)}$ is therefore exactly $\sqrt{2}$ times a sample standard deviation---an
+algebraic identity, not a distributional assumption. $S^{(q)}$ is a dispersion of pairwise differences and carries no
 information about whether the underlying responses clear their floors.
 
 \subsection{Candidate selection and transport}
 
-Operating-point candidates are selected on \emph{seed stability alone}, at the
-(ansatz, condition) level: a pair is a candidate if the condition is labelled
-robust under that ansatz in all three discovery blocks. Cross-ansatz agreement
-is never a selection criterion, so the table is non-circular with respect to
-the comparison it illustrates. It is not statistically independent of it: the
-same response data enter both. Blocks 1--3 are the
-discovery set and blocks 4--5 the holdout. Every condition in the discovery
-union $U^{\rm disc}$ is then evaluated on the holdout blocks under \emph{all
-four} ans\"atze, giving a within-ansatz replication count and a transport count
-over $0\ldots4$ ans\"atze. Because $U^{\rm disc}$ is a set and its membership
-changes with ensemble size, transport is reported as counts and never as a
-rate. The same screen run at $n_{\rm real}=100$ is an \emph{extended
-confirmation}, not a second holdout: the $n_{\rm real}=100$ aggregate contains
-the $n_{\rm real}=30$ realizations as a prefix and reuses blocks 4 and 5, which
-were already seen at the smaller ensemble.
+Operating-point candidates are selected from seed stability at the
+(ansatz, condition) level. A pair is a candidate when the condition is labelled
+robust under that ansatz in all three discovery blocks; cross-ansatz agreement
+does not enter selection. Blocks 1--3 form the discovery set and blocks 4--5
+the holdout. Every condition in the discovery union $U^{\rm disc}$ is then
+evaluated on the holdout blocks under all four ans\"atze, yielding a
+within-ansatz replication count and a transport count from 0 to 4. Because
+$U^{\rm disc}$ changes with ensemble size, transport is reported as counts
+rather than a rate. Repeating the screen at $n_{\rm real}=100$ gives an
+\emph{extended confirmation}, not an independent second holdout: the larger
+aggregate contains the $n_{\rm real}=30$ realizations as a prefix and reuses
+the same holdout blocks.
 
 \subsection{Registration and the ranking diagnostic}
 
-The estimands, the candidate-selection rule and the checkpoints
-$n_{\rm real}=5,10,20,30$ with primary endpoint $n_{\rm real}=30$ were fixed in
-writing before any of these data existed. The extension to $n_{\rm real}=100$,
-including its checkpoints, its hard stop and its reporting language, was
-registered after the $n_{\rm real}=30$ result and before the extension data
-were generated. The channel decomposition of
-Eq.~\eqref{eq:channel-identity}, the family breakdowns and the ranking
-diagnostic below were added after seeing results and are marked post-hoc where
-they appear.
+The estimands, candidate-selection rule and checkpoints
+$n_{\rm real}=5,10,20,30$, with primary endpoint $n_{\rm real}=30$, were fixed
+in writing before data generation. The extension to $n_{\rm real}=100$ was registered
+after the $n_{\rm real}=30$ result and before generation of the extension
+data, including its checkpoints, hard stop and reporting language. The channel
+decomposition of Eq.~\eqref{eq:channel-identity}, the family breakdowns and the
+ranking diagnostic below were introduced after inspection of the results and
+are identified as post-hoc.
 
-The ranking diagnostic is a complementary magnitude-ordering summary: the
-pairwise Spearman rank correlation of $|\mathcal{R}|$ across conditions,
-evaluated within each seed block and then averaged over blocks. It weights the
-two channels differently from the classifier, since the released magnitude is
-unnormalized while the classifier judges each channel against its own floor. We test that difference directly by recomputing the correlation
-under floor-normalized and single-channel magnitudes, and under the signed
+For the ranking diagnostic we compute the pairwise Spearman correlation of
+$|\mathcal{R}|$ across conditions within each seed block and average over
+blocks. Because the released magnitude is unnormalized whereas the classifier
+judges each channel against its own floor, we also recompute the ranking under
+floor-normalized and single-channel magnitudes and under signed
 $\Delta\chi_\phi$.
 
-Nothing here is a population-level statistical claim. There are five
-registered seed blocks; grid cells are paired by common random numbers across
-geometry, case and ansatz, and are not independent replicates, so they are
-never resampled as i.i.d. We report no confidence intervals and no
-significance tests, and every threshold-dependent statement is scoped to these
-operational floors.
+The analysis makes no population-level statistical claim. There are five
+registered seed blocks, and grid cells paired by common random numbers across
+geometry, case and ansatz are not independent replicates. We therefore do not
+resample them as i.i.d., report confidence intervals, or perform significance
+tests; threshold-dependent statements remain conditional on the operational
+floors.
 
-The distinction between the ranking and the classification is central to our
-conclusions and is shown in Fig.~\ref{fig:quadrant}: two ans\"atze may
-order a set of conditions by response \emph{magnitude} almost identically while
-still assigning many conditions to different categories. Ranking captures how
-large the response is; the thresholded label records which response signs are
-resolved above the floors. Within that label set, the four two-channel quadrants
-capture the sign pattern of the baseline-relative responses, one ingredient of
-a co-design decision. A final performance decision would also require the
-absolute full-model leakage and dephasing proxies, which we do not optimize
-here.
+Figure~\ref{fig:quadrant} illustrates why ranking and classification are kept
+separate. Two ans\"atze can order conditions by response magnitude almost
+identically while assigning many of them to different thresholded categories.
+The ranking summarizes response magnitude, whereas the label records which
+response signs are resolved above their channel-specific floors. A final
+performance decision would additionally require the absolute full-model leakage
+and dephasing proxies, which are outside the optimization performed here.
 
 \begin{figure*}[!tp]
 \centering
@@ -1258,9 +1219,9 @@ core set to those floors, so the box is the linear region. (a)~A against
 A$_{\rm pocket}$, the pair with the lowest classification agreement in the
 family, $0.467$. (b)~A against B$_z$, the highest, $0.839$. Their rank
 correlations differ by only $0.011$, $0.967$ against $0.978$, so the two panels
-show almost the same magnitude ordering producing very different labels. One
-seed block is shown because the reported agreement averages over blocks and a
-figure cannot.}
+show nearly identical magnitude ordering despite markedly different labels. One
+seed block is shown for visual clarity; the reported agreement values average
+over all blocks.}
 \label{fig:quadrant}
 \end{figure*}
 
@@ -1306,132 +1267,118 @@ Post-hoc diagnostic.}
 \end{figure*}
 
 \paragraph{Unmatched seeds exaggerated the archived model disagreement.}
-The archived analysis drew a separate noise realization for each ansatz, so a
-cross-ansatz difference there carried a sampling difference as well. Repeating
-that comparison with the seeding corrected, at matched ensemble size
-$n_{\rm real}=5$, matched seed block and matched convention, raises the mean
-classification agreement from $35.96\%$ to $56.94\%$ and the mean rank
-correlation from $0.837$ to $0.917$. Both endpoints are computed in the
-archived convention, so the contrast isolates seeding alone. The correction
-removes $20.99$ of the archived $64.04$ percentage points of disagreement,
-about one third; $43.06$ points survive matched seeding. Unmatched cross-ansatz
-seeding therefore accounts for roughly a third of the archived disagreement,
-and most of it remains after matching. The archived numbers are retained only
-as a provenance record.
+The archived analysis used a separate noise realization for each ansatz, so
+its cross-ansatz comparison also contained a sampling difference. Repeating the
+comparison at $n_{\rm real}=5$ with matched seed block and the same archived
+observable convention raises mean classification agreement from $35.96\%$ to
+$56.94\%$ and mean rank correlation from $0.837$ to $0.917$. The disagreement falls from $64.04$ to $43.06$ percentage points, a reduction
+of $20.99$ points, or about one third. These values are retained only as an
+archived seeding audit and are not mixed with the corrected T0-C results.
 
-\paragraph{Cross-ansatz disagreement is substantial in absolute label fraction under matched realizations.}
-At the pre-registered endpoint $n_{\rm real}=30$, cross-ansatz disagreement is
-$D_{\rm ansatz}=0.388$ and same-ansatz cross-seed disagreement is
-$D_{\rm seed}=0.385$; the two are comparable there, and both are large. Averaged
-over conditions, ansatz pairs and seed blocks, about $39\%$ of matched
-comparisons assign different design-facing labels. Neither scale dominates at
-that endpoint,
-which is a comparison outcome and not a null result.
+\paragraph{Matched cross-ansatz disagreement remains substantial.}
+At the pre-registered endpoint $n_{\rm real}=30$,
+$D_{\rm ansatz}=0.388$ and $D_{\rm seed}=0.385$. Thus roughly $39\%$ of matched
+comparisons change their design-facing label across ans\"atze, while a change
+of seed block produces a comparable rate.
 
-The aggregate hides a persistent pair structure. Across all eight registered
-checkpoints the six ansatz pairs fall into three tiers: A/B$_z$ alone at the
-bottom ($0.143$--$0.180$), the three pairs containing B$_x$ in a narrow middle
-band ($0.348$--$0.407$), and A/A$_{\rm pocket}$ together with
-A$_{\rm pocket}$/B$_z$ at the top ($0.467$--$0.533$). The third pair containing
-A$_{\rm pocket}$, A$_{\rm pocket}$/B$_x$, sits in the middle band. Between $n_{\rm real}=30$ and $100$ no pair moves by
-more than $2.0$ points while the seed-pair mean falls from $0.385$ to $0.298$.
-The tiers name three specified diagnostic contrasts: among the contrasts
-examined, the specified pocket localization produces the largest classification
-change and the specified resonance-localization envelope the smallest. The four ans\"atze form a set of specified
-contrasts, so this names three of them and not a general ranking of modelling
-axes. A and B$_z$ remain distinct: they are the most similar pair in the family
-and still disagree on $16.1\%$ of conditions.
+The aggregate contains a stable pairwise structure. Across all eight registered
+checkpoints, A/B$_z$ forms the lowest-disagreement tier
+($0.143$--$0.180$); the three pairs containing B$_x$ form a narrow middle band
+($0.348$--$0.407$); and A/A$_{\rm pocket}$ together with
+A$_{\rm pocket}$/B$_z$ form the highest tier ($0.467$--$0.533$).
+A$_{\rm pocket}$/B$_x$ lies in the middle band. From
+$n_{\rm real}=30$ to $100$ no ansatz pair moves by more than $2.0$ points,
+whereas the seed-pair mean falls from $0.385$ to $0.298$. These tiers describe the six specified pairwise contrasts within the
+four-profile family; they do not rank underlying physical modeling axes. Even
+the most similar pair,
+A/B$_z$, disagrees on $16.1\%$ of conditions at $n_{\rm real}=100$.
 
-Uniform dominance does not hold. The two pairwise distributions overlap at
-every checkpoint: at $n_{\rm real}=100$ the lowest seed pair, blocks 3 and 5 at
-$0.169$, sits just above the lowest ansatz pair at $0.161$, and the two ranges
-otherwise interleave. As a post-hoc descriptive summary of the same
-sixty (ansatz-pair, seed-pair) comparisons, 46 favour the ansatz side there,
-against 33 at $n_{\rm real}=30$. Shared inactivity contributes to both sides and is
-reported, not conditioned away: $13$ of $108$ conditions are below
-threshold under every ansatz and block at $n_{\rm real}=100$, and shared
-below-threshold assignments supply $46.4\%$ of ansatz-pair agreement. Restricting
-to comparisons in which at least one member carries a two-channel quadrant
-label, as a sensitivity analysis, leaves the contrast intact and larger,
-$0.521$ against $0.323$.
+The ansatz- and seed-pair distributions nevertheless overlap at every
+checkpoint, so uniform dominance does not hold. At $n_{\rm real}=100$ the
+lowest seed-pair disagreement is $0.169$ and the lowest ansatz-pair value is
+$0.161$; the remaining ranges interleave. In a post-hoc count over the same
+sixty pairwise comparisons, 46 favour the ansatz side at $n_{\rm real}=100$,
+compared with 33 at $n_{\rm real}=30$. Shared inactivity contributes to both
+forms of agreement: 13 of 108 conditions are below threshold under every
+ansatz and block at $n_{\rm real}=100$, and shared below-threshold assignments
+account for $46.4\%$ of ansatz-pair agreement. Restricting the comparison to the
+union in which at least one pair member has a two-channel quadrant label
+increases the contrast to $0.521$ versus $0.323$.
 
-\paragraph{The two scales behave differently in ensemble size.}
-Over the eight registered checkpoints $D_{\rm seed}$ decreases from $0.542$ to
-$0.298$ with no rebound, while $D_{\rm ansatz}$ stays within a $2.6$-point band,
-$0.369$ to $0.395$, with no trend [Fig.~\ref{fig:overview}(d)]. The ordering
-reverses between $n_{\rm real}=20$ and $30$, and the separation widens
-thereafter, $R_D$ running from $0.73$ to $1.33$. Cross-ansatz disagreement thus
-persists across the ensemble sizes and registered seed blocks examined, whereas
-cross-seed disagreement decreases over the registered trajectory.
+\paragraph{Sampling and ansatz disagreement scale differently with ensemble size.}
+Across the eight checkpoints, $D_{\rm seed}$ decreases from $0.542$ to
+$0.298$ without a rebound, whereas $D_{\rm ansatz}$ remains between $0.369$ and
+$0.395$ [Fig.~\ref{fig:overview}(d)]. The ordering reverses between
+$n_{\rm real}=20$ and $30$ and the separation grows thereafter, with $R_D$
+rising from $0.73$ to $1.33$. Cross-seed disagreement is therefore strongly
+ensemble-size dependent over the registered trajectory, whereas cross-ansatz
+disagreement persists across the ensemble sizes and registered seed blocks
+examined.
 
-Two limits on reading this. $D_{\rm seed}$ was still falling at the final
-checkpoint and the extension is hard-stopped there, so no asymptotic or
-convergence statement is available. And $D_{\rm ansatz}$ is itself computed from
-finite samples and retains an ansatz$\times$realization interaction, so its
-flatness is an empirical property of this design, not a property of the model
-family. At the registered checkpoints up to
-$n_{\rm real}=30$ the two are of comparable size, so a cross-ansatz
-disagreement reported without the cross-seed benchmark cannot be judged against
-the label instability a change of random sample produces on its own.
+This trajectory does not establish an asymptotic limit. $D_{\rm seed}$ is still
+decreasing at the $n_{\rm real}=100$ hard stop, and $D_{\rm ansatz}$ retains a
+finite-sample ansatz$\times$realization interaction. Its observed flatness is
+therefore an empirical property of this design and ensemble range, not a
+property of the model family. Up to the primary
+$n_{\rm real}=30$ endpoint the two disagreement scales are comparable, which
+makes the same-size cross-seed benchmark essential for interpreting
+cross-ansatz disagreement.
 
-\paragraph{The balance is observable dependent.}
-The nine-category label is an exact bijection of the two channels' three-state
-descriptions, so Eq.~\eqref{eq:channel-identity} holds identically
-and the joint estimand is an inclusion--exclusion combination of the two
-channel disagreements and their overlap [Fig.~\ref{fig:atlas}(a)]. At $n_{\rm real}=30$ the valley channel runs toward
-sampling, $0.257$ against $0.355$, and the dephasing channel toward model form,
-$0.188$ against $0.064$. The two channel contrasts are opposed, $-0.099$ and
-$+0.124$, and the overlap term completes the identity at $-0.023$, leaving the
-joint difference at $+0.002$. The near-equality is the arithmetic outcome of
-three terms, not one channel prevailing. At
-$n_{\rm real}=100$ the valley channel is approximately balanced, ratio $0.96$,
-while the dephasing ratio rises to $5.60$.
+\paragraph{The balance depends on the response channel.}
+Because the nine-category label is a bijection of the two channels'
+three-state descriptions, Eq.~\eqref{eq:channel-identity} decomposes joint
+disagreement by inclusion--exclusion [Fig.~\ref{fig:atlas}(a)]. At the primary
+endpoint, the valley and dephasing contrasts have opposite signs, and the
+overlap term leaves the joint difference near zero. Specifically, at
+$n_{\rm real}=30$, valley disagreement is larger across seeds than across
+ans\"atze ($0.355$ versus $0.257$), whereas dephasing shows the opposite
+ordering ($0.188$ versus $0.064$). The channel contrasts, $-0.099$ and
+$+0.124$, together with the overlap term $-0.023$ leave the joint difference
+near zero, $+0.002$. At $n_{\rm real}=100$ the valley channel is approximately
+balanced, with a cross-ansatz to cross-seed ratio of $0.96$, while the
+dephasing ratio reaches $5.60$.
 
-The continuous responses agree, and must be stated separately. For
-$\Delta\chi_\phi$ the cross-ansatz dispersion stays between $40$ and $52$ in
-floor units over the whole trajectory and moves from $43.5$ to $42.4$ between
-the two endpoints, while the cross-seed dispersion more than halves, $21.8$ to
-$9.8$. For
-$\Delta P_v$ both fall steeply -- cross-ansatz $28.8$ to $23.0$ against
-cross-seed $36.2$ to $19.0$ -- so no ensemble-size-stable cross-ansatz
-continuous scale is isolated in that channel, and its ratio only reaches
-$1.22$. Neither dispersion is monotone in $n_{\rm real}$: the seed dispersion
-rebounds at $n_{\rm real}=60$ for $\Delta P_v$ and at $10$ for
-$\Delta\chi_\phi$. $D_{\rm seed}$ is the only quantity here that is monotone
-over all eight registered checkpoints. Which observable a design criterion
-consumes therefore changes which uncertainty is larger.
+The continuous diagnostics sharpen this channel contrast: dephasing
+cross-ansatz dispersion changes little between the two endpoints while its
+cross-seed dispersion falls, whereas both valley dispersions decrease. For
+$\Delta\chi_\phi$, cross-ansatz dispersion stays between $40$ and $52$ floor
+units over the trajectory and changes from $43.5$ to $42.4$ between the two
+endpoints, while cross-seed dispersion falls from $21.8$ to $9.8$. For
+$\Delta P_v$, both dispersions decrease substantially: cross-ansatz from
+$28.8$ to $23.0$ and cross-seed from $36.2$ to $19.0$, giving a final ratio of
+only $1.22$. Neither continuous dispersion is monotone in $n_{\rm real}$;
+the cross-seed dispersion rebounds at $n_{\rm real}=60$ for $\Delta P_v$ and
+at $n_{\rm real}=10$ for $\Delta\chi_\phi$. $D_{\rm seed}$ is the only
+quantity here that decreases monotonically across all eight registered
+checkpoints. Which response a design criterion emphasizes therefore
+changes the relative size of model-form and sampling sensitivity.
 
-\paragraph{Ranking and classification are decoupled across the family.}
-This diagnostic and the comparisons in it were added after the registered
-results were seen; both are post-hoc.
-Rank correlation is high and narrow across the family, mean $0.913$ at
-$n_{\rm real}=100$ with all six pairs between $0.850$ and $0.978$, while
-classification agreement spans $0.467$ to $0.839$. The two do not track each
-other [Fig.~\ref{fig:atlas}(c)]: A/A$_{\rm pocket}$ and A/B$_z$ differ by
-$0.011$ in rank correlation and by $37.2$ percentage points in classification
-agreement. Chance correction does not rescue the agreement -- Cohen's $\kappa$
-runs from $0.311$ to $0.804$, and the two lowest values belong to
-A/A$_{\rm pocket}$ and A$_{\rm pocket}$/B$_z$.
+\paragraph{Ranking agreement does not predict classification agreement.}
+The ranking diagnostic and all comparisons in this paragraph are post-hoc. At
+$n_{\rm real}=100$, pairwise rank correlation is high across the family
+(mean $0.913$, range $0.850$--$0.978$), while classification agreement is
+much broader (mean $0.605$, range $0.467$--$0.839$). The two summaries do not track one another
+[Fig.~\ref{fig:atlas}(c)]: A/A$_{\rm pocket}$ and A/B$_z$ differ by only
+$0.011$ in rank correlation but by $37.2$ percentage points in classification
+agreement. Cohen's $\kappa$ spans $0.311$--$0.804$, so chance correction does
+not remove the disparity.
 
-The rank metric weights the two channels differently from the classifier, and
-that was the leading alternative explanation. Recomputing the correlation under
-a floor-normalized magnitude moves the A/A$_{\rm pocket}$ against A/B$_z$ gap
-only from $0.011$ to $0.023$ at $n_{\rm real}=100$, and single-channel
-magnitudes move it less; channel weighting does not account for the decoupling.
-Among the ranked quantities tested here, the \emph{signed} dephasing response
-is the only one that separates the counterexample pair: its
-A/A$_{\rm pocket}$ against A/B$_z$ gap is $0.147$, three times the next largest
-($0.042$, the signed leakage response) and an order of magnitude above the
-released magnitude ($0.011$). Its six-pair Spearman correlation with
-classification agreement is $+0.486$ at both $n_{\rm real}=30$ and $100$,
-against $-0.086$ for the released magnitude: the highest of the quantities
-tested, but not high enough to read the signed response as a substitute
-ranking. Spin-response sign information is therefore a candidate contributor to
-the decoupling and not a demonstrated one. It is a post-hoc metric over six
-non-independent pairs -- A/A$_{\rm pocket}$ and A/B$_z$ share A -- and the
-classifier uses floor crossing as well as sign.
+To test whether the decoupling is an artifact of channel weighting, we
+recomputed the ranking under floor-normalized and single-channel magnitudes.
+The A/A$_{\rm pocket}$--A/B$_z$ rank-correlation gap increases only from
+$0.011$ to $0.023$ under floor normalization, and the single-channel
+magnitudes change it less.
 
-\begin{table}[!tbp]
+Among the ranked quantities examined, signed
+$\Delta\chi_\phi$ separates the pair most strongly: its gap is $0.147$, versus
+$0.042$ for signed $\Delta P_v$ and $0.011$ for the released magnitude. Across
+the six ansatz pairs, its Spearman correlation with classification agreement is
+$+0.486$ at both $n_{\rm real}=30$ and $100$, compared with $-0.086$ for the
+released magnitude. This suggests that spin-response sign contributes to the
+decoupling, but the evidence is descriptive: the metric is post-hoc, the six
+pairs are not independent, and the classifier also depends on floor crossing.
+
+\begin{table*}[!tbp]
 \centering
 \caption{Seed-stable candidates at the pre-registered endpoint
 $n_{\rm real}=30$. Selection uses the three discovery blocks and seed stability
@@ -1446,196 +1393,172 @@ signed step from the baseline point.}
 \toprule
 case & geometry & $v$\,(m/s) & $\lambda$\,($\mu$eV) & discovered by & confirmed \\
 \midrule
-center & period$-$   & 5  & 1.0 & A$_{\rm p}$                 & 2/4 \\
-edge   & depth$-$    & 5  & 1.0 & A, A$_{\rm p}$, B$_z$, B$_x$& \textbf{4/4} \\
+center & period$-$   & 5  & 1.0 & A$_{\rm pocket}$                 & 2/4 \\
+edge   & depth$-$    & 5  & 1.0 & A, A$_{\rm pocket}$, B$_z$, B$_x$& \textbf{4/4} \\
 edge   & half\_z$-$  & 5  & 1.0 & A                           & 2/4 \\
-edge   & period$+$   & 5  & 1.0 & A, A$_{\rm p}$, B$_x$       & \textbf{4/4} \\
+edge   & period$+$   & 5  & 1.0 & A, A$_{\rm pocket}$, B$_x$       & \textbf{4/4} \\
 edge   & depth$+$    & 10 & 0.5 & A, B$_z$, B$_x$             & 3/4 \\
-edge   & depth$+$    & 10 & 1.0 & A, A$_{\rm p}$, B$_z$, B$_x$& \textbf{4/4} \\
+edge   & depth$+$    & 10 & 1.0 & A, A$_{\rm pocket}$, B$_z$, B$_x$& \textbf{4/4} \\
 edge   & baseline    & 20 & 1.0 & B$_z$, B$_x$                & 1/4 \\
 edge   & half\_z$+$  & 20 & 1.0 & A, B$_z$, B$_x$             & 3/4 \\
 edge   & half\_z$-$  & 20 & 1.0 & B$_x$                       & 1/4 \\
 edge   & period$+$   & 20 & 1.0 & A, B$_z$, B$_x$             & 0/4 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \paragraph{Seed-stable candidates transport unevenly.}
-Selecting on seed stability alone over the three discovery blocks yields 25
-(ansatz, condition) candidate pairs at $n_{\rm real}=30$, spread 7/4/6/8 over
-A, A$_{\rm pocket}$, B$_z$ and B$_x$, and a discovery union of ten conditions
-(Table~\ref{tab:retest}). Evaluated on the two holdout blocks, 21 of the 25
-replicate within their own ansatz: an operating point that is stable across
-seeds under one coupling profile generally stays stable under that profile.
+Selection on seed stability across the three discovery blocks yields 25
+(ansatz, condition) candidate pairs at $n_{\rm real}=30$, distributed 7/4/6/8
+over A, A$_{\rm pocket}$, B$_z$ and B$_x$, with a union of ten conditions
+(Table~\ref{tab:retest}). On the two holdout blocks, 21 of the 25 pairs
+replicate within their original ansatz.
 
-Transport across the family is a different matter [Fig.~\ref{fig:atlas}(b)]. Of
-the ten conditions, one is confirmed under no ansatz, two under one, two under
-two, two under three, and three under all four. The registered
-$n_{\rm real}=100$ companion analysis gives 31 pairs, a union of 13, within-ansatz
-replication 21 of 31, and transport 2/4/2/2/3. This is an extended confirmation and not an
-independent replication: the $n_{\rm real}=100$ aggregate contains the
-$n_{\rm real}=30$ realizations as a prefix and reuses the same holdout blocks.
-Of the 25 pairs, 22 are retained, 3 lost and 9 gained, and the two unions are
-nested. The same three conditions receive
-four-of-four confirmation at both prefixes. They are grid-local candidates
-conditional on this diagnostic family, and three conditions do not support a
-claim about which geometries are robust.
+Transport across ans\"atze is less uniform [Fig.~\ref{fig:atlas}(b)]. Of the ten
+conditions, one is confirmed under no ansatz, two under one, two under two, two
+under three and three under all four. The registered $n_{\rm real}=100$
+companion analysis is an extended confirmation: it contains 31 pairs and a
+union of 13 conditions, with 21 of 31 replicating within ansatz. The numbers of
+conditions confirmed under zero, one, two, three, and four ans\"atze are 2, 4,
+2, 2, and 3, respectively. Because the larger
+aggregate contains the $n_{\rm real}=30$ realizations as a prefix and reuses
+the same holdout blocks, it is not an independent replication. Of the original
+25 pairs, 22 are retained, 3 are lost and 9 are gained; the same three
+conditions receive four-of-four confirmation at both prefixes. These are
+grid-local candidates within the diagnostic family, not evidence for a general
+ranking of robust geometries.
 
 
 \section{Discussion}
 
-Design-facing conclusions in this setting depend on the assumed coupling
-profile, and the dependence is large under matched realizations. The
-nine-category thresholded classification is what changes; its four two-channel
-quadrants encode the decision-facing sign pattern that a co-design choice
-consumes. Whether a given operating point is
-labelled robust is contingent on which profile was assumed: three of the ten
-seed-stable candidates are confirmed under all four ans\"atze, one under none.
+The matched comparison shows that design-facing classifications in this setting
+depend substantially on the assumed coupling profile. The nine-category label
+changes even when the geometry, operator structure, noise model and random
+realizations are held fixed. This dependence is visible in the candidate layer
+as well: among the ten seed-stable conditions at $n_{\rm real}=30$, three are
+confirmed under all four ans\"atze and one under none.
 
-The comparison against cross-seed disagreement is what makes this readable.
-Showing that four different kernels give four different numbers is true by
-construction. The informative content is how the two scales behave. Cross-ansatz
-disagreement stays near $0.39$ across a twentyfold change in ensemble size,
-while cross-seed disagreement falls by nearly half. At the smaller registered
-checkpoints the two are of comparable size, so an observed ansatz sensitivity
-cannot be judged large without the benchmark alongside it, and the judgement
-changes with the ensemble size at which it is made. It also settles what the earlier archived
-analysis was measuring: correcting its seeding removes about a third of the
-disagreement it reported, and the rest survives matched realizations.
+The cross-seed benchmark changes how that dependence should be interpreted.
+Cross-ansatz disagreement remains near $0.39$ over a twentyfold increase in
+ensemble size, while cross-seed disagreement falls from $0.542$ to $0.298$.
+At the smaller registered checkpoints the two scales are comparable, so
+cross-ansatz disagreement cannot be interpreted without specifying the
+finite-sampling scale at the same $n_{\rm real}$. The archived seeding audit
+makes the same point from another direction: matching realizations removes
+about one third of its apparent disagreement, while most of the difference
+between profiles remains.
 
-Three features of the disagreement structure carry more information than the
-aggregate. First, ranking and classification come apart: two ansatz pairs
-differing by $0.011$ in rank correlation differ by $37$ percentage points in
-classification agreement, so a family can agree on which conditions respond
-strongly while disagreeing on which of them improve. The fragile quantity is the
-classification --- the one a design decision consumes. Second, the hierarchy is
-observable-dependent. Spin dephasing shows a large cross-ansatz excess at both
-endpoints; valley excitation runs toward sampling at $n_{\rm real}=30$ and is
-approximately balanced at $100$. Which loss channel a criterion weights
-therefore changes which uncertainty is larger. Third, the pairwise disagreements
-separate into three persistent tiers across all eight checkpoints, so the
-aggregate conceals a persistent structure among the specified contrasts. These
-are three diagnostic contrasts within one family, not a factorial design, and
-they do not identify a general physical axis of disagreement.
+Aggregate disagreement does not determine whether rankings and classifications
+agree. High rank correlation does not guarantee classification agreement: the
+A/A$_{\rm pocket}$ and A/B$_z$ pairs differ by only $0.011$ in rank
+correlation but by $37.2$ percentage points in classification agreement.
 
-The value of the exercise is conditional on a specific fact: no generally
-validated effective local spin--valley kernel is available for the shuttled-dot
-and micromagnet regime considered here. A validated microscopic kernel would replace the
-present diagnostic family as the preferred physical description and would
-substantially reduce the specific model-form ambiguity studied here. Residual
-parameter and structural uncertainty could still be assessed with the same
-comparison. Design decisions today are made
-under non-unique phenomenological proxies, so the disagreement between those
-proxies is a real component of design risk, and a single proxy cannot expose it
-however realistic it looks. Microscopically informed valley landscapes, such as
-those constrained by alloy-disorder calculations and conveyor-mode
-measurements~\cite{paquelet_wuetz_atomic_2022,losert_practical_2023,volmer_mapping_2024},
-can enter the same comparison. If a microscopic derivation maps onto the same
-effective operator structure, its $\lambda_{sv}(x)$ enters as a further
-profile; if it changes that structure, the comparison has to be extended to
-operator-form uncertainty rather than absorbed into this family. Whether that narrows the
-spread is an empirical question.
+The channel balance is likewise uneven. Dephasing shows a large cross-ansatz
+excess at both endpoints, whereas valley excitation has larger cross-seed
+disagreement at $n_{\rm real}=30$ and is approximately balanced at $100$. The
+six ansatz pairs also separate into three persistent disagreement tiers across
+all eight registered checkpoints. These tiers characterize the specified
+contrasts in this family; they do not identify a general causal axis of model
+uncertainty.
+
+This model-form sensitivity matters because no generally validated effective
+local spin--valley kernel is yet available for the shuttled-dot/micromagnet
+regime. A microscopically derived kernel would provide a preferred physical
+description and could reduce the profile ambiguity studied here. The same comparison would
+remain useful for residual parameter or structural uncertainty. Valley
+landscapes constrained by alloy-disorder calculations and conveyor-mode
+measurements~\cite{paquelet_wuetz_atomic_2022,losert_practical_2023,volmer_mapping_2024}
+can be incorporated directly when they map onto the same effective operator
+structure. A microscopic derivation that changes the operator structure would
+instead extend the comparison to operator-form uncertainty.
 
 \paragraph{Corrective replication.}
 A later implementation audit corrected the valley-energy ordering, after which
-the $n_{\rm real}=30$ and $n_{\rm real}=100$ production runs were repeated. The
-registered estimands, effect-size floors, seed design, candidate selection rule,
-checkpoints and the $n_{\rm real}=100$ hard stop were unchanged. All values
-reported here come from the repeated runs.
+the $n_{\rm real}=30$ and $n_{\rm real}=100$ production runs were repeated.
+The registered estimands, effect-size floors, seed design, candidate rule,
+checkpoints and $n_{\rm real}=100$ hard stop were unchanged. All current values
+reported here come from those repeated runs.
 
 \paragraph{Limitations.}
-All conclusions are scoped to four diagnostic coupling profiles, one fixed
-minimal spin--valley operator, one fixed charge-noise description, and the
-periodic micromagnet reference geometry examined here. The four ans\"atze differ
-only in their scalar spatial profiles, so operator-level alternatives are
-outside the present scope. The same $1/f$ spectrum and a single representative,
-non-device-calibrated displacement-noise amplitude enter both responses, since
-$\Delta P_v$ measures the effect of charge noise on valley leakage and
-$\Delta\chi_\phi$ the effect of the valley sector on charge-noise dephasing.
-What is quantified is therefore coupling-profile uncertainty conditional on that
-noise description; noise-spectrum and amplitude uncertainty are a separate axis
-and are not scanned.
+The conclusions are conditional on four diagnostic scalar coupling profiles,
+one fixed minimal spin--valley operator, one charge-noise description and the
+periodic micromagnet reference geometry. Operator-level alternatives are not
+sampled. The same $1/f$ spectrum and one representative,
+non-device-calibrated displacement-noise amplitude enter both responses, so the
+study isolates coupling-profile dependence against that fixed noise model
+rather than scanning noise-spectrum or amplitude uncertainty.
 
 The thresholded labels are operational classifications under the stated
-effect-size floors, not confidence-certified assignments, and every
-threshold-dependent statement is scoped to those floors. Sensitivity to shared below-threshold
-assignments is examined in the Supplementary Material. Nothing reported here is a
-population-level statistical claim: there are five registered seed blocks, grid
-cells are paired by common random numbers and are not independent replicates, and
-no confidence intervals or significance tests are computed.
+effect-size floors, not confidence-certified assignments. Sensitivity to shared
+below-threshold assignments is reported in the Supplementary Material. A
+post-hoc independent factor-of-two sweep of both operational floors leaves the
+$n_{\rm real}=100$ cross-ansatz versus cross-seed ordering and the pairwise
+disagreement-tier structure unchanged, while the exact crossover checkpoint is
+floor dependent (Supplementary Material). The five seed blocks and the
+common-random-number grid do not constitute
+independent population replicates, and we report no confidence intervals or
+significance tests.
 
-The registered trajectory stops at $n_{\rm real}=100$, where cross-seed
-disagreement was still falling, so no asymptotic or convergence statement is
-available. Cross-ansatz disagreement is itself computed from finite samples and
-retains an ansatz$\times$realization interaction; its stability across the
-trajectory is an empirical property of this design. The $n_{\rm real}=100$
-candidate layer is an extended confirmation on blocks already seen at
-$n_{\rm real}=30$, not an independent replication. The three conditions confirmed
-under all four ans\"atze are grid-local and conditional on this diagnostic
-family; three conditions do not support a claim about which geometries are
-robust.
+The registered trajectory ends at $n_{\rm real}=100$ while cross-seed
+disagreement is still decreasing, so no convergence or asymptotic claim is
+made. Cross-ansatz disagreement also retains a finite-sample
+ansatz$\times$realization interaction. The $n_{\rm real}=100$ candidate layer is
+an extended confirmation using the same block structure and a nested
+realization prefix, not an independent replication. The three conditions
+confirmed under all four ans\"atze are therefore grid-local results within this
+diagnostic family.
 
-Natural extensions are to measured or finite-device micromagnet fields, to
-families of noise descriptions, and to microscopically derived couplings and
-operator structures. We leave these to future work because the purpose here is
-to isolate coupling-profile dependence against a fixed geometric backdrop.
+Natural extensions include measured or finite-device micromagnet fields,
+alternative noise descriptions, and microscopically derived couplings and
+operator structures. Those extensions are deliberately left outside the
+present comparison so that coupling-profile dependence is isolated against a
+fixed geometric backdrop.
 
 \paragraph{Implications for co-design.}
-Two practical implications follow. First, a claim that a particular operating
-point is robust should state which coupling profile produced it, and should
-report whether the point transports across a family. Proposed mitigations such
-as varying the shuttling velocity, dot shape, or
-path~\cite{losert_strategies_2024} deserve the same treatment. Second, a cross-ansatz comparison should
-carry a same-ansatz cross-seed benchmark at the same ensemble size, since at the
-smaller checkpoints examined here the two are of comparable size.
+A robust operating-point claim should identify the coupling profile under which
+it was obtained and test whether the point transports across a justified
+family. The same applies to proposed mitigations based on shuttling velocity,
+dot shape or path~\cite{losert_strategies_2024}. Cross-ansatz comparisons should
+also carry a same-ansatz cross-seed benchmark at the same ensemble size,
+because the two scales are comparable at the smaller checkpoints studied here.
 
-A geometry or trajectory optimum obtained under one assumed coupling profile
-remains model-conditional. Two routes strengthen it: constraining the effective
-coupling independently, against microscopic theory or experiment, or
-demonstrating that the optimum survives across a justified model family. The
-comparison reported here supplies the second route's measurement, and says
-nothing about which route is cheaper.
+An optimum obtained under one phenomenological coupling remains
+model-conditional. It can be strengthened either by constraining the effective
+coupling independently through microscopic theory or experiment, or by showing
+that the optimum persists across a justified model family. The atlas provides that cross-profile test for both the classification and the
+seed-stable candidates.
 
 \section{Conclusion}
 
-We have compared cross-ansatz and cross-seed variation in a design-facing
-classification for spin shuttling through a periodic micromagnet field, under
-common random numbers and across a registered range of Monte-Carlo ensemble
-sizes. Two results are methodological. First, drawing separate noise
-realizations per model mixes model differences with realization differences: in
-the archived analysis, correcting the seeding removes about a third of the
-disagreement it reported, and two thirds survive. In the finite-ensemble paired comparison used here,
-matched realizations remove the confounding introduced by drawing a different
-realization set for each ansatz; without them an observed cross-ansatz
-difference carries a sampling difference as well. Second, the two scales behave differently in
-ensemble size, so a cross-ansatz disagreement is interpretable only against a
-cross-seed benchmark measured at the same ensemble size.
+Using matched random realizations, we compared the sensitivity of a
+design-facing classification to the coupling ansatz with its sensitivity to
+finite Monte-Carlo sampling. In the archived analysis, separate realization sets inflated cross-ansatz
+disagreement; matching removes about one third of that archived disagreement. In the corrected paired comparison,
+cross-seed disagreement decreases strongly with ensemble size while
+cross-ansatz disagreement remains substantial over the registered range.
 
-The scientific result is that cross-ansatz disagreement in this setting is
-large, persistent across the registered ensemble sizes and seed blocks, and
-unevenly distributed. It concentrates in the thresholded classification while
-magnitude ranking stays high; its excess over cross-seed disagreement is much
-larger in the dephasing channel than in valley excitation; and it separates the
-specified contrasts into three persistent tiers. Operating points selected for seed stability replicate within
-their own ansatz and transport unevenly across the family. Design conclusions
-drawn from a single phenomenological coupling profile therefore remain
-model-conditional.
+The imbalance is response dependent. Dephasing is much more sensitive to the
+ansatz than to the seed block at $n_{\rm real}=100$, whereas valley excitation
+is approximately balanced. Magnitude ranking and thresholded classification
+also capture different aspects of the response, and seed-stable candidates
+transport unevenly across the four profiles. For this diagnostic family, a
+design conclusion obtained from one phenomenological coupling therefore
+remains model-conditional unless the coupling is independently constrained or
+the conclusion is shown to persist across a justified family.
 
 \paragraph{Future work.}
-The natural next step is a microscopic effective $H_{sv}$ for this regime,
-derived from orbital admixture, valley--orbit interaction, and $g$-factor
+A microscopic effective $H_{sv}$ for the shuttled-dot/micromagnet regime could
+be derived from orbital admixture, valley--orbit interaction and $g$-factor
 anisotropy~\cite{friesen_theory_2010,hosseinkhani_theory_2022,zhang_controlling_2021}.
-Related gradient, strain, and spin--orbit design questions in Ge hole-spin
+Related work on gradient, strain and spin--orbit design in Ge hole-spin
 platforms~\cite{sarkar_effect_2025,mauro_strain_2025,geyer_anisotropic_2024,hendrickx_sweet-spot_2024,jin_probing_2024}
-can inform the same program. Because the framework treats the coupling profile
-as an interchangeable module, a microscopic model whose effective operator
-structure matches this one enters as an additional profile and is compared
-pairwise against the diagnostic family; one that does not would extend the
-comparison to operator form. Residual uncertainty in
-microscopic input parameters will likely leave a finite degree of model
-dependence, which the same comparison would measure. A factorial design over
-gradient component and spatial localization, which the four profiles here cannot
-support, would test whether the disagreement has an identifiable physical axis.
+provides complementary examples of how those microscopic ingredients can enter
+device-level design. A microscopic model with the same effective
+operator structure can enter the present framework as an additional profile;
+one with a different structure would extend the comparison to operator-form
+uncertainty. A separate factorial design would be required to attribute the
+observed disagreement to gradient component, spatial localization or other
+physical axes.
 
 
 \section*{Acknowledgments}

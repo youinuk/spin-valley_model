@@ -88,7 +88,7 @@ for n in ('30', '100'):
 # n_real= 100  D_ansatz=0.395  D_seed=0.298  ratio=1.33
 ```
 
-`data/t0c/analysis/` holds fourteen such files; `REPRODUCIBILITY.md` Sec. 3
+`data/t0c/analysis/` holds fifteen JSON files: the fourteen registered/current analysis products plus one explicitly post-hoc operational-floor sensitivity product; `REPRODUCIBILITY.md` Sec. 3
 maps each one to the numbers it supplies.
 
 `data/t0c/analysis/` is the canonical analysis layer for the current
@@ -100,6 +100,44 @@ correction. That comparison is a correction audit and must not be read as a
 scientific perturbation of one estimand — the two layers use opposite
 valley-energy orderings, so the same symbol names different quantities in the
 two columns.
+
+## Check the post-hoc operational-floor sensitivity
+
+The registered classifier floors remain the primary analysis. A separate
+post-hoc robustness check varies the two operational floors independently by
+factors of `0.5`, `0.75`, `1`, `1.5`, and `2` (25 combinations) and relabels
+the stored responses without rerunning the simulator. The shipped summary is
+`data/t0c/analysis/threshold_floor_sensitivity.json`.
+
+```bash
+python - <<'PY'
+import json
+s = json.load(open('data/t0c/analysis/threshold_floor_sensitivity.json'))['summary']
+for n in ('n30', 'n100'):
+    x = s[n]
+    print(n, 'R_D range', x['R_D_range'],
+          'D_ansatz>D_seed', f"{x['D_ansatz_gt_D_seed']}/25",
+          'tiers', f"{x['tier_partition_preserved']}/25")
+print('first R_D>1 checkpoint counts:',
+      s['trajectory']['crossover_first_R_D_gt_1'])
+PY
+# n30  ... D_ansatz>D_seed 15/25 ...
+# n100 ... D_ansatz>D_seed 25/25 ...
+# first R_D>1 checkpoint counts: {'30': 15, '40': 8, '60': 2}
+```
+
+With the corrected raw-data layer available, regenerate the shipped JSON with
+
+```bash
+python reproduce/t0/threshold_floor_sensitivity.py \
+    ../repro-runs/t0c-step3b \
+    /tmp/threshold_floor_sensitivity.json
+cmp /tmp/threshold_floor_sensitivity.json \
+    data/t0c/analysis/threshold_floor_sensitivity.json
+```
+
+This check is post-hoc: it does not change the registered floors or any primary
+registered result.
 
 ## Regenerate the manuscript figures
 
@@ -141,7 +179,7 @@ the validation controls, and the tolerances are all in `REPRODUCIBILITY.md`.
 ```
 geometry/  noise/  reproduce/  tests/   field model, noise, analyses, checks
 constants.py, field_landscape.py        constants and analytic landscape
-data/t0c/analysis/                      canonical corrected analysis outputs (14 JSON)
+data/t0c/analysis/                      canonical corrected analysis outputs (15 JSON)
 data/t0/analysis/                       superseded historical outputs (14 JSON)
 reproduce/t0/                           provenance tools for the raw layer, the response
                                         exporter, and the T0/T0-C correction audit

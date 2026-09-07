@@ -116,7 +116,7 @@ columns** — they cause a clean-build fatal).
 
 ## 3. The T0-C analysis layer
 
-`data/t0c/analysis/` holds the canonical corrected T0-C outputs (14 JSON).
+`data/t0c/analysis/` holds the canonical corrected T0-C outputs (15 JSON: fourteen registered/current products and one explicitly post-hoc floor-sensitivity product).
 Every current number in the manuscript is traceable to one of these files. The
 analysis machinery stays under `reproduce/t0/` because the correction changed
 the producer convention and regenerated the data; it did not define a new
@@ -133,13 +133,15 @@ analysis procedure.
 | `discovery_n100.json` | the candidate screen at the registered follow-up prefix; the reference input for the layer comparison |
 | `confirmation_n100.json`, `candidate_delta.json` | extended confirmation at `n_real = 100` and the layer comparison |
 | `legacy_n5_block1.json` | the matched-seeding comparison against the archived r31 estimate |
+| `threshold_floor_sensitivity.json` | post-hoc factor-of-two sensitivity of the nine-category label to both operational floors; registered floors and primary results are unchanged |
 
 `reproduce/t0/` holds the public provenance utilities and no figure renderer.
 `t0_step4_analysis.py` computes the analysis JSON from the raw pickles;
 `t0_check_prefix.py` and `t0_check_seed_pairing.py` are the nested-prefix and
 seed-pairing gates; `export_responses.py` lifts the per-condition responses out
-of the raw layer; `compare_t0_t0c.py` is the correction audit across the two
-shipped analysis layers; and `README.md` describes them. The manuscript figure
+of the raw layer; `threshold_floor_sensitivity.py` performs the post-hoc
+operational-floor relabelling sweep; `compare_t0_t0c.py` is the correction
+audit across the two shipped analysis layers; and `README.md` describes them. The manuscript figure
 renderer is `reproduce/phase5_paper_figures.py`, one directory up.
 One of the gates does run in-tree: with both discovery files shipped, the
 registered layer comparison is reproducible without the raw layer,
@@ -162,6 +164,36 @@ absent. That key is what supplies the `confirmed` column of Table III and the
 statement that the same three conditions receive four-of-four confirmation at
 both prefixes, so a run without it reproduces everything except the claim the
 file is cited for.
+
+### Post-hoc operational-floor sensitivity
+
+The registered classifier uses $|\Delta P_v|\ge10^{-4}$ and
+$|\Delta\chi_\phi|\ge10^{-3}$. Those floors remain fixed for the primary
+analysis. The shipped `threshold_floor_sensitivity.json` is a post-hoc
+robustness product: each floor is independently multiplied by `0.5`, `0.75`,
+`1`, `1.5`, and `2`, and the stored response arrays are relabelled without
+rerunning the simulator. The script first reconstructs all eight registered
+prefixes and requires their registered $D_{\rm ansatz}$ and $D_{\rm seed}$
+values to match exactly before it performs the 25-combination sweep.
+
+When the corrected n=100 raw layer is available:
+
+```bash
+python reproduce/t0/threshold_floor_sensitivity.py \
+    ../repro-runs/t0c-step3b \
+    /tmp/threshold_floor_sensitivity.json
+cmp /tmp/threshold_floor_sensitivity.json \
+    data/t0c/analysis/threshold_floor_sensitivity.json
+```
+
+Expected summary: at $n_{\rm real}=30$, $R_D=0.961$--$1.042$ and
+$D_{\rm ansatz}>D_{\rm seed}$ for 15/25 floor combinations; at
+$n_{\rm real}=100$, $R_D=1.223$--$1.379$ and the ordering holds for 25/25.
+The high/middle/low pair-tier partition is preserved for 25/25 combinations at
+both endpoints. Across all eight checkpoints, $D_{\rm seed}$ decreases
+monotonically for 25/25 combinations; the first checkpoint with $R_D>1$ is
+$n_{\rm real}=30$ for 15 combinations, 40 for 8, and 60 for 2. These are
+post-hoc robustness statements, not changes to the registered analysis.
 
 **The remaining chain tools are not part of the default in-tree reproduction
 path**, because
