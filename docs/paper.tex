@@ -52,7 +52,7 @@ coupling profile, and that profile is not uniquely fixed for the moving-dot
 micromagnet setting considered here. We quantify how strongly a design-facing
 classification depends on that choice and compare the dependence with the
 variation finite Monte-Carlo sampling produces on its own. Using a periodic
-micromagnet array as a controlled reference geometry, we evaluate 108
+micromagnet array as a controlled-reference geometry, we evaluate 108
 conditions under four phenomenological coupling ans\"atze. Within each seed
 block all four share the same noise realizations; independent seed blocks
 supply a same-ansatz sampling benchmark. At the pre-registered endpoint of 30
@@ -199,6 +199,8 @@ model family.
   % ----- aligned profiles below -----
   % pocket-centre reference: well -> \varepsilon_v panel -> gradient panel
   \draw[black!22, dashed, line width=0.4pt] (4.9,4.12) -- (4.9,0.42);
+  % centred-pocket placement: x_c sits on the array-symmetry point
+  \node[tick, anchor=north] at (4.9,0.36) {$x_c=0$};
   % \varepsilon_v(x)
   \draw[axisline, black!35] (0.85,1.55) -- (9.0,1.55);
   \begin{scope}
@@ -513,7 +515,7 @@ model family.
 (a)~Device schematic: an electron spin (tilted arrow) is shuttled at constant
 velocity $v$ through the Si quantum well of a Si/SiGe heterostructure, beneath a
 periodic array of identical, uniformly $z$-magnetized rectangular Co prisms
-(period 150\,nm; not to scale along $y$), a controlled reference geometry
+(period 150\,nm; not to scale along $y$), a controlled-reference geometry
 motivated by proposed shuttling-bus architectures. Below, aligned with the
 device: the diabatic valley-detuning landscape $\varepsilon_v(x)$ of
 Eq.~\eqref{eq:evx}, the input-detuning proxy crossings where
@@ -622,7 +624,7 @@ comparison.
 
 Cross-ansatz disagreement---the fraction of conditions assigned different
 labels by two ans\"atze---is $0.395$ at $n_{\rm real}=100$ and remains within a
-three-point band over all eight registered checkpoints. Cross-seed disagreement
+$0.026$-wide band over all eight registered checkpoints. Cross-seed disagreement
 instead falls monotonically from $0.542$ to $0.298$. The two scales are
 comparable through the registered $n_{\rm real}=30$ endpoint; from
 $n_{\rm real}=40$ to $100$, cross-ansatz disagreement is larger.
@@ -632,7 +634,7 @@ $n_{\rm real}=100$, the cross-ansatz to cross-seed ratio is $5.60$ for spin
 dephasing and $0.96$ for valley excitation in a post-hoc channel decomposition.
 A separate post-hoc ranking diagnostic shows that similar response-magnitude
 rankings need not imply similar classifications: two ansatz pairs whose rank
-correlations differ by $0.011$ differ by $37.2$ percentage points in
+correlations differ by $0.011$ differ by $0.372$ in
 classification agreement. Operating points selected for stability across noise
 samples likewise transport unevenly across the four profiles.
 
@@ -699,7 +701,7 @@ experimentally~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,de_smet_high-f
 whereas periodically patterned micromagnet shuttling architectures remain
 largely proposed or emerging
 designs~\cite{kunne_spinbus_2024,langrock_blueprint_2023,unseld_baseband_2025}.
-We therefore use the periodic array as a controlled reference geometry rather
+We therefore use the periodic array as a controlled-reference geometry rather
 than a validated device architecture. Conclusions drawn on that geometry
 remain conditional on the assumed coupling profile and can be strengthened
 either by constraining the profile independently or by demonstrating robustness
@@ -761,7 +763,7 @@ diabatic valley detuning
 This gives a baseline detuning with a Gaussian pocket (minimum) near the
 shuttling path. We use $\varepsilon_{v,\rm base}=100\,\mu$eV,
 $\varepsilon_{v,\min}=5\,\mu$eV and $\sigma_p=30$\,nm; for
-A$_{\rm pocket}$ we set $\sigma_\lambda=\sigma_p$. The constant-velocity trajectory spans
+A$_{\rm pocket}$ we set $\sigma_\lambda=\sigma_p$ [Eq.~\eqref{eq:ansatz_apocket}]. The constant-velocity trajectory spans
 $x\in[x_c-4\sigma_p,\,x_c+4\sigma_p]$, a total path length of
 $240$\,nm. This detuning landscape is a phenomenological surrogate for
 the measured spatial variation of the physical valley splitting
@@ -817,11 +819,16 @@ relative difference at the pocket minimum and less than $0.02\%$ near the
 $\varepsilon_v\simeq E_Z$ crossings that set the proxy hot spots. The crossing condition of the separately dressed spin and
 valley blocks, before the spin--valley coupling is included, is
 $E_{\rm gap}=E_{\rm spin}$. Centring the resonance window on the simpler proxy
-$\varepsilon_v\simeq E_Z$ instead moves the crossing by $0.0014\,\mu$eV,
-$0.014\%$ of the $\sigma_E=10\,\mu$eV window width, because the two
-approximations displace it in the same direction and largely cancel. That
-cancellation follows from $\Delta_v\ll\varepsilon_v$; at
-$\Delta_v=5\,\mu$eV the residual would reach $8\%$ of the window width.
+$\varepsilon_v\simeq E_Z$ instead displaces the window centre by
+$0.046\,\mu$eV, $0.46\%$ of the $\sigma_E=10\,\mu$eV window width. Two
+corrections enter the crossing condition with opposite sign: valley dressing
+raises $E_{\rm gap}$ above $\varepsilon_v$ by
+$2\Delta_v^2/\varepsilon_v\simeq0.008\,\mu$eV, while the transverse
+micromagnet field raises $E_{\rm spin}$ above $E_Z$ by
+$\frac{g\mu_B B_x^2}{2[B_{\rm ext}+B_z]}\simeq0.054\,\mu$eV at the crossing. At this
+baseline the transverse-field term sets the residual. The valley term grows as
+$\Delta_v^2$ and dominates for stronger mixing: at $\Delta_v=5\,\mu$eV the
+residual reaches $8\%$ of the window width.
 
 We use this Hamiltonian as a phenomenological response model rather than a
 microscopically derived Si/SiGe $H_{sv}$. The
@@ -860,7 +867,7 @@ are then
 & \text{A:} \quad \lambda_{sv}(x) = \lambda_0\,
   \frac{|\partial_x B_z(x)|}{\max_x|\partial_x B_z|}, \\
 & \text{A}_{\rm pocket}\text{:} \quad \lambda_{sv}(x) = \lambda_{sv}^{\rm A}(x)\,
-  \exp\!\left[-\frac{(x-x_c)^2}{2\sigma_\lambda^2}\right], \\
+  \exp\!\left[-\frac{(x-x_c)^2}{2\sigma_\lambda^2}\right], \label{eq:ansatz_apocket} \\
 & \text{B}_z\text{:} \quad \lambda_{sv}(x) = \lambda_{sv}^{\rm A}(x)\,
   \exp\!\left[-\frac{(\varepsilon_v(x)-E_Z(x))^2}{2\sigma_E^2}\right], \\
 & \text{B}_x\text{:} \quad \lambda_{sv}(x) = \lambda_0\,
@@ -944,9 +951,9 @@ For the off-centred pocket, the two flank crossings become inequivalent and the
 localized profiles become asymmetric. A$_{\rm pocket}$ can then become
 single-flank dominated because the $|\partial_x B_z|$ node no longer coincides
 with the well bottom. B$_x$ also samples a different spatial phase from the
-$\partial_x B_z$-based kernels because it is built from $\partial_x B_x$; its
-weight peaks slightly outside a proxy crossing where the
-$\partial_x B_z$-based kernels peak slightly inside. This spatial offset is one
+$\partial_x B_z$-based kernels because it is built from $\partial_x B_x$, so
+within each resonance window the two peak at slightly different positions and
+the two crossings receive different relative weight. This spatial offset is one
 geometric distinction between B$_x$ and the $\partial_x B_z$-based ans\"atze.
 The atlas compares the resulting classifications but does not isolate that
 offset as their cause.
@@ -969,10 +976,13 @@ pocket-centred envelope, and all three localized profiles form symmetric twin
 peaks. (b)~Edge pocket, $x_c=25$~nm. The panel spans $x_c\pm4\sigma_p$, so
 $\varepsilon_v$ is centred in it, but $E_Z(x)$ is periodic in the array and is
 not symmetric about $x_c$, so the two crossings become inequivalent.
-A$_{\rm pocket}$ is then single-flank dominated, and B$_z$ and B$_x$ select
-opposite crossings, because $\partial_x B_z$ and $\partial_x B_x$ are
-approximately phase shifted. The left--right asymmetry is a property of the
-off-centred placement, not of the profiles.}
+A$_{\rm pocket}$ is then single-flank dominated, and the two
+resonance-localized profiles weight the crossings differently: because
+$\partial_x B_z$ and $\partial_x B_x$ are approximately phase shifted, B$_z$ is
+concentrated on the crossing at which $|\partial_x B_z|$ is larger, whereas
+B$_x$ retains comparable weight at both. The crossing inequivalence is
+induced by the off-centred placement, while its expression depends on the
+gradient kernel.}
 \label{fig:profiles}
 \end{figure*}
 
@@ -1000,7 +1010,7 @@ references. We compare a spin-only model with charge noise but no valley sector
 ($\mathrm{M2}$):
 $\Delta P_v=P_v^{\mathrm{M2}}-P_v^{\mathrm{M1V}}$ measures the effect of charge
 noise on valley leakage, whereas
-$\Delta\chi_\phi=\chi^{\mathrm{M2}}-\chi^{\mathrm{M1}}$ measures the effect of
+$\Delta\chi_\phi=\chi_\phi^{\mathrm{M2}}-\chi_\phi^{\mathrm{M1}}$ measures the effect of
 the valley sector on charge-noise dephasing. The latter is computed within a
 filter-function description of $1/f$ charge
 noise~\cite{burkard_semiconductor_2023,struck_low-frequency_2020,viola_dynamical_1999}.
@@ -1233,7 +1243,7 @@ scientific reasoning and claim scope, inspected and debugged simulation,
 analysis, plotting and verification code, and checked consistency among the registered
 estimands, the archived analysis outputs, the figures and the manuscript text.
 The purpose was to reduce implementation and transcription errors and to add a
-second consistency check. The registered Monte Carlo runs were executed by the
+second consistency check. The registered Monte-Carlo runs were executed by the
 author. Every suggested code or text change was reviewed by the author, and
 every reported numerical value was verified against the archived outputs. The
 final interpretations and conclusions were determined by the author.
@@ -1260,7 +1270,7 @@ $|\mathcal{R}|$ against classification agreement, six ansatz pairs at
 $n_{\rm real}=100$. Filled markers joined by the dashed line are the
 counterexample pair, open markers the other four. A/A$_{\rm pocket}$ and
 A/B$_z$ differ by
-$0.011$ in rank correlation and $37.2$ percentage points in classification
+$0.011$ in rank correlation and $0.372$ in classification
 agreement. The three pairs containing B$_x$ group together in the middle band.
 Post-hoc diagnostic.}
 \label{fig:atlas}
@@ -1271,8 +1281,8 @@ The archived analysis used a separate noise realization for each ansatz, so
 its cross-ansatz comparison also contained a sampling difference. Repeating the
 comparison at $n_{\rm real}=5$ with matched seed block and the same archived
 observable convention raises mean classification agreement from $35.96\%$ to
-$56.94\%$ and mean rank correlation from $0.837$ to $0.917$. The disagreement falls from $64.04$ to $43.06$ percentage points, a reduction
-of $20.99$ points, or about one third. These values are retained only as an
+$56.94\%$ and mean rank correlation from $0.837$ to $0.917$. The disagreement falls from $64.04\%$ to $43.06\%$, a reduction
+of about one third. These values are retained only as an
 archived seeding audit and are not mixed with the corrected T0-C results.
 
 \paragraph{Matched cross-ansatz disagreement remains substantial.}
@@ -1287,11 +1297,11 @@ checkpoints, A/B$_z$ forms the lowest-disagreement tier
 ($0.348$--$0.407$); and A/A$_{\rm pocket}$ together with
 A$_{\rm pocket}$/B$_z$ form the highest tier ($0.467$--$0.533$).
 A$_{\rm pocket}$/B$_x$ lies in the middle band. From
-$n_{\rm real}=30$ to $100$ no ansatz pair moves by more than $2.0$ points,
+$n_{\rm real}=30$ to $100$ no ansatz pair moves by more than $0.020$,
 whereas the seed-pair mean falls from $0.385$ to $0.298$. These tiers describe the six specified pairwise contrasts within the
 four-profile family; they do not rank underlying physical modeling axes. Even
 the most similar pair,
-A/B$_z$, disagrees on $16.1\%$ of conditions at $n_{\rm real}=100$.
+A/B$_z$, disagrees on $0.161$ of conditions at $n_{\rm real}=100$.
 
 The ansatz- and seed-pair distributions nevertheless overlap at every
 checkpoint, so uniform dominance does not hold. At $n_{\rm real}=100$ the
@@ -1301,7 +1311,7 @@ sixty pairwise comparisons, 46 favour the ansatz side at $n_{\rm real}=100$,
 compared with 33 at $n_{\rm real}=30$. Shared inactivity contributes to both
 forms of agreement: 13 of 108 conditions are below threshold under every
 ansatz and block at $n_{\rm real}=100$, and shared below-threshold assignments
-account for $46.4\%$ of ansatz-pair agreement. Restricting the comparison to the
+account for $0.464$ of ansatz-pair agreement. Restricting the comparison to the
 union in which at least one pair member has a two-channel quadrant label
 increases the contrast to $0.521$ versus $0.323$.
 
@@ -1359,7 +1369,7 @@ $n_{\rm real}=100$, pairwise rank correlation is high across the family
 (mean $0.913$, range $0.850$--$0.978$), while classification agreement is
 much broader (mean $0.605$, range $0.467$--$0.839$). The two summaries do not track one another
 [Fig.~\ref{fig:atlas}(c)]: A/A$_{\rm pocket}$ and A/B$_z$ differ by only
-$0.011$ in rank correlation but by $37.2$ percentage points in classification
+$0.011$ in rank correlation but by $0.372$ in classification
 agreement. Cohen's $\kappa$ spans $0.311$--$0.804$, so chance correction does
 not remove the disparity.
 
@@ -1393,16 +1403,16 @@ signed step from the baseline point.}
 \toprule
 case & geometry & $v$\,(m/s) & $\lambda$\,($\mu$eV) & discovered by & confirmed \\
 \midrule
-center & period$-$   & 5  & 1.0 & A$_{\rm pocket}$                 & 2/4 \\
-edge   & depth$-$    & 5  & 1.0 & A, A$_{\rm pocket}$, B$_z$, B$_x$& \textbf{4/4} \\
-edge   & half\_z$-$  & 5  & 1.0 & A                           & 2/4 \\
-edge   & period$+$   & 5  & 1.0 & A, A$_{\rm pocket}$, B$_x$       & \textbf{4/4} \\
-edge   & depth$+$    & 10 & 0.5 & A, B$_z$, B$_x$             & 3/4 \\
-edge   & depth$+$    & 10 & 1.0 & A, A$_{\rm pocket}$, B$_z$, B$_x$& \textbf{4/4} \\
-edge   & baseline    & 20 & 1.0 & B$_z$, B$_x$                & 1/4 \\
-edge   & half\_z$+$  & 20 & 1.0 & A, B$_z$, B$_x$             & 3/4 \\
-edge   & half\_z$-$  & 20 & 1.0 & B$_x$                       & 1/4 \\
-edge   & period$+$   & 20 & 1.0 & A, B$_z$, B$_x$             & 0/4 \\
+center & \texttt{period}$-$   & 5  & 1.0 & A$_{\rm pocket}$                 & 2/4 \\
+edge   & \texttt{depth}$-$    & 5  & 1.0 & A, A$_{\rm pocket}$, B$_z$, B$_x$& \textbf{4/4} \\
+edge   & \texttt{half\_z}$-$  & 5  & 1.0 & A                           & 2/4 \\
+edge   & \texttt{period}$+$   & 5  & 1.0 & A, A$_{\rm pocket}$, B$_x$       & \textbf{4/4} \\
+edge   & \texttt{depth}$+$    & 10 & 0.5 & A, B$_z$, B$_x$             & 3/4 \\
+edge   & \texttt{depth}$+$    & 10 & 1.0 & A, A$_{\rm pocket}$, B$_z$, B$_x$& \textbf{4/4} \\
+edge   & \texttt{baseline}    & 20 & 1.0 & B$_z$, B$_x$                & 1/4 \\
+edge   & \texttt{half\_z}$+$  & 20 & 1.0 & A, B$_z$, B$_x$             & 3/4 \\
+edge   & \texttt{half\_z}$-$  & 20 & 1.0 & B$_x$                       & 1/4 \\
+edge   & \texttt{period}$+$   & 20 & 1.0 & A, B$_z$, B$_x$             & 0/4 \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -1449,9 +1459,10 @@ about one third of its apparent disagreement, while most of the difference
 between profiles remains.
 
 Aggregate disagreement does not determine whether rankings and classifications
-agree. High rank correlation does not guarantee classification agreement: the
-A/A$_{\rm pocket}$ and A/B$_z$ pairs differ by only $0.011$ in rank
-correlation but by $37.2$ percentage points in classification agreement.
+agree. High rank correlation does not guarantee classification agreement.
+A/A$_{\rm pocket}$ provides the clearest example: its response-magnitude
+ranking is close to that of A/B$_z$, yet its classification agreement is the
+lowest in the family.
 
 The channel balance is likewise uneven. Dephasing shows a large cross-ansatz
 excess at both endpoints, whereas valley excitation has larger cross-seed
@@ -1508,11 +1519,8 @@ realization prefix, not an independent replication. The three conditions
 confirmed under all four ans\"atze are therefore grid-local results within this
 diagnostic family.
 
-Natural extensions include measured or finite-device micromagnet fields,
-alternative noise descriptions, and microscopically derived couplings and
-operator structures. Those extensions are deliberately left outside the
-present comparison so that coupling-profile dependence is isolated against a
-fixed geometric backdrop.
+These restrictions deliberately hold the geometric backdrop fixed so that
+coupling-profile dependence can be isolated.
 
 \paragraph{Implications for co-design.}
 A robust operating-point claim should identify the coupling profile under which
@@ -1522,11 +1530,10 @@ dot shape or path~\cite{losert_strategies_2024}. Cross-ansatz comparisons should
 also carry a same-ansatz cross-seed benchmark at the same ensemble size,
 because the two scales are comparable at the smaller checkpoints studied here.
 
-An optimum obtained under one phenomenological coupling remains
-model-conditional. It can be strengthened either by constraining the effective
-coupling independently through microscopic theory or experiment, or by showing
-that the optimum persists across a justified model family. The atlas provides that cross-profile test for both the classification and the
-seed-stable candidates.
+The atlas supplies that cross-profile test within the four diagnostic profiles
+studied here, for both the classification and the seed-stable candidates. It
+does not supply the independent constraint on the coupling that would remove
+the ambiguity.
 
 \section{Conclusion}
 
@@ -1586,7 +1593,7 @@ Writing -- review \& editing (lead).
 The data that support the findings of this study are openly available in
 Zenodo at
 \href{https://doi.org/10.5281/zenodo.21588784}{https://doi.org/10.5281/zenodo.21588784},
-reference number~21588784 (all versions:
+reference number~21588784~\cite{you_reproducibility_2026} (all versions:
 \href{https://doi.org/10.5281/zenodo.21588003}{10.5281/zenodo.21588003}), and
 are mirrored at \url{https://github.com/youinuk/spin-valley_model}. The
 archive contains the simulation code, the analysis outputs behind every

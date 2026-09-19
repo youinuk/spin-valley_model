@@ -73,8 +73,8 @@ known.
 \subsection{Analytic field landscape (V0)}
 The deterministic field model reproduces the analytic periodic
 landscape of the device model to machine precision: the analytic
-derivative $\partial_x B_{\rm long}$ and the JAX automatic-differentiation
-value agree to a relative error of $4\times10^{-9}$
+derivative $\partial_x B_z$ of the longitudinal stray-field component and the
+JAX automatic-differentiation value agree to a relative error of $4\times10^{-9}$
 (\texttt{field\_landscape.py}). This validates the field-gradient
 calculation used by the downstream observables.
 
@@ -109,14 +109,14 @@ guarantees the accuracy of the geometry-derivative checks below.
 
 \subsection{Position and geometry autodifferentiation (V6)}
 Automatic differentiation of $B_z,B_x$ with respect to both position
-\emph{and} device-geometry parameters (magnet half-extents
-$\mathrm{half}_x,\mathrm{half}_z$, spatial period, 2DEG depth) agrees
+\emph{and} device-geometry parameters (the main-text geometry parameters
+\texttt{half\_x}, \texttt{half\_z}, \texttt{period} and \texttt{depth}) agrees
 with finite differences to a relative error
 $\le 4\times10^{-6}$: position derivatives reach
 $\sim\!10^{-10}$, and the four geometry derivatives are
-$1.3\times10^{-6}$ ($\mathrm{half}_x$), $2.0\times10^{-6}$
-($\mathrm{half}_z$), $1.0\times10^{-6}$ (period), and
-$4.0\times10^{-6}$ (depth) (\texttt{tests/test\_geometry\_autodiff.py}).
+$1.3\times10^{-6}$ (\texttt{half\_x}), $2.0\times10^{-6}$
+(\texttt{half\_z}), $1.0\times10^{-6}$ (\texttt{period}), and
+$4.0\times10^{-6}$ (\texttt{depth}) (\texttt{tests/test\_geometry\_autodiff.py}).
 This validates the geometry derivatives used in the numerical checks.
 
 \subsection{Spatial periodicity of the finite array (V7)}
@@ -124,20 +124,26 @@ An eleven-prism finite array (central $\pm5$ periods) satisfies
 $B(x+a)=B(x)$ to within $0.04\%$ in the central region (maximum
 deviation $0.0423\%$ at $z=-50$\,nm, $a=400$\,nm). This is an auxiliary
 check on a larger-period array, not a direct validation of the
-$a=150$\,nm controlled reference geometry used in the atlas; it supports
+$a=150$\,nm controlled-reference geometry used in the atlas; it supports
 the use of a periodic descriptor for a finite array of this kind rather
 than certifying the baseline period.
 
 \subsection{Fourier-harmonic content (V8)}
-The stray field is dominated by its first harmonic, but the even/odd
-harmonic pattern depends on the magnet duty cycle. For a large magnet
-($200^3$\,nm, $a=400$\,nm, $50\%$ duty) only odd harmonics survive, with
-$B_z^{(3)}/B_z^{(1)}=8.8\%$ and $B_x^{(3)}/B_x^{(1)}=10.0\%$; for the
-small-magnet baseline ($50\times50\times30$\,nm, $a=150$\,nm, $33\%$ duty) even
-harmonics also appear, with $B_z^{(2)}/B_z^{(1)}=9.2\%$. We therefore
-retain three harmonics ($N_{\rm harm}=3$) in the field descriptor so
-that both regimes are represented. Table~\ref{tab:numerics} summarizes
-the numerical-consistency checks of this section.
+The stray field is dominated by its first harmonic, but the leading
+non-fundamental component depends on the magnet duty cycle. For the
+large-magnet stress configuration ($200\times200\times100$\,nm,
+$a=400$\,nm, $d=1/2$), even harmonics vanish and the leading correction is
+the third harmonic, with $B_z^{(3)}/B_z^{(1)}=8.8\%$ and
+$B_x^{(3)}/B_x^{(1)}=10.0\%$. For the atlas baseline
+($50\times50\times30$\,nm, $a=150$\,nm, $d=1/3$), harmonics with $n$
+divisible by three vanish, while the second harmonic remains, with
+$B_z^{(2)}/B_z^{(1)}=9.2\%$. For a rectangular periodic profile the relevant
+Fourier coefficient contains the factor $\sin(n\pi d)$, so harmonic $n$
+vanishes whenever $nd$ is an integer. Retaining $n\le3$
+($N_{\rm harm}=3$) therefore captures the leading non-fundamental harmonic in
+both benchmark geometries: the baseline contribution is at $n=2$, whereas the
+separate large-magnet stress test requires $n=3$. Table~\ref{tab:numerics}
+summarizes the numerical-consistency checks of this section.
 
 \begin{table}[t]
 \centering
@@ -155,7 +161,7 @@ V0.2 & quasi-static $T_2^\ast$      & $\sqrt{2}/\sigma_\omega$   & $<1\%$ ($27.1
 V0.3 & float64 necessity            & analytic vs autodiff       & $10^0\!\to\!10^{-9}$ \\
 V6   & geometry autodiff            & finite difference          & $\le 4\times10^{-6}$ \\
 V7   & array periodicity            & $B(x{+}a){=}B(x)$          & $0.04\%$ \\
-V8   & harmonic content             & FFT spectrum               & $N_{\rm harm}{=}3$ retained \\
+V8   & harmonic content             & FFT spectrum               & $N_{\rm harm}{=}3$ (combined benchmark) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -174,12 +180,12 @@ Halving a monotonic magnetic gradient roughly doubles the static-dot
 $T_2^\ast$, consistent with the ratio reported by Krzywda
 \emph{et~al.}~\cite{krzywda_coherence_2026}, who observe
 $T_2^\ast=4.4\to8.5\,\mu$s on reducing the longitudinal gradient, a ratio
-of $1.93$. At $g_{\rm grad}=0.1\to0.05$\,mT/nm we find
+of $1.93$. At a longitudinal gradient of $0.1\to0.05$\,mT/nm we find
 $T_2^\ast=302\to664$\,ns, a ratio of $2.20$. Our acceptance interval is $\pm20\%$ of the reported ratio, namely
 $[1.55,2.32]$. This interval is our tolerance, not a range reported in the
 reference. \emph{Caveat:} the absolute values are about $10\times$ shorter
 than the reference because our noise amplitude $\sigma_{\delta x}=0.3$\,nm
-is representative rather than device calibrated; only the ratio is claimed. Figure~\ref{fig:v1} shows the two
+is representative rather than device calibrated. Figure~\ref{fig:v1} shows the two
 decay curves.
 
 \begin{figure}[t]
@@ -189,7 +195,7 @@ decay curves.
 $1/f$ charge noise for a high and a halved magnetic gradient. Halving
 the gradient increases $T_2^\ast$ from $302$ to $664$\,ns (ratio
 $2.20$), within our $\pm20\%$ acceptance interval around the reported
-ratio. Only the ratio is claimed; the
+ratio. The
 absolute values depend on the representative noise amplitude.}
 \label{fig:v1}
 \end{figure}
@@ -203,12 +209,15 @@ in Ref.~\cite{krzywda_coherence_2026}; the $64\times$ magnitude is
 specific to the present model and parameter set. This occurs
 once the drive frequency $f_{\rm drive}=v/a$ moves above the dominant
 noise band. The stationary baseline here is an effective static-gradient
-model with the mean absolute periodic gradient
-$\langle|B_{\rm long}'|\rangle\approx0.8$\,T/$\mu$m, so only the
-\emph{relative} improvement is meaningful. \emph{Caveat:} we claim only
-the direction of the trend; at very high velocity, orbital
-non-adiabaticity (not modeled here) is expected to re-introduce error,
-so unbounded improvement is not claimed.
+model using the mean absolute gradient of the separate $a=100$\,nm sinusoidal
+validation landscape, $\langle|\partial_x B_z|\rangle\approx0.8$\,mT/nm. This
+validation landscape is distinct from the $a=150$\,nm controlled-reference
+geometry characterized in V9; the benchmark therefore tests the
+motional-narrowing trend rather than transferring its absolute $T_2^\ast$
+values or $64\times$ factor to the atlas geometry. \emph{Caveat:} at very high
+velocity, orbital non-adiabaticity (not modeled here) is expected to
+re-introduce error, so the modeled improvement should not be extrapolated
+indefinitely.
 
 \subsection{Filter-function suppression (V3)}
 This auxiliary filter-function validation uses the original
@@ -219,26 +228,31 @@ mechanism validation and not a geometry variation of the atlas.
 The periodic-shuttling filter function $F(f,T)$ suppresses low-frequency
 ($f<1$\,MHz) sensitivity by about $2\times10^5$ relative to a static dot.
 The physically realized dephasing is set by the PSD-weighted overlap
-$\chi(T)=\int S_{\delta x}(f)F(f,T)\,df$; this quantity is suppressed by
+$\chi_\phi(T)=\int S_{\delta x}(f)F(f,T)\,df$, with $S_{\delta x}(f)$ the
+displacement-noise power spectral density; this quantity is suppressed by
 about $5.8\times10^3$ ($T=1\,\mu$s, $v=10$\,m/s).
 \emph{Caveat:} the filter-function shape and the realized dephasing
 differ; a $10^5$-fold suppression of $F$ corresponds to only a
-$10^3$-fold suppression of $\chi$, because dynamical decoupling lowers
-the low-frequency response but introduces a sensitivity peak near
-$f_{\rm drive}$ that overlaps the $1/f$ tail. Figure~\ref{fig:v3} shows
-the filter function and the PSD-weighted integrand.
+$10^3$-fold suppression of $\chi_\phi$, because dynamical decoupling
+further lowers the low-frequency response while the drive-induced
+sensitivity band near $f_{\rm drive}$ overlaps the $1/f$ tail.
+Figure~\ref{fig:v3} shows the filter function and the PSD-weighted
+integrand.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{figures/filter_suppression.pdf}
-\caption{Validation V3. Left: the filter function $F(f,T)$ for a
+\caption{Validation V3. (a)~The filter function $F(f,T)$ for a
 static dot versus periodic shuttling (and shuttling with dynamical
 decoupling), showing strong low-frequency ($f<1$\,MHz, shaded)
-suppression. Right: the PSD-weighted integrand
+suppression. The zeros of $F$ are destructive-interference nodes of the
+finite-duration modulation, whereas the finite-frequency peak near
+$f_{\rm drive}=v/a$ marks the drive-induced sensitivity band.
+(b)~The PSD-weighted integrand
 $S_{\delta x}(f)\,F(f,T)$, whose integral is the realized dephasing;
 its suppression ($\sim\!5.8\times10^3$) is smaller than that of $F$
-alone ($\sim\!2\times10^5$) because decoupling introduces a
-sensitivity feature near $f_{\rm drive}=v/a$.}
+alone ($\sim\!2\times10^5$) because the $1/f$ tail overlaps this
+drive-frequency sensitivity band.}
 \label{fig:v3}
 \end{figure*}
 
@@ -271,15 +285,18 @@ accumulation between the two crossings.
 \caption{Validation V4. Diabatic transition probability after a linear
 valley sweep, numerical (markers) versus the analytic Landau--Zener
 formula (line), as a function of the sweep-rate parameter
-$\gamma=\hbar\alpha/(2\pi\Delta_v^2)$. Agreement is within $0.28\%$
+$\gamma=\hbar\alpha/(2\pi\Delta_v^2)$, where $\alpha=|\dot\varepsilon_v|$
+is the sweep rate of Eq.~(S1). Agreement is within $0.28\%$
 across the scanned range.}
 \label{fig:v4}
 \end{figure}
 
 \subsection{Single-prism stray field (V5)}
 The analytic stray field of a uniformly magnetized rectangular prism
-(Engel-Herbert \& Hesjedal) is implemented in JAX and matches the
-far-field dipole limit $B_z\to\mu_0 m/(2\pi d^3)$ to $0.06\%$:
+(Engel-Herbert \& Hesjedal~\cite{engelherbert_calculation_2005}) is
+implemented in JAX and matches the
+far-field dipole limit $B_z\to\mu_0 m/(2\pi d^3)$, with moment $m=M_sV$,
+to $0.06\%$:
 $8.95\,\mu$T (numerical) versus $8.96\,\mu$T (dipole) on the $z$-axis at
 $d=5\,\mu$m. Figure~\ref{fig:v5} shows the array field and its gradients
 at two depths.
@@ -287,8 +304,8 @@ at two depths.
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.95\columnwidth]{figures/prism_fields.pdf}
-\caption{Validation V5/V6. Stray field $B_z,B_x$ (left) and their
-position gradients via automatic differentiation (right) at two depths
+\caption{Validation V5/V6. Stray field $B_z,B_x$ [(a),~(c)] and their
+position gradients via automatic differentiation [(b),~(d)] at two depths
 below a micromagnet array. The gradient panels feed the coupling
 profiles of the main text; the autodifferentiation underlying them is
 validated against finite differences to $\le4\times10^{-6}$ (V6).}
@@ -307,8 +324,8 @@ the peak gradient sits just above the upper end. This check bears on the field a
 gradient scales the chosen geometry produces, not on the magnet
 dimensions themselves; the velocity range is motivated separately by
 conveyor-mode shuttling studies.
-\emph{Caveat:} a large magnet ($200\times200\times100$\,nm) gives
-$\delta B_z\approx197$\,mT, about $10\times$ stronger; the main-text
+\emph{Caveat:} a large magnet ($200\times200\times100$\,nm, period
+$400$\,nm, depth $-50$\,nm) gives $\delta B_z\approx197$\,mT, about $7.3\times$ the baseline value; the main-text
 baseline uses the small-magnet configuration, and the large-magnet case
 is reserved as a strong-gradient stress test.
 Table~\ref{tab:literature} summarizes the checks of this section.
@@ -326,10 +343,10 @@ ID & quantity & reference / regime & result \\
 \midrule
 V1 & gradient-halving $T_2^\ast$ ratio & Krzywda~\cite{krzywda_coherence_2026}: reported $1.93$, our $\pm20\%$ band & $2.20$ (ratio) \\
 V2 & motional-narrowing trend          & Krzywda~\cite{krzywda_coherence_2026}: direction only & up to $64\times$ \\
-V3 & filter-function suppression       & static vs shuttling, this model & $F:2\times10^5$, $\chi:5.8\times10^3$ \\
+V3 & filter-function suppression       & static vs shuttling, this model & $F:2\times10^5$, $\chi_\phi:5.8\times10^3$ \\
 V4 & valley Landau--Zener              & reduced Oda model~\cite{oda_suppressing_2026} & $<0.28\%$ \\
 V5 & single-prism stray field          & dipole far-field limit       & $0.06\%$ \\
-V9 & field/gradient scale              & device parameter scales      & comparable; peak gradient at upper end \\
+V9 & field/gradient scale              & device parameter scales~\cite{yoneda_quantum-dot_2018,unseld_baseband_2025,langrock_blueprint_2023} & comparable; peak gradient at upper end \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -359,8 +376,8 @@ alternative explanation of the decoupling reported in the main text.
 
 Table~\ref{tab:weight} recomputes the pairwise rank correlations under
 alternative ranked quantities. The diagnostic quantity is the gap between the
-A/A$_{\rm pocket}$ and A/B$_z$ pairs, which differ by $37.2$ percentage points
-in classification agreement at $n_{\rm real}=100$ ($34.1$ at $30$). If raw-unit
+A/A$_{\rm pocket}$ and A/B$_z$ pairs, which differ by $0.372$
+in classification agreement at $n_{\rm real}=100$ ($0.341$ at $30$). If raw-unit
 channel weighting were the main explanation, floor normalization should move
 the ranking gap substantially toward the classification gap. It moves only from $0.011$ to $0.023$, and ranking each channel separately
 changes the gap less. Among the ranked quantities tested here, the signed
@@ -382,7 +399,12 @@ information as a candidate contributor; it is not a demonstrated cause. Figure~\
 \begin{table}[t]
 \centering
 \caption{Pairwise rank correlation under alternative definitions of the ranked
-quantity, and the resulting A/A$_{\rm pocket}$ against A/B$_z$ gap. The
+quantity, and the resulting A/A$_{\rm pocket}$ against A/B$_z$ gap.
+$\Delta P_v$ and $\Delta\chi_\phi$ are the two baseline-relative responses of
+the main text, used here as the scalar by which conditions are ranked;
+``pair gap'' is the difference between the mean Spearman $\rho$ of the
+A/A$_{\rm pocket}$ pair and that of the A/B$_z$ pair, not a difference between
+ans\"atze. The
 classification-agreement gap for that pair of pairs is $0.341$ at
 $n_{\rm real}=30$ and $0.372$ at $100$; a ranked quantity carrying the
 explanation should close much of that distance. Six-pair ordering statistics are discussed in the
@@ -412,8 +434,8 @@ A shared \emph{below-threshold} assignment counts as agreement, so a large
 inactive population could in principle manufacture both the agreement level and
 the cross-ansatz versus cross-seed contrast. The main text reports the dilution
 directly: at $n_{\rm real}=100$, $13$ of $108$ conditions are inactive under
-every ansatz and block, and shared below-threshold assignments supply $46.4\%$
-of ansatz-pair agreement and $47.0\%$ of seed-pair agreement.
+every ansatz and block, and shared below-threshold assignments supply $0.464$
+of ansatz-pair agreement and $0.470$ of seed-pair agreement.
 
 As a pre-registered sensitivity analysis we recompute both estimands on the
 subset of comparisons in which at least one member carries one of the four
@@ -461,7 +483,8 @@ eight-checkpoint trajectory, $D_{\rm seed}$ decreases monotonically for all
 $25$ combinations. The first checkpoint with $R_D>1$ is $n_{\rm real}=30$
 for $15$ combinations, $40$ for $8$, and $60$ for $2$. Thus the exact
 crossover location is floor dependent, whereas the $n_{\rm real}=100$
-ordering is stable over this post-hoc grid.
+ordering is stable over this post-hoc grid. Table~\ref{tab:floor_sensitivity}
+collects the ranges.
 
 The pairwise structure is more stable than the exact aggregate crossover. At
 both $n_{\rm real}=30$ and $100$, every floor combination preserves the same
@@ -529,12 +552,12 @@ $n_{\rm real}=100$.}
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 pair & agreement & $\kappa$ & agreement & $\kappa$ \\
 \midrule
-A vs A$_{\rm pocket}$         & $48.3\%$ & $0.360$ & $46.7\%$ & $0.311$ \\
-A$_{\rm pocket}$ vs B$_z$     & $49.6\%$ & $0.373$ & $49.6\%$ & $0.347$ \\
-A$_{\rm pocket}$ vs B$_x$     & $61.1\%$ & $0.475$ & $59.8\%$ & $0.431$ \\
-A vs B$_x$                    & $61.3\%$ & $0.532$ & $60.6\%$ & $0.508$ \\
-B$_z$ vs B$_x$                & $64.6\%$ & $0.571$ & $62.6\%$ & $0.533$ \\
-A vs B$_z$                    & $82.4\%$ & $0.790$ & $83.9\%$ & $0.804$ \\
+A vs A$_{\rm pocket}$         & $0.483$ & $0.360$ & $0.467$ & $0.311$ \\
+A$_{\rm pocket}$ vs B$_z$     & $0.496$ & $0.373$ & $0.496$ & $0.347$ \\
+A$_{\rm pocket}$ vs B$_x$     & $0.611$ & $0.475$ & $0.598$ & $0.431$ \\
+A vs B$_x$                    & $0.613$ & $0.532$ & $0.606$ & $0.508$ \\
+B$_z$ vs B$_x$                & $0.646$ & $0.571$ & $0.626$ & $0.533$ \\
+A vs B$_z$                    & $0.824$ & $0.790$ & $0.839$ & $0.804$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -542,14 +565,14 @@ A vs B$_z$                    & $82.4\%$ & $0.790$ & $83.9\%$ & $0.804$ \\
 The three pairs containing B$_x$ agree on $327$, $323$ and $338$ of $540$
 comparisons at $n_{\rm real}=100$, that is $0.606$, $0.598$ and $0.626$. They
 are close but not equal, and the corresponding values at $n_{\rm real}=30$ are
-$0.613$, $0.611$ and $0.646$. The near-coincidence is a numerical accident of
-three similar counts and carries no structural meaning.
+$0.613$, $0.611$ and $0.646$.
 
 \section{Relation to the main text}
-The numerical-consistency checks (V0--V8) validate the field model, its
-gradients, and the time-evolution engine used to generate the main-text atlas. The literature and physical benchmark checks
-(V1--V9) support the representative parameter values (Table~I of the main
-text). V9 verifies that the controlled-reference geometry produces field
+The numerical-consistency checks in Table~\ref{tab:numerics} test the
+implementation of the field model, its gradients, and the time-evolution engine
+used to generate the main-text atlas. The literature and physical benchmarks in
+Table~\ref{tab:literature} support the representative parameter values (Table~I
+of the main text). V9 verifies that the controlled-reference geometry produces field
 and gradient scales comparable to those of relevant micromagnet devices,
 while the velocity sweep is motivated separately by conveyor-mode
 shuttling studies. V1--V3 test the dephasing response to gradients, and
