@@ -196,7 +196,7 @@ produced it is no longer implemented in this tree.
 
 ## Build the manuscript
 
-The manuscript targets the *Journal of Applied Physics* and uses `revtex4-2`
+The manuscript was prepared for the *Journal of Applied Physics* and uses `revtex4-2`
 with the AIP substyle.
 `docs/figures/` already contains the adopted figures, so the build needs no
 preparation step:
@@ -224,14 +224,23 @@ against them.
 
 ## Citation
 
-Please cite the accompanying paper; see `CITATION.cff`. To cite this software
+Please cite the archived software and data using the DOI below. To cite this software
 archive, use the version DOI
 [10.5281/zenodo.21588784](https://doi.org/10.5281/zenodo.21588784), or the
 concept DOI [10.5281/zenodo.21588003](https://doi.org/10.5281/zenodo.21588003)
 to resolve to the latest release.
 
+## Manuscript status (October 30, 2026)
+
+The accompanying manuscript was submitted to the *Journal of Applied Physics* and was rejected following peer review.
+
+This repository preserves the released numerical study based on a phenomenological four-level response model, four diagnostic spin–valley coupling ansätze, and a controlled-reference periodic geometry. The physical applicability of the valley Hamiltonian and spin–valley coupling to Si/SiGe devices remains unresolved.
+
+The released numerical results are conditional on these assumptions. No revised physical model or corresponding simulation results are included in this release.
+
+
 ## License
 
 Code under the MIT License (`LICENSES/MIT.txt`). Figures and data under
 `figures/` and `data/` may be reused under CC-BY 4.0
-(`LICENSES/CC-BY-4.0.txt`) with attribution to the accompanying paper.
+(`LICENSES/CC-BY-4.0.txt`) with attribution to this archive.

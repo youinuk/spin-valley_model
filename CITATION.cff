@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this code or data, please cite the accompanying paper."
+message: "If you use this code or data, please cite this software archive."
 title: "spinshuttle: matched model-form and finite-sampling atlas for micromagnet-assisted spin-valley shuttling"
 authors:
   - family-names: "You"
@@ -23,10 +23,3 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.21588003
     description: "Concept DOI resolving to the latest archived release"
-preferred-citation:
-  type: article
-  title: "Model-form versus finite-sampling uncertainty in micromagnet-assisted spin-valley shuttling: a periodic-reference sensitivity atlas"
-  authors:
-    - family-names: "You"
-      given-names: "Inuk"
-  year: 2026
